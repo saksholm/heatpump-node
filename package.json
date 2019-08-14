@@ -1,0 +1,22 @@
+{
+  "name": "heatpump-node",
+  "version": "0.0.1",
+  "description": "Heatpump software",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saksholm/heatpump-node.git"
+  },
+  "author": "Joni Saskholm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saksholm/heatpump-node/issues"
+  },
+  "homepage": "https://github.com/saksholm/heatpump-node#readme",
+  "dependencies": {
+    "johnny-five": "^1.3.0"
+  }
+}
