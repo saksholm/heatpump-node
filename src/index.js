@@ -14,9 +14,6 @@ import {
 
 const board = new five.Board({timeout: 3600});
 
-
-//console.log("io's", DI,DO,AI,AO);
-
 board.on("ready", function() {
 
   io.initial(this);
@@ -35,11 +32,11 @@ board.on("ready", function() {
 
 
   // clear stuff
-  /*
+
   this.on("exit", function() {
-    led.off();
+    // TODO: shutdown everything necessary!!
   });
-  */
+
 });
 
 
