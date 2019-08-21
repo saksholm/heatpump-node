@@ -1,36 +1,48 @@
-import five from "johnny-five";
+const five = require("johnny-five");
 import {
-  DI,
-  DO,
-  AI,
-  AO,
+  io
 } from './includes/io';
-const board = new five.Board();
+import {GLOBALS} from './includes/globals';
+import {DO} from './includes/do';
+import {DI} from './includes/di';
+import {AO} from './includes/ao';
+import {AI} from './includes/ai';
+import {logic} from './includes/logic';
+import {
+  Foo
+} from './includes/func';
+
+const board = new five.Board({timeout: 3600});
 
 
-console.log("io's", DI,DO,AI,AO);
-
-DO.ahu_fan.on();
-
-/*
+//console.log("io's", DI,DO,AI,AO);
 
 board.on("ready", function() {
 
+  io.initial(this);
+
   this.repl.inject({
-    on: input => {
-      console.log("on on on", typeof input, input);
+    info: () => {
+      console.log("DO ahuFan", DO.ahuFan);
+//      DO.ahuFan.initial(five);
+
     },
-    off: input => {
-      console.log("off off off", input);
+
+    ledOutput: value => {
+      DO.ahuFanOutput.set(value);
     },
   });
-
 
 
   // clear stuff
+  /*
   this.on("exit", function() {
     led.off();
   });
-
+  */
 });
-*/
+
+
+board.on("close", function() {
+  console.log("Board closed :/");
+});
