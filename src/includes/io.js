@@ -1,33 +1,30 @@
-const DI = {
-  DI1: 'DI1',
-};
-
-const DO = {
-  ahu_fan: {
-    pin: '13',
-    value: false, // true/false
-    mqttCommand: '',
-    mqttState: '',
-    on: function() {
-      console.log("turn on ahu_fan", this);
-    },
-    off: function() {
-      console.log("turn off ahu_fan", this);
-    },
-  },
-};
-
-const AI = {
-  AI1: 'AI1',
-};
-
-const AO = {
-  AO1: 'AO1',
-};
-
-export {
-  DI,
+//import five from 'johnny-five';
+//const board = new five.Board();
+import {GLOBALS} from './globals';
+import {
   DO,
-  AI,
-  AO,
+  DOInitial,
+} from './do';
+import {DI} from './di';
+import {AO} from './ao';
+import {AI} from './ai';
+import {
+  TH,
+  THInitial,
+} from './th';
+
+const io = {};
+
+
+io.initial = board => {
+  console.log("Start initialising io's");
+  DOInitial(board);
+  DI.initial(board);
+  AO.initial(board);
+  AI.initial(board);
+  THInitial(board);
 };
+
+
+
+export {io};
