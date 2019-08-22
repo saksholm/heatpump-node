@@ -1,7 +1,5 @@
 const five = require("johnny-five");
-import {
-  io
-} from './includes/io';
+import {io} from './includes/io';
 import {GLOBALS} from './includes/globals';
 import {DO} from './includes/do';
 import {DI} from './includes/di';
@@ -9,7 +7,7 @@ import {AO} from './includes/ao';
 import {AI} from './includes/ai';
 import {logic} from './includes/logic';
 import {
-  Foo
+
 } from './includes/func';
 
 const board = new five.Board({timeout: 3600});
