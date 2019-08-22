@@ -1,6 +1,6 @@
 import {
   Initialized,
-} from './func';
+} from './initialized.class';
 
 const initialized = new Initialized('AO');
 

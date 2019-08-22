@@ -1,7 +1,7 @@
 const five = require("johnny-five");
 import {
   Initialized,
-} from './func';
+} from './initialized.class';
 
 const {
   constrain,
