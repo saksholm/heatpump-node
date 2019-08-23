@@ -264,7 +264,7 @@ const TH = {
 
 };
 
-const THInitial = board => {
+TH.initial = board => {
   if(TH.board === null) {
     TH.board = board;
   }
@@ -279,7 +279,4 @@ const THInitial = board => {
   console.log("TH initial setup............................................... DONE");
 };
 
-export {
-  TH,
-  THInitial,
-};
+export {TH};
