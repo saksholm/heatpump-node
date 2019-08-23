@@ -117,7 +117,7 @@ const DO = {
 */
 };
 
-const DOInitial = board => {
+DO.initial = board => {
 
   if(DO.board === null) {
     DO.board = board;
@@ -131,10 +131,6 @@ const DOInitial = board => {
     }
   });
   console.log("DO initial setup............................................... DONE");
+}
 
-};
-
-export {
-  DO,
-  DOInitial,
-};
+export {DO};
