@@ -1,9 +1,5 @@
+import {GLOBALS} from './globals';
 
-
-
-
-
-
-export {
-
+export const parseMQTTString = path => {
+  return `${GLOBALS.mqttBase}${path}`;
 };
