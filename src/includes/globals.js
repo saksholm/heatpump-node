@@ -3,6 +3,7 @@
 const GLOBALS = {
   starting: true,
   startupTime: 20*1000, // 20sec to not start hp
+  startupTimestamp: 0,
   hvacCooling: false,
   hvacDrying: false, // means cooling & after heating
   hvacHeating: false, // water or pump?!
@@ -11,18 +12,6 @@ const GLOBALS = {
   heatToAir: false,
   groundWarmerThanAir: false,
 
-  hp: {
-    allowedToRun: false,
-    error: false,
-    running: false,
-    lastStopTime: 0,
-    minimumRunningTime: 60*5*1000, // 5min
-    restartDelay: 60*5*1000, // 5mins
-    maxPower: 50, // 0-100
-    minPower: 10, // 0-100
-    minFan: 10, // 0-100
-    maxFan: 60, // 0-100
-  },
   boiler: {
     upperHeatingResistorAllowed: true,
     lowerHeatingResistorAllowed: false,
@@ -49,7 +38,7 @@ const GLOBALS = {
     },
 
   },
-  mqttBase: '/iot/heatpump/',
+  mqttBase: '/iot/heatpump',
 };
 
 export {
