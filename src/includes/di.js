@@ -5,7 +5,14 @@ import {
 const initialized = new Initialized('DI');
 
 const DI = {
-  DI1: 'DI1',
+  board: null,
+
+  hpAlarm: {
+
+  },
+  kwhMeterPulse: {
+
+  },
 
 /*
   const int     DI_HP_ALARM = 19; // DI 19 - HP Alarm
@@ -17,12 +24,16 @@ const DI = {
 */
 };
 
-DI.initial = function() {
-  Object.keys(this).map((key,index) => {
-    const instance = this[key];
+DI.initial = board => {
+  if(DI.board === null) {
+    DI.board = board;
+  }
 
-    if(typeof instance.initial === "function") {
-      instance.initial(five);
+  Object.keys(DI).map((key,index) => {
+    const instance = DI[key];
+
+    if(key !== "board" && typeof instance !== null && instance && typeof instance.initial === "function") {
+      instance.initial(board);
     }
   });
   console.log("DI initial setup............................................... DONE");
