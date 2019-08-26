@@ -6,14 +6,14 @@ const initialized = new Initialized('DI');
 
 const DI = {
   board: null,
-
+/*
   hpAlarm: {
 
   },
   kwhMeterPulse: {
 
   },
-
+*/
 /*
   const int     DI_HP_ALARM = 19; // DI 19 - HP Alarm
   const int     DI_KWHMETER_PULSE = 20; // DI 20 - KWH Meter pulse
