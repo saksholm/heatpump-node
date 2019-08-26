@@ -44,7 +44,7 @@ const DO = {
   ahuFan: {
     type: 'relay',
     name: 'AHU Fan',
-    pin: 14,
+    pin: 22,
     pinMode: Pin.OUPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
@@ -62,7 +62,7 @@ const DO = {
   ahuFanOutput: {
     type: 'pwm',
     name: 'AHU Fan Output',
-    pin: 13,
+    pin: 2,
     pinMode: Pin.PWM, // PWM
     value: 0,
     set: function(value) {
@@ -81,6 +81,139 @@ const DO = {
       initialized.done(this.name);
     }
   },
+  hpAllowed: {
+//   const int     DO_HP_ALLOWED = 22; // DO 22 - HP Allowed
+    type: 'relay',
+    name: 'HP allowed',
+    pin: 23,
+    pinMode: Pin.OUPUT, // OUTPUT
+    value: false, // true/false
+    set: function(value) {
+      this.value = value;
+      // trigger something mqtt etc stuff?
+    },
+    mqttCommand: '',
+    mqttState: '',
+    output: null,
+    initial: function() {
+      this.output = new five.Relay(this.pin);
+      initialized.done(this.name);
+    },
+  },
+  dampertOutside: {
+//  const int     DO_DAMPER_OUTSIDE = 23; // DO 23 - Damper outside
+    type: 'relay',
+    name: 'Damper outside',
+    pin: 24,
+    pinMode: Pin.OUPUT, // OUTPUT
+    value: false, // true/false
+    set: function(value) {
+      this.value = value;
+      // trigger something mqtt etc stuff?
+    },
+    mqttCommand: '',
+    mqttState: '',
+    output: null,
+    initial: function() {
+      this.output = new five.Relay(this.pin);
+      initialized.done(this.name);
+    },
+  },
+  damperConvection: {
+//   const int     DO_DAMPER_CONVECTION = 29; // DO 29 ? - Damper convection
+    type: 'relay',
+    name: 'Damper convection',
+    pin: 25,
+    pinMode: Pin.OUPUT, // OUTPUT
+    value: false, // true/false
+    set: function(value) {
+      this.value = value;
+      // trigger something mqtt etc stuff?
+    },
+    mqttCommand: '',
+    mqttState: '',
+    output: null,
+    initial: function() {
+      this.output = new five.Relay(this.pin);
+      initialized.done(this.name);
+    },
+  },
+  waterpumpCharging: {
+//  const int     DO_WATERPUMP_CHARGING = 24; // DO 24 - Waterpump charging
+    type: 'relay',
+    name: 'Waterpump charging',
+    pin: 26,
+    pinMode: Pin.OUPUT, // OUTPUT
+    value: false, // true/false
+    set: function(value) {
+      this.value = value;
+      // trigger something mqtt etc stuff?
+    },
+    mqttCommand: '',
+    mqttState: '',
+    output: null,
+    initial: function() {
+      this.output = new five.Relay(this.pin);
+      initialized.done(this.name);
+    },
+  },
+  chgPumpRequest: {
+//   const int     DO_CHGPUMP_REQUEST = 25; // DO 25 - CHG pump request
+    type: 'relay',
+    name: 'CHG pump request',
+    pin: 27,
+    pinMode: Pin.OUPUT, // OUTPUT
+    value: false, // true/false
+    set: function(value) {
+      this.value = value;
+      // trigger something mqtt etc stuff?
+    },
+    mqttCommand: '',
+    mqttState: '',
+    output: null,
+    initial: function() {
+      this.output = new five.Relay(this.pin);
+      initialized.done(this.name);
+    },
+  },
+  hp4Way: {
+//    const int     DO_4WAY = 27; // DO 27 - HP 4-way - heating/cooling
+    type: 'relay',
+    name: 'HP 4-way valve',
+    pin: 28,
+    pinMode: Pin.OUPUT, // OUTPUT
+    value: false, // true/false
+    set: function(value) {
+      this.value = value;
+      // trigger something mqtt etc stuff?
+    },
+    mqttCommand: '',
+    mqttState: '',
+    output: null,
+    initial: function() {
+      this.output = new five.Relay(this.pin);
+      initialized.done(this.name);
+    },
+  },
+  hpFan: {
+//  const int     DO_HP_FAN = 28; // DO 28 - HP Fan
+    type: 'relay',
+    name: 'HP fan',
+    pin: 29,
+    pinMode: Pin.OUPUT, // OUTPUT
+    value: false, // true/false
+    set: function(value) {
+      this.value = value;
+      // trigger something mqtt etc stuff?
+    },
+    mqttCommand: '',
+    mqttState: '',
+    output: null,
+    initial: function() {
+      this.output = new five.Relay(this.pin);
+      initialized.done(this.name);
+    },
+  },
   // maapiiri pumppu
   // hx pumppu, restart delay
   // hx venttiili, delay 90s-90deg.. wait 30s
@@ -89,14 +222,6 @@ const DO = {
   // 4-way
 
 /*
-  const int     DO_HP_ALLOWED = 22; // DO 22 - HP Allowed
-  const int     DO_DAMPER_OUTSIDE = 23; // DO 23 - Damper outside
-  const int     DO_DAMPER_CONVECTION = 29; // DO 29 ? - Damper convection
-  const int     DO_WATERPUMP_CHARGING = 24; // DO 24 - Waterpump charging
-  const int     DO_CHGPUMP_REQUEST = 25; // DO 25 - CHG pump request
-  const int     DO_AHU_FAN_ALLOWED = 26; // DO 26 - AHU Fan allowed
-  const int     DO_4WAY = 27; // DO 27 - HP 4-way - heating/cooling
-  const int     DO_HP_FAN = 28; // DO 28 - HP Fan
 
 
     pinMode(AO_HP, OUTPUT); // HP control signal
