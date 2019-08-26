@@ -1,5 +1,5 @@
 const five = require("johnny-five");
-import getUnixTime from 'date-fns/getUnixTime'
+
 
 import {io} from './includes/io';
 import {GLOBALS} from './includes/globals';
@@ -9,7 +9,7 @@ import {AO} from './includes/ao';
 import {AI} from './includes/ai';
 import {logic} from './includes/logic';
 import {
-
+  unixtimestamp,
 } from './includes/func';
 import {HP} from './includes/hp';
 
@@ -18,11 +18,11 @@ import {HP} from './includes/hp';
 const board = new five.Board({timeout: 3600});
 
 
-console.log(getUnixTime(new Date()));
+console.log(unixtimestamp());
 
 board.on("ready", function() {
 
-  GLOBALS.startupTimestamp = getUnixTime();
+  GLOBALS.startupTimestamp = unixtimestamp();
   this.wait(GLOBALS.startupTime, () => {
     GLOBALS.starting = false;
   });
