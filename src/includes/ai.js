@@ -5,6 +5,7 @@ import {
 const initialized = new Initialized('AI');
 
 const AI = {
+  board: null,
   AI1: 'AI1',
 
 
@@ -15,12 +16,15 @@ const AI = {
   */
 };
 
-AI.initial = function() {
-  Object.keys(this).map((key,index) => {
-    const instance = this[key];
+AI.initial = board => {
+  if(AI.board === null) {
+    AI.board = board;
+  }
+  Object.keys(AI).map((key,index) => {
+    const instance = AI[key];
 
-    if(typeof instance.initial === "function") {
-      instance.initial(five);
+    if(key !== "board" && typeof instance !== null && instance && typeof instance.initial === "function") {
+      instance.initial(board);
     }
   });
   console.log("AI initial setup............................................... DONE");
