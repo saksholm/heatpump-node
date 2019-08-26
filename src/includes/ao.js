@@ -5,19 +5,25 @@ import {
 const initialized = new Initialized('AO');
 
 const AO = {
+  board: null,
   AO1: 'AO1',
 };
 
-AO.initial = function() {
-  Object.keys(this).map((key,index) => {
-    const instance = this[key];
+AO.initial = board => {
+  if(AO.board === null) {
+    AO.board = board;
+  }
 
-    if(typeof instance.initial === "function") {
+  Object.keys(AO).map((key,index) => {
+    const instance = AO[key];
+
+    if(key !== "board" && typeof instance !== null && instance && typeof instance.initial === "function") {
       instance.initial(five);
     }
   });
   console.log("AO initial setup............................................... DONE");
 }
+
 
 
 export {AO};
