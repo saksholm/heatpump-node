@@ -1,15 +1,28 @@
-import {five} from 'johnny-five';
+import five from 'johnny-five';
 import {GLOBALS} from './globals';
+import {DO} from './do';
+import {TH} from './th';
+import {
+  unixtimestamp,
+  calculateTimeout,
+  mapPercentToPWM,
+} from './func'
+
+const {
+  constrain,
+} = five.Fn;
+
 
 const HP = {
   board: null,
   allowedToRun: false,
   error: false,
+  mode: 'stop',
   running: false,
   lastStopTime: 0,
-  minimumRunningTime: 60*5*1000, // 5min
-  restartDelay: 60*5*1000, // 5mins
-  restartTimestamp: 0,
+  minimumRunningTime: 60*5, // 5min
+  restartDelay: 60*5, // 5mins
+  restartTimestamp: 1566932400,
   maxPower: 50, // 0-100
   minPower: 10, // 0-100
   minFan: 10, // 0-100
@@ -22,11 +35,55 @@ HP.start = function() {
   console.log("Starting HP..... let's settle things up first");
   const {wait} = this.board;
 
+  HP.mode = 'run';
+  console.log("HP mode is 'run'");
+
+  const timeoutMillis = calculateTimeout(HP.restartTimestamp, HP.restartDelay, true);
+  wait(timeoutMillis, function() {
+    HP.allowedToRun = true; // let's allow HP running (restartDelay is now over)
+    console.log("HP allowed to run = true");
+    DO.hpAllowed.output.on(); // hp allowed relay to on
+    console.log("hp allowed output on()");
+    DO.waterpumpCharging.output.on(); // waterpump charging relay to on
+    console.log("waterpump charging output on()");
+    DO.hpFan.output.on(); // Fan on
+    console.log("hp fan output on()");
+
+    // 4-way ?!??!
 
 
-  wait(5000, function() {
-    console.log("trolololo");
+
+    DO.load2Way.set(mapPercentToPWM(20)); // let's open 2way valve 20%
+    console.log("load 2-way to 20%");
+    DO.hpFanOutput.set(mapPercentToPWM(20)); // hp fan output to 20%
+    console.log("hp fan output to 20%");
+
+    // Dampers?
+
+    if(TH.outside.value > 5) {
+      DO.damperOutside.output.on();
+      console.log("damper outside output on()");
+      DO.damperConvection.output.off();
+      console.log("damper convection output off()");
+    } else {
+      DO.damperOutside.output.off();
+      console.log("damper outside output off()");
+      DO.damperConvection.output.on();
+      console.log("damper convection output on()");
+    }
+
+
+
+    // waiting extra 10s. to start pump.
+    wait(10*1000, function() {
+      DO.hpOutput.set(mapPercentToPWM(10)); // set HP to 10% load
+      console.log("hp output to 10%");
+    });
+
+
+    console.log("Okay... let's start");
   });
+
 
 /*
  if( (global.currentMillis -  HP_RESTART_LASTMS) >= HP_RESTART_DELAY) {
@@ -84,6 +141,10 @@ HP.start = function() {
 */
 };
 
+
+HP.stop = function() {
+  // TODO:
+};
 
 HP.initial = board => {
   if(HP.board === null) {
