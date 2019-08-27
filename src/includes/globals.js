@@ -11,7 +11,7 @@ const GLOBALS = {
   heatToGround: false,
   heatToAir: false,
   groundWarmerThanAir: false,
-
+  deadzone: 0.3,
   boiler: {
     upperHeatingResistorAllowed: true,
     lowerHeatingResistorAllowed: false,
