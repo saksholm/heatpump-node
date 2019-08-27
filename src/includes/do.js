@@ -65,7 +65,10 @@ const DO = {
     pin: 2,
     pinMode: Pin.PWM, // PWM
     value: 0,
+    minValue: 15,
+    maxValue: 60,
     set: function(value) {
+      value = constrain(value, this.minValue, this.maxValue);
       this.value = constrain(value, 0, 255);
       DO.board.analogWrite(this.pin, this.value);
 
@@ -100,7 +103,7 @@ const DO = {
       initialized.done(this.name);
     },
   },
-  dampertOutside: {
+  damperOutside: {
 //  const int     DO_DAMPER_OUTSIDE = 23; // DO 23 - Damper outside
     type: 'relay',
     name: 'Damper outside',
@@ -203,6 +206,7 @@ const DO = {
     pinMode: Pin.OUPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
+
       this.value = value;
       // trigger something mqtt etc stuff?
     },
@@ -213,6 +217,81 @@ const DO = {
       this.output = new five.Relay(this.pin);
       initialized.done(this.name);
     },
+  },
+  hpFanOutput: {
+    type: 'pwm',
+    name: 'HP Fan Output',
+    pin: 4,
+    pinMode: Pin.PWM, // PWM
+    value: 0,
+    minValue: 15,
+    maxValue: 60,
+    set: function(value) {
+      value = constrain(value, this.minValue, this.maxValue);
+      this.value = constrain(value, 0, 255);
+      DO.board.analogWrite(this.pin, this.value);
+
+      // TODO: ramp?!? up/down
+    },
+    mqttCommand: '',
+    mqttState: '',
+    output: null,
+    initial: function() {
+      DO.board.pinMode(this.pin, this.pinMode);
+      //this.output = five.PWM
+      DO.board.analogWrite(this.pin, this.value);
+      initialized.done(this.name);
+    }
+  },
+  load2Way: {
+    type: 'pwm',
+    name: 'Load 2-Way output',
+    pin: 3,
+    pinMode: Pin.PWM, // PWM
+    value: 0,
+    minValue: 2,
+    maxValue: 100,
+    set: function(value) {
+      value = constrain(value, this.minValue, this.maxValue);
+      this.value = constrain(value, 0, 255);
+      DO.board.analogWrite(this.pin, this.value);
+
+      // TODO: ramp?!? up/down
+    },
+    mqttCommand: '',
+    mqttState: '',
+    output: null,
+    initial: function() {
+      DO.board.pinMode(this.pin, this.pinMode);
+      //this.output = five.PWM
+      DO.board.analogWrite(this.pin, this.value);
+      initialized.done(this.name);
+    }
+  },
+  hpOutput: {
+    type: 'pwm',
+    name: 'HP Output',
+    pin: 5,
+    pinMode: Pin.PWM, // PWM
+    value: 0,
+    minValue: 10,
+    maxValue: 60,
+    set: function(value) {
+      value = constrain(value, this.minValue, this.maxValue);
+      this.value = constrain(value, 0, 255);
+      DO.board.analogWrite(this.pin, this.value);
+
+      // TODO: ramp?!? up/down
+    },
+    mqttCommand: '',
+    mqttState: '',
+    output: null,
+    initial: function() {
+      DO.board.pinMode(this.pin, this.pinMode);
+      //this.output = five.PWM
+      DO.board.analogWrite(this.pin, this.value);
+      initialized.done(this.name);
+    }
   },
   // maapiiri pumppu
   // hx pumppu, restart delay
