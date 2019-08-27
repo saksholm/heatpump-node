@@ -8,9 +8,9 @@ const ports = {
     D1: 0, // TX
     PWM: {
       D2: 'ahuFanOutput',
-      D3: 0,
-      D4: 0,
-      D5: 0,
+      D3: 'load2Way',
+      D4: 'hpFanOutput',
+      D5: 'hpOutput',
       D6: 0,
       D7: 0,
       D8: 0,
