@@ -1,8 +1,10 @@
 const five = require("johnny-five");
-
+var mqtt = require('mqtt')
+var mqttClient  = mqtt.connect('mqtt://test.mosquitto.org')
 
 import {io} from './includes/io';
 import {GLOBALS} from './includes/globals';
+import {secrets} from './secrets.js';
 import {DO} from './includes/do';
 import {DI} from './includes/di';
 import {AO} from './includes/ao';
