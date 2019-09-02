@@ -6,6 +6,7 @@ import {
   unixtimestamp,
   calculateTimeout,
   mapPercentToPWM,
+  genericInitial,
 } from './func'
 
 const {
@@ -146,21 +147,7 @@ HP.stop = function() {
   // TODO:
 };
 
-HP.initial = board => {
-  if(HP.board === null) {
-    HP.board = board;
-  }
-/*
-  Object.keys(TH).map((key) => {
-    const instance = TH[key];
-
-    if(key !== "board" && typeof instance !== null && instance && typeof instance.initial === "function") {
-      instance.initial(board);
-    }
-  });
-  */
-  console.log("HP initial setup............................................... DONE");
-};
+HP.initial = board => genericInitial(HP, 'HP', board);
 
 
 export {
