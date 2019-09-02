@@ -5,6 +5,9 @@ import {
 import {
   genericInitial,
   mapPercentToPWM,
+  mqttPublish,
+  convertStringToBoolean,
+  relayOnOff,
 } from './func';
 
 const initialized = new Initialized('DO');
@@ -209,12 +212,14 @@ const DO = {
     pinMode: Pin.OUPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
-
+      if(typeof value !== 'boolean') value = convertStringToBoolean(value);
       this.value = value;
+      relayOnOff(this);
+      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       // trigger something mqtt etc stuff?
     },
-    mqttCommand: '',
-    mqttState: '',
+    mqttCommand: 'hp/hpFan',
+    mqttState: 'hp/hpFan',
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin);
@@ -230,13 +235,15 @@ const DO = {
     minValue: 15,
     maxValue: 60,
     set: function(value) {
-      value = mapPercentToPWM(value, this.minValue, this.maxValue);
-      DO.board.analogWrite(this.pin, this.value);
+      this.value = constrain(value, this.minValue, this.maxValue);
+      DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
+
+      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
 
       // TODO: ramp?!? up/down
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'hp/fanOutput',
     output: null,
     initial: function() {
       DO.board.pinMode(this.pin, this.pinMode);
@@ -254,13 +261,15 @@ const DO = {
     minValue: 2,
     maxValue: 100,
     set: function(value) {
-      value = mapPercentToPWM(value, this.minValue, this.maxValue);
-      DO.board.analogWrite(this.pin, this.value);
+      this.value = constrain(value, this.minValue, this.maxValue);
+      DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
+
+      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
 
       // TODO: ramp?!? up/down
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'hp/load2Way',
     output: null,
     initial: function() {
       DO.board.pinMode(this.pin, this.pinMode);
@@ -278,12 +287,14 @@ const DO = {
     minValue: 10,
     maxValue: 60,
     set: function(value) {
-      value = mapPercentToPWM(value, this.minValue, this.maxValue);
-      DO.board.analogWrite(this.pin, this.value);
+      this.value = constrain(parseInt(value), this.minValue, this.maxValue);
+      DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
+
+      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       // TODO: ramp?!? up/down
     },
-    mqttCommand: '',
-    mqttState: '',
+    mqttCommand: 'hp/hpOutput',
+    mqttState: 'hp/hpOutput',
     repl: {
       hpOutput: function(value) { DO.hpOutput.set(value)},
     },
