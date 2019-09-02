@@ -38,7 +38,7 @@ const GLOBALS = {
     },
 
   },
-  mqttBase: '/iot/heatpump',
+  mqttBase: 'iot/heatpump',
 };
 
 export {
