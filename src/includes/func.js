@@ -36,9 +36,9 @@ export const calculateTimeout = (timestamp, delay, milliseconds=false) => {
 };
 
 export const mapPercentToPWM = (value,min=false,max=false) => {
-  value = parseint(value);
-  if(min && value < min) console.wan(`value (${value})is under minimum (${min})`);
-  if(max && value > max) console.wan(`value (${value})is over maximum (${max})`);
+  value = parseInt(value);
+  if(min && value < min) console.warn(`value (${value})is under minimum (${min})`);
+  if(max && value > max) console.warn(`value (${value})is over maximum (${max})`);
   value = constrain(value, (min ? min : 0), (max ? max : 100));
   return map(value, 0,100, 0,255);
 };
