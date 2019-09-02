@@ -1,6 +1,6 @@
 const five = require("johnny-five");
 var mqtt = require('mqtt')
-var mqttClient  = mqtt.connect('mqtt://test.mosquitto.org')
+
 
 import {io} from './includes/io';
 import {GLOBALS} from './includes/globals';
@@ -12,15 +12,27 @@ import {AI} from './includes/ai';
 import {logic} from './includes/logic';
 import {
   unixtimestamp,
+  mqttSubscriptions,
+  mqttOnMessage,
+  mqttCommandTopics,
 } from './includes/func';
 import {HP} from './includes/hp';
 
+const {
+  mqttServer,
+  mqttUser,
+  mqttPass,
+} = secrets;
 
-
+const mqttClient = mqtt.connect(mqttServer, {username: mqttUser, password: mqttPass});
 const board = new five.Board({timeout: 3600});
 
+mqttClient.commandTopics = mqttCommandTopics();
+
+board.mqttClient = mqttClient;
 
 console.log(unixtimestamp());
+
 
 board.on("ready", function() {
 
@@ -57,4 +69,33 @@ board.on("ready", function() {
 
 board.on("close", function() {
   console.log("Board closed :/");
+});
+
+
+mqttClient.on('connect', function() {
+
+  mqttSubscriptions(mqttClient);
+
+
+//  mqttClient.subscribe('cmnd/iot/heatpump/hp/output');
+
+  mqttClient.subscribe('state/iot/heatpump/online', (err) => {
+    if(!err) {
+      mqttClient.publish('state/iot/heatpump/online', 'hello');
+    }
+  });
+});
+
+mqttClient.on('message', (topic, message) => {
+  console.log("topic",topic.toString());
+  console.log("message",message.toString());
+//  mqttClient.end();
+
+
+  mqttOnMessage(mqttClient,topic,message);
+
+});
+
+mqttClient.on('error', err => {
+  console.error("mqttClient error", err);
 });
