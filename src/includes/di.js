@@ -1,6 +1,7 @@
 import {
   Initialized,
 } from './initialized.class';
+import {genericInitial} from './func';
 
 const initialized = new Initialized('DI');
 
@@ -24,20 +25,7 @@ const DI = {
 */
 };
 
-DI.initial = board => {
-  if(DI.board === null) {
-    DI.board = board;
-  }
-
-  Object.keys(DI).map((key,index) => {
-    const instance = DI[key];
-
-    if(key !== "board" && typeof instance !== null && instance && typeof instance.initial === "function") {
-      instance.initial(board);
-    }
-  });
-  console.log("DI initial setup............................................... DONE");
-}
+DI.initial = board => genericInitial(DI, 'DI', board);
 
 
 export {DI};
