@@ -8,7 +8,9 @@ import {AI} from './ai';
 import {TH} from './th';
 import {HP} from './hp';
 
-const io = {};
+const io = {
+  
+};
 
 
 io.initial = board => {
