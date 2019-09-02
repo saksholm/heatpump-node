@@ -2,6 +2,10 @@ const five = require("johnny-five");
 import {
   Initialized,
 } from './initialized.class';
+import {
+  genericInitial,
+  mapPercentToPWM,
+} from './func';
 
 const initialized = new Initialized('DO');
 
@@ -68,8 +72,7 @@ const DO = {
     minValue: 15,
     maxValue: 60,
     set: function(value) {
-      value = constrain(value, this.minValue, this.maxValue);
-      this.value = constrain(value, 0, 255);
+      value = mapPercentToPWM(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, this.value);
 
       // TODO: ramp?!? up/down
@@ -227,8 +230,7 @@ const DO = {
     minValue: 15,
     maxValue: 60,
     set: function(value) {
-      value = constrain(value, this.minValue, this.maxValue);
-      this.value = constrain(value, 0, 255);
+      value = mapPercentToPWM(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, this.value);
 
       // TODO: ramp?!? up/down
@@ -252,8 +254,7 @@ const DO = {
     minValue: 2,
     maxValue: 100,
     set: function(value) {
-      value = constrain(value, this.minValue, this.maxValue);
-      this.value = constrain(value, 0, 255);
+      value = mapPercentToPWM(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, this.value);
 
       // TODO: ramp?!? up/down
@@ -277,18 +278,18 @@ const DO = {
     minValue: 10,
     maxValue: 60,
     set: function(value) {
-      value = constrain(value, this.minValue, this.maxValue);
-      this.value = constrain(value, 0, 255);
+      value = mapPercentToPWM(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, this.value);
-
       // TODO: ramp?!? up/down
     },
     mqttCommand: '',
     mqttState: '',
+    repl: {
+      hpOutput: function(value) { DO.hpOutput.set(value)},
+    },
     output: null,
     initial: function() {
       DO.board.pinMode(this.pin, this.pinMode);
-      //this.output = five.PWM
       DO.board.analogWrite(this.pin, this.value);
       initialized.done(this.name);
     }
@@ -321,20 +322,6 @@ const DO = {
 */
 };
 
-DO.initial = board => {
-
-  if(DO.board === null) {
-    DO.board = board;
-  }
-
-  Object.keys(DO).map(key => {
-    const instance = DO[key];
-
-    if(key !== "board" && typeof instance !== null && instance && typeof instance.initial === "function") {
-      instance.initial(board);
-    }
-  });
-  console.log("DO initial setup............................................... DONE");
-}
+DO.initial = board => genericInitial(DO, 'DO', board);
 
 export {DO};
