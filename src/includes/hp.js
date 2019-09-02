@@ -54,9 +54,9 @@ HP.start = function() {
 
 
 
-    DO.load2Way.set(mapPercentToPWM(20)); // let's open 2way valve 20%
+    DO.load2Way.set(20); // let's open 2way valve 20%
     console.log("load 2-way to 20%");
-    DO.hpFanOutput.set(mapPercentToPWM(20)); // hp fan output to 20%
+    DO.hpFanOutput.set(20); // hp fan output to 20%
     console.log("hp fan output to 20%");
 
     // Dampers?
@@ -77,7 +77,7 @@ HP.start = function() {
 
     // waiting extra 10s. to start pump.
     wait(10*1000, function() {
-      DO.hpOutput.set(mapPercentToPWM(10)); // set HP to 10% load
+      DO.hpOutput.set(10); // set HP to 10% load
       console.log("hp output to 10%");
     });
 
