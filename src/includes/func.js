@@ -66,3 +66,97 @@ export const genericInitial = (module, name, board) => {
   });
   console.log(`${name} initial setup............................................... DONE`);
 };
+
+export const mqttSubscriptions = mqttClient => {
+  Object.keys(DO).map(key => {
+    const instance = DO[key];
+
+    if(key !== "board" && typeof instance !== null && instance ) {
+      if(typeof instance.mqttCommand === "string" && instance.mqttCommand !== "") {
+        mqttClient.subscribe(`cmnd/${GLOBALS.mqttBase}/${instance.mqttCommand}`, (err) => {
+          if(err) console.warn(`error in mqttSubscriptions, (${instance.mqttCommand}).. ${err}`);
+          console.log(`Subscribed!! ${instance.mqttCommand}`);
+        });
+      }
+    }
+  });
+};
+
+
+export const mqttPublish = (mqttClient,topic,value) => {
+  const t = `state/${GLOBALS.mqttBase}/${topic}`;
+  const v = typeof value !== "string" ? value.toString() : value;
+  mqttClient.publish(t,v, (err) => {
+    if(err) console.log(`mqttPublish (${t}) error: ${err}`);
+  });
+};
+
+export const mqttCommandTopics = () => {
+  const arr = [];
+
+  Object.keys(DO).map(key => {
+    const instance = DO[key];
+    if(key !== "board" && typeof instance !== null && instance.mqttCommand) {
+      if(typeof instance.mqttCommand === "string" && !!instance.mqttCommand) {
+
+        const topic = `cmnd/${GLOBALS.mqttBase}/${instance.mqttCommand}`;
+
+        switch(instance.type) {
+          case 'pwm':
+            arr.push({
+              topic: topic,
+              set: value => instance.set(value),
+            });
+            break;
+          case 'relay':
+            arr.push({
+              topic: topic,
+              set: value => instance.set(value),
+            });
+            break;
+          default:
+            console.warn("mqttCommandTopics, type not defined", instance.type);
+        }
+
+      }
+    }
+
+  });
+  return arr;
+};
+
+export const mqttOnMessage = (mqttClient,topic,message) => {
+  const {commandTopics} = mqttClient;
+  console.log(commandTopics);
+  commandTopics.filter(x => x.topic === topic).map(obj => {
+    console.log(`Got message, topic: ${obj.topic}, msg buffer: ${message}, message str: ${message.toString()}, message type: ${typeof message}`);
+    obj.set(message.toString());
+  });
+
+/*
+  if(topic === 'cmnd/iot/heatpump/hp/output') {
+    console.log("LOLOLOLO IN HERE", topic, message);
+    DO.hpOutput.set(message);
+  }
+*/
+};
+
+export const convertStringToBoolean = str => {
+  str = str.toLowerCase();
+  if(str === "true") return true;
+  if(str === "false") return false;
+  return str;
+};
+
+export const relayOnOff = instance => {
+  switch (instance.value) {
+    case true:
+      console.log("turn on");
+      instance.output.on();
+      break;
+    case false:
+      console.log("turn off");
+      instance.output.off();
+      break;
+  }
+}; 
