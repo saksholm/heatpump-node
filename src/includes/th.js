@@ -3,6 +3,7 @@ import {
   Initialized,
 } from './initialized.class';
 
+import {genericInitial} from './func';
 const {
   constrain,
   map,
@@ -264,19 +265,6 @@ const TH = {
 
 };
 
-TH.initial = board => {
-  if(TH.board === null) {
-    TH.board = board;
-  }
-
-  Object.keys(TH).map((key) => {
-    const instance = TH[key];
-
-    if(key !== "board" && typeof instance !== null && instance && typeof instance.initial === "function") {
-      instance.initial(board);
-    }
-  });
-  console.log("TH initial setup............................................... DONE");
-};
+TH.initial = board => genericInitial(TH, 'TH', board);
 
 export {TH};
