@@ -1,8 +1,9 @@
 /*
-  reverse ports :D
+  "reserve" ports :D
+  ... just a memo basically
 */
 
-const ports = {
+export const PORTS = {
   digital: {
     D0: 0, // RX
     D1: 0, // TX
