@@ -1,5 +1,7 @@
-const logic = {};
+export const LOGIC = {};
 
+// from old project
+// TODO: to be converted to js.... whoah...
 
 /*
 void HPclass::loop() {
@@ -272,6 +274,3 @@ void LOGICclass::loop() {
 
 
 */
-
-
-export {logic};
