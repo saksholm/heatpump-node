@@ -1,4 +1,4 @@
-const five = require("johnny-five");
+import five from 'johnny-five';
 import {
   Initialized,
 } from './initialized.class';
