@@ -25,10 +25,10 @@ const HP = {
   actualRunStartTimestamp: 0,
   restartDelay: 60*5, // 5mins
   restartTimestamp: 0,
-  maxPower: 50, // 0-100
-  minPower: 10, // 0-100
-  minFan: 10, // 0-100
-  maxFan: 60, // 0-100
+  maxPower: 50, // 0-100 ... not use directly
+  minPower: 10, // 0-100 ... not use directly
+  minFan: 10, // 0-100 ... not use directly
+  maxFan: 60, // 0-100 ... not use directly
   maxHotgas: 90, // 90c
   maxFluidline: 30, // TODO: ask????
 };

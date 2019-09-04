@@ -10,6 +10,8 @@ import {
   relayOnOff,
 } from './func';
 
+import {HP} from './hp';
+
 const initialized = new Initialized('DO');
 
 
@@ -218,8 +220,8 @@ const DO = {
     pin: 4,
     pinMode: Pin.PWM, // PWM
     value: 0,
-    minValue: 15,
-    maxValue: 60,
+    minValue: HP.minFan,
+    maxValue: HP.maxFan,
     set: function(value) {
       this.value = constrain(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
@@ -276,8 +278,8 @@ const DO = {
     pin: 5,
     pinMode: Pin.PWM, // PWM
     value: 0,
-    minValue: 10,
-    maxValue: 60,
+    minValue: HP.minPower,
+    maxValue: HP.maxPower,
     set: function(value) {
       this.value = constrain(parseInt(value), this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
