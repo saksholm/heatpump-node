@@ -22,8 +22,9 @@ const HP = {
   running: false,
   lastStopTime: 0,
   minimumRunningTime: 60*5, // 5min
+  actualRunStartTimestamp: 0,
   restartDelay: 60*5, // 5mins
-  restartTimestamp: 1566932400,
+  restartTimestamp: 0,
   maxPower: 50, // 0-100
   minPower: 10, // 0-100
   minFan: 10, // 0-100
@@ -33,6 +34,12 @@ const HP = {
 };
 
 HP.start = function() {
+  // if error... we don't want to start at all!!!
+  if(HP.error) return false;
+
+  // if HP.mode is run or HP.allowedToRun is true... let skip whole process!!
+  if(HP.mode === 'run' || HP.allowedToRun === true) return false;
+
   console.log("Starting HP..... let's settle things up first");
   const {wait} = this.board;
 
@@ -85,66 +92,49 @@ HP.start = function() {
     console.log("Okay... let's start");
   });
 
-
-/*
- if( (global.currentMillis -  HP_RESTART_LASTMS) >= HP_RESTART_DELAY) {
-   Serial.println("HP_RESTART_DELAY expired, we can now start HP");
-   if(CHARGING_WATERPUMP == 0) {
-     Serial.println("CHARGING_WATERPUMP is off.. lets tune first some 2-way valve output");
-
-     LOAD_2WAY_OUTPUT = 30;// okok... minimum is exceeded?
-
-
-     analogWrite(AO_2WAY,LOAD_2WAY_OUTPUT); // turn 2-way valve first 30% open
-
-     delay(5000); // then wait 5 sec...
-
-     // waterpump is not on.. we want to turn waterpump on first
-     CHARGING_WATERPUMP = 1;
-     Serial.println("CHARGING_WATERPUMP is now on");
-     digitalWrite(DO_WATERPUMP_CHARGING, CHARGING_WATERPUMP ? HIGH : LOW);
-
-
-//      delay(5000); // wait 5sec
-
-   } else {
-
-   // open outside damper;
-   DAMPER_OUTSIDE_OUTPUT = 1;
-//    analogWrite(AO_LF, LF_OUTPUT);
-   digitalWrite(DO_DAMPER_OUTSIDE, HIGH);
-
-   hpFan(true);
-
-//    HP_FAN_STATUS = 1;
-//    digitalWrite(DO_HP_FAN, HP_FAN_STATUS ? HIGH : LOW);
-//    HP_FAN_OUTPUT = 30;
-//    analogWrite(AO_HP_FAN, HP_FAN_OUTPUT);
-
-   delay(2000);
-
-   hp(true);
-//    HP_STATUS = 1;
-//    Serial.println("HP_STATUS is now RUNNING");
-//    digitalWrite(DO_HP_ALLOWED, HP_STATUS ? HIGH : LOW); // turn HP on
-
-   delay(2000);
-
-   hpOutput(HP_OUTPUT_MIN);
-//    HP_OUTPUT = 10;
-//    delay(2000);
-//    Serial.println("HP_OUTPUT is now 10%.. should rev on");
-//    analogWrite(AO_HP, HP_OUTPUT); // 10% on.
-   }
-
-
- }
-*/
 };
 
 
-HP.stop = function() {
-  // TODO:
+HP.stop = function(emergency=false) {
+
+  // let's check if minimumRunningTime is enough... if not.. we run it to end.
+  // on emergency case we want to stop immediately.
+  wait(emergency ? 0 : calculateTimeout(HP.actualRunStartTimestamp, HP.minimumRunningTime, true), () => {
+    HP.mode = 'stop';
+    HP.allowedToRun = false;
+
+    DO.hpOutput.set(0); // shutdown output
+    DO.hpAllowed.output.off();
+
+
+    // wait 20s before shutting water pump, 2-way valve
+    wait(20000,() => {
+      DO.waterpumpCharging.output.off(); // waterpump charging relay to on
+      console.log("waterpump charging output off()");
+      DO.load2Way.set(0); // let's open 2way valve 20%
+      console.log("load 2-way to 0%");
+
+      // wait 10s more before closing hp fan and close outside damper
+      // and open convection damper
+      wait(10000, () => {
+        DO.hpFanOutput.set(0); // hp fan output to 20%
+        console.log("hp fan output to 0%");
+
+        DO.hpFan.output.off(); // Fan on
+        console.log("hp fan output off()");
+
+        DO.damperConvection.output.on();
+        console.log("damper convection output off()");
+        DO.damperOutside.output.off();
+        console.log("damper outside output off()");
+
+
+        console.log("Stopped whole process");
+      });
+
+    });
+  });
+
 };
 
 HP.initial = board => genericInitial(HP, 'HP', board);
