@@ -132,13 +132,6 @@ export const mqttOnMessage = (mqttClient,topic,message) => {
     console.log(`Got message, topic: ${obj.topic}, msg buffer: ${message}, message str: ${message.toString()}, message type: ${typeof message}`);
     obj.set(message.toString());
   });
-
-/*
-  if(topic === 'cmnd/iot/heatpump/hp/output') {
-    console.log("LOLOLOLO IN HERE", topic, message);
-    DO.hpOutput.set(message);
-  }
-*/
 };
 
 export const convertStringToBoolean = str => {
@@ -159,4 +152,4 @@ export const relayOnOff = instance => {
       instance.output.off();
       break;
   }
-}; 
+};
