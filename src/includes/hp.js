@@ -124,7 +124,7 @@ HP.stop = function(emergency=false) {
         console.log("hp fan output off()");
 
         DO.damperConvection.output.on();
-        console.log("damper convection output off()");
+        console.log("damper convection output on()");
         DO.damperOutside.output.off();
         console.log("damper outside output off()");
 
