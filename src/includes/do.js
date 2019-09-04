@@ -31,17 +31,7 @@ const {
   toFixed,
   uid,
 } = five.Fn;
-/*
-const {
-  analogRead,
-  analogWrite,
-  digitalRead,
-  digitalWrite,
-  pinMode,
-  wait,
-  loop,
-} = DO.board;
-*/
+
 const {
   Pin,
 } = five;
@@ -90,13 +80,11 @@ const DO = {
     output: null,
     initial: function() {
       DO.board.pinMode(this.pin, this.pinMode);
-      //this.output = five.PWM
       DO.board.analogWrite(this.pin, this.value);
       initialized.done(this.name);
     }
   },
   hpAllowed: {
-//   const int     DO_HP_ALLOWED = 22; // DO 22 - HP Allowed
     type: 'relay',
     name: 'HP allowed',
     pin: 23,
@@ -115,7 +103,6 @@ const DO = {
     },
   },
   damperOutside: {
-//  const int     DO_DAMPER_OUTSIDE = 23; // DO 23 - Damper outside
     type: 'relay',
     name: 'Damper outside',
     pin: 24,
@@ -134,7 +121,6 @@ const DO = {
     },
   },
   damperConvection: {
-//   const int     DO_DAMPER_CONVECTION = 29; // DO 29 ? - Damper convection
     type: 'relay',
     name: 'Damper convection',
     pin: 25,
@@ -153,7 +139,6 @@ const DO = {
     },
   },
   waterpumpCharging: {
-//  const int     DO_WATERPUMP_CHARGING = 24; // DO 24 - Waterpump charging
     type: 'relay',
     name: 'Waterpump charging',
     pin: 26,
@@ -172,7 +157,6 @@ const DO = {
     },
   },
   chgPumpRequest: {
-//   const int     DO_CHGPUMP_REQUEST = 25; // DO 25 - CHG pump request
     type: 'relay',
     name: 'CHG pump request',
     pin: 27,
@@ -191,7 +175,6 @@ const DO = {
     },
   },
   hp4Way: {
-//    const int     DO_4WAY = 27; // DO 27 - HP 4-way - heating/cooling
     type: 'relay',
     name: 'HP 4-way valve',
     pin: 28,
@@ -210,7 +193,6 @@ const DO = {
     },
   },
   hpFan: {
-//  const int     DO_HP_FAN = 28; // DO 28 - HP Fan
     type: 'relay',
     name: 'HP fan',
     pin: 29,
@@ -221,7 +203,6 @@ const DO = {
       this.value = value;
       relayOnOff(this);
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
-      // trigger something mqtt etc stuff?
     },
     mqttCommand: '', // not allowed
     mqttState: 'hp/hpFan',
@@ -257,7 +238,6 @@ const DO = {
     output: null,
     initial: function() {
       DO.board.pinMode(this.pin, this.pinMode);
-      //this.output = five.PWM
       DO.board.analogWrite(this.pin, this.value);
       initialized.done(this.name);
     }
