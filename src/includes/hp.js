@@ -37,7 +37,7 @@ HP.start = function() {
   // if error... we don't want to start at all!!!
   if(HP.error) return false;
 
-  // if HP.mode is run or HP.allowedToRun is true... let skip whole process!!
+  // if HP.mode is run or HP.allowedToRun is true... lets skip whole function!!
   if(HP.mode === 'run' || HP.allowedToRun === true) return false;
 
   console.log("Starting HP..... let's settle things up first");
