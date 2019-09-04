@@ -38,10 +38,10 @@ board.on("ready", function() {
   GLOBALS.startupTimestamp = unixtimestamp();
   this.wait(GLOBALS.startupTime, () => {
     GLOBALS.starting = false;
+    LOGIC.loop();
   });
 
   IO.initial(this);
-  HP.start();
 
   this.repl.inject({
     info: () => {
