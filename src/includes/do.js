@@ -56,10 +56,10 @@ const DO = {
     value: false, // true/false
     set: function(value) {
       this.value = value;
-      // trigger something mqtt etc stuff?
+      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
-    mqttCommand: '',
-    mqttState: '',
+    mqttCommand: 'ahu/ahuFan',
+    mqttState: 'ahu/ahuFan',
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin);
@@ -77,11 +77,16 @@ const DO = {
     set: function(value) {
       value = mapPercentToPWM(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, this.value);
-
+      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       // TODO: ramp?!? up/down
     },
-    mqttCommand: '',
-    mqttState: '',
+    increase: function(step=1) { if(step) this.set(this.value+step) },
+    decrease: function(step=1) { if(step) this.set(this.value-step) },
+    mqttCommand: 'ahu/ahuFanOutput',
+    mqttState: 'ahu/ahuFanOutput',
+    repl: {
+      ahuFanOutput: function(value) { DO.ahuFanOutput.set(value) }
+    },
     output: null,
     initial: function() {
       DO.board.pinMode(this.pin, this.pinMode);
@@ -99,10 +104,10 @@ const DO = {
     value: false, // true/false
     set: function(value) {
       this.value = value;
-      // trigger something mqtt etc stuff?
+      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
-    mqttCommand: '',
-    mqttState: '',
+    mqttCommand: 'hp/hpAllowed',
+    mqttState: 'hp/hpAllowed',
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin);
@@ -118,10 +123,10 @@ const DO = {
     value: false, // true/false
     set: function(value) {
       this.value = value;
-      // trigger something mqtt etc stuff?
+      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
-    mqttCommand: '',
-    mqttState: '',
+    mqttCommand: '', // not allowed
+    mqttState: 'hp/damperOutside',
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin);
@@ -137,10 +142,10 @@ const DO = {
     value: false, // true/false
     set: function(value) {
       this.value = value;
-      // trigger something mqtt etc stuff?
+      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
-    mqttCommand: '',
-    mqttState: '',
+    mqttCommand: '', // not allowed
+    mqttState: 'hp/damperConvection',
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin);
@@ -156,10 +161,10 @@ const DO = {
     value: false, // true/false
     set: function(value) {
       this.value = value;
-      // trigger something mqtt etc stuff?
+      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
-    mqttCommand: '',
-    mqttState: '',
+    mqttCommand: '', // not allowed
+    mqttState: 'hp/waterpumpCharging',
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin);
@@ -175,10 +180,10 @@ const DO = {
     value: false, // true/false
     set: function(value) {
       this.value = value;
-      // trigger something mqtt etc stuff?
+      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
-    mqttCommand: '',
-    mqttState: '',
+    mqttCommand: 'hp/chgPumpRequest',
+    mqttState: 'hp/chgPumpRequest',
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin);
@@ -193,11 +198,11 @@ const DO = {
     pinMode: Pin.OUPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
+      //TODO: check if stuff is running... cant change if running!!!
       this.value = value;
-      // trigger something mqtt etc stuff?
-    },
-    mqttCommand: '',
-    mqttState: '',
+      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);    },
+    mqttCommand: '', // not allowed!
+    mqttState: 'hp/hp4Way',
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin);
@@ -218,7 +223,7 @@ const DO = {
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       // trigger something mqtt etc stuff?
     },
-    mqttCommand: 'hp/hpFan',
+    mqttCommand: '', // not allowed
     mqttState: 'hp/hpFan',
     output: null,
     initial: function() {
@@ -242,8 +247,13 @@ const DO = {
 
       // TODO: ramp?!? up/down
     },
-    mqttCommand: '',
+    increase: function(step=1) { if(step) this.set(this.value+step) },
+    decrease: function(step=1) { if(step) this.set(this.value-step) },
+    mqttCommand: 'hp/fanOutput',
     mqttState: 'hp/fanOutput',
+    repl: {
+      hpFanOutput: function(value) { DO.hpFanOutput.set(value) }
+    },
     output: null,
     initial: function() {
       DO.board.pinMode(this.pin, this.pinMode);
@@ -268,7 +278,9 @@ const DO = {
 
       // TODO: ramp?!? up/down
     },
-    mqttCommand: '',
+    increase: function(step=1) { if(step) this.set(this.value+step) },
+    decrease: function(step=1) { if(step) this.set(this.value-step) },
+    mqttCommand: '', // not allowed
     mqttState: 'hp/load2Way',
     output: null,
     initial: function() {
@@ -293,7 +305,9 @@ const DO = {
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       // TODO: ramp?!? up/down
     },
-    mqttCommand: 'hp/hpOutput',
+    increase: function(step=1) { if(step) this.set(this.value+step) },
+    decrease: function(step=1) { if(step) this.set(this.value-step) },
+    mqttCommand: '', // not allowed
     mqttState: 'hp/hpOutput',
     repl: {
       hpOutput: function(value) { DO.hpOutput.set(value)},
