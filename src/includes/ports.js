@@ -1,5 +1,5 @@
 /*
-  "reserve" ports :D
+  "reserved" ports :D
   ... just a memo basically
 */
 
