@@ -28,7 +28,7 @@ const mqttClient = mqtt.connect(mqttServer, {username: mqttUser, password: mqttP
 const board = new five.Board({timeout: 3600});
 
 
-mqttClient.commandTopics = mqttCommandTopics(); // create dynamic mqttCommandTopics array
+mqttClient.commandTopics = mqttCommandTopics(); // create dynamic mqttCommandTopics array to mqttClient instance
 board.mqttClient = mqttClient; // inject mqttClient to board instance
 
 console.log(unixtimestamp());
@@ -44,13 +44,7 @@ board.on("ready", function() {
   IO.initial(this);
 
   this.repl.inject({
-    info: () => {
-      console.log("DO ahuFan", DO.ahuFan);
-    },
-    // test repl
-    ledOutput: value => {
-      DO.ahuFanOutput.set(value);
-    },
+    info: () => console.log("Hello, this is your info :D"),
   });
 
   // clear stuff
@@ -67,24 +61,27 @@ board.on("close", function() {
 
 
 mqttClient.on('connect', function() {
-
+  // create subscriptions dynamically:
   mqttSubscriptions(mqttClient);
 
-//  mqttClient.subscribe('cmnd/iot/heatpump/hp/output');
-
+  // test subscribe
   mqttClient.subscribe('state/iot/heatpump/online', (err) => {
     if(!err) {
+      // reply with publish
       mqttClient.publish('state/iot/heatpump/online', 'hello');
     }
   });
 });
 
 mqttClient.on('message', (topic, message) => {
-  console.log("topic",topic.toString());
-  console.log("message",message.toString());
+  if(GLOBALS.debug) {
+    console.log("topic",topic.toString());
+    console.log("message",message.toString());
+  }
 
+  // handle mqtt messages dynamically..
+  // based on dynamically created mqttCommandTopics array
   mqttOnMessage(mqttClient,topic,message);
-
 });
 
 mqttClient.on('error', err => {
