@@ -29,8 +29,13 @@ const HP = {
   minPower: 10, // 0-100 ... not use directly
   minFan: 10, // 0-100 ... not use directly
   maxFan: 60, // 0-100 ... not use directly
-  maxHotgas: 90, // 90c
+  maxHotgas: 80, // 80c
   maxFluidline: 30, // TODO: ask????
+  hxInMaximum: 35,
+  hxOutTarget: 45,
+  nextLoopIntervalTimestamps: { // object to handle interval check skips
+    hotgas: 0,
+  },
 };
 
 HP.start = function() {
@@ -60,6 +65,9 @@ HP.start = function() {
     // 4-way ?!??!
 
 
+
+    DO.load2Way.controller.setTarget(HP.hxOutTarget);
+    console.log(`load 2-way controller set to ${HP.hxOutTarget}c target out temp` )
 
     DO.load2Way.set(20); // let's open 2way valve 20%
     console.log("load 2-way to 20%");
@@ -136,6 +144,58 @@ HP.stop = function(emergency=false) {
   });
 
 };
+
+HP.loop = () => {
+  let count = 10;
+  setInterval(() => {
+
+    // check if we need to bypass this part for a while?
+    if(HP.nextLoopIntervalTimestamps.hotgas <= unixtimestamp()) {
+      // watch hotgas temp etc... safety things especially
+      if(TH.hotgas.value > (HP.maxHotgas + GLOBALS.deadZone)) {
+        console.log("HP hotgas is maybe little bit too hot...");
+
+        // too hot hotgas! drop output demand by half
+        if(DO.hpOutput.value > DO.hpOutput.minValue) {
+          const cutOutputToHalf = Math.round(DO.hpOutput.value / 2);
+          DO.hpOutput.set(cutOutputToHalf);
+
+          console.log("... cut hp output demand to half");
+        }
+
+        if(DO.load2Way.value < DO.load2Way.maxValue) {
+          const doubleOutput = Math.round(DO.load2Way.value * 2);
+          DO.load2Way.set(doubleOutput);
+          console.log("... and doubled load 2-way valve output");
+        }
+        // should put next legit check time?! so this have time to stabilize things
+        // for 15s?
+        HP.nextLoopIntervalTimestamps.hotgas = unixtimestamp() +15;
+      }
+    }
+
+    // some operator to handle if this should be active or not
+    // count variable is basically some measurement
+    // input is pure output...
+    if(GLOBALS.dryRun || (HP.heatToWater && DO.load2Way.value !== 0)) {
+
+      // update temperature to controller and get new value out
+      const newValue = Math.round( DO.load2Way.controller.update(TH.hxOut) );
+      // if new value is not the existing value.. we update
+      if(newValue !== DO.load2Way.value) {
+        DO.load2Way.set(newValue);
+      }
+
+      console.log("this is fancy input pid", count, newValue);
+
+      count++;
+    }
+
+
+
+  },GLOBALS.logicLoopInterval);
+};
+
 
 HP.initial = board => genericInitial(HP, 'HP', board);
 
