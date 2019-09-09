@@ -39,6 +39,7 @@ board.on("ready", function() {
   this.wait(GLOBALS.startupTime, () => {
     GLOBALS.starting = false;
     LOGIC.loop();
+    HP.loop();
   });
 
   IO.initial(this);
