@@ -1,5 +1,6 @@
 import five from 'johnny-five';
 import getUnixTime from 'date-fns/getUnixTime';
+import Controller from 'node-pid-controller';
 import {GLOBALS} from './globals';
 import {DO} from './do';
 import {DI} from './di';
@@ -75,7 +76,7 @@ export const mqttSubscriptions = mqttClient => {
       if(typeof instance.mqttCommand === "string" && instance.mqttCommand !== "") {
         mqttClient.subscribe(`cmnd/${GLOBALS.mqttBase}/${instance.mqttCommand}`, (err) => {
           if(err) console.warn(`error in mqttSubscriptions, (${instance.mqttCommand}).. ${err}`);
-          console.log(`Subscribed!! ${instance.mqttCommand}`);
+          console.log(`Subscribed topic: ${instance.mqttCommand} ...`);
         });
       }
     }
@@ -152,4 +153,8 @@ export const relayOnOff = instance => {
       instance.output.off();
       break;
   }
+};
+
+export const pidController = (p=0.25,i=0.01,d=0.01,time=1) => {
+  return new Controller(p,i,d,time);
 };
