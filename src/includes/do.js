@@ -8,6 +8,7 @@ import {
   mqttPublish,
   convertStringToBoolean,
   relayOnOff,
+  pidController,
 } from './func';
 
 import {HP} from './hp';
@@ -114,6 +115,7 @@ const DO = {
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
+    startDelay: 30*1000, //delay 180s-90deg.. wait 120s.... running... change lastTimestamp
     mqttCommand: '', // not allowed
     mqttState: 'hp/damperOutside',
     output: null,
@@ -132,6 +134,7 @@ const DO = {
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
+    startDelay: 30*1000, //delay 180s-90deg.. wait 120s.... running... change lastTimestamp
     mqttCommand: '', // not allowed
     mqttState: 'hp/damperConvection',
     output: null,
@@ -250,9 +253,10 @@ const DO = {
     pin: 3,
     pinMode: Pin.PWM, // PWM
     value: 0,
-    minValue: 2,
+    minValue: 5, //TODO: should check what is the real minimum to use
     maxValue: 100,
     set: function(value) {
+
       this.value = constrain(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
 
@@ -262,6 +266,12 @@ const DO = {
     },
     increase: function(step=1) { if(step) this.set(this.value+step) },
     decrease: function(step=1) { if(step) this.set(this.value-step) },
+    controller: null,
+    controller_p: 0.25,
+    controller_i: 0.01,
+    controller_d: 0.01,
+    controller_time: 2,
+    startDelay: 10*1000, // delay 90s-90deg.. wait 30s
     mqttCommand: '', // not allowed
     mqttState: 'hp/load2Way',
     output: null,
@@ -269,7 +279,9 @@ const DO = {
       DO.board.pinMode(this.pin, this.pinMode);
       //this.output = five.PWM
       DO.board.analogWrite(this.pin, this.value);
+      this.controller = pidController(this.controller_p, this.controller_i, this.controller_d, this.controller_time);
       initialized.done(this.name);
+
     }
   },
   hpOutput: {
@@ -301,31 +313,15 @@ const DO = {
       initialized.done(this.name);
     }
   },
+
+  // 3-way valve for hp cg coil
   // maapiiri pumppu
   // hx pumppu, restart delay
-  // hx venttiili, delay 90s-90deg.. wait 30s
-  // damperOutside // delay 180s-90deg.. wait 120s.... running... change lastTimestamp
-  // damperConvection // delay 180s-90deg.. wait 120s... running... change lastTimestamp
   // 4-way
 
 /*
-
-
-    pinMode(AO_HP, OUTPUT); // HP control signal
-    pinMode(AO_2WAY, OUTPUT); // 2-way valve for limiting water flow over hx
-    pinMode(AO_HP_FAN, OUTPUT); // HP circulation fan
-  //  pinMode(AO_LF, OUTPUT); // Outside/convection damper
     pinMode(AO_3WAY, OUTPUT); // 3-way valve for cg
-    pinMode(AO_AHU_FAN, OUTPUT); // AHU convection fan
-    pinMode(DO_HP_ALLOWED, OUTPUT); // HP allowed
-    pinMode(DO_DAMPER_CONVECTION, OUTPUT); // Damper outside
-    pinMode(DO_DAMPER_OUTSIDE, OUTPUT); // HP outside
-    pinMode(DO_HP_FAN, OUTPUT); //HP fan
-    pinMode(DO_WATERPUMP_CHARGING, OUTPUT); // Charging waterpump
-    pinMode(DO_CHGPUMP_REQUEST, OUTPUT); // CG pump request - some other's may also want this on
-    pinMode(DO_AHU_FAN_ALLOWED, OUTPUT); // AHU convection fan allowed
     pinMode(DO_4WAY, OUTPUT); // 4-way valve - heat/cooling .... ??? 0 = cooling, 1 = heating?
-
 */
 };
 
