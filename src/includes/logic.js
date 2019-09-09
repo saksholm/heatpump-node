@@ -36,7 +36,7 @@ LOGIC.loop = () => {
       GLOBALS.boiler.middle.request = true;
       GLOBALS.heatToWater = true; // allow
     }
-    // boiler middle hardMaximum
+    // boiler middle softMaximum
     if( (TH.boilerMiddle.value - GLOBALS.boiler.deadZone) > GLOBALS.boiler.middle.softMaximum) {
       GLOBALS.boiler.middle.request = false;
       GLOBALS.heatToWater = false;
@@ -44,8 +44,13 @@ LOGIC.loop = () => {
 
     // boiler check lower minimum
     if( ( TH.boilerLower.value + GLOBALS.boiler.deadZone) < GLOBALS.boiler.lower.softMinimum) {
-      GLOBALS.boiler.lower.request = true;
-      GLOBALS.heatToWater = true;
+
+      // do we allow lower request if middle is above softMaximum?
+      if(GLOBALS.boiler.middle.request) {
+        GLOBALS.boiler.lower.request = true;
+        GLOBALS.heatToWater = true;
+      }
+
 
     }
 
@@ -55,8 +60,13 @@ LOGIC.loop = () => {
       GLOBALS.heatToWater = false;
     }
 
-// let's use this later...
-//    HP.start();
+
+    if(GLOBALS.boiler.middle.request && GLOBALS.heatToWater) {
+      // let's use this later...
+      HP.start();
+    } 
+
+
 
   },GLOBALS.logicLoopInterval);
 
