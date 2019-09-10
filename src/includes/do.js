@@ -45,7 +45,7 @@ const DO = {
     type: 'relay',
     name: 'AHU Fan',
     pin: 22,
-    pinMode: Pin.OUPUT, // OUTPUT
+    pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
       this.value = value;
@@ -91,7 +91,7 @@ const DO = {
     type: 'relay',
     name: 'HP allowed',
     pin: 23,
-    pinMode: Pin.OUPUT, // OUTPUT
+    pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
       this.value = value;
@@ -109,7 +109,7 @@ const DO = {
     type: 'relay',
     name: 'Damper outside',
     pin: 24,
-    pinMode: Pin.OUPUT, // OUTPUT
+    pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
       this.value = value;
@@ -128,7 +128,7 @@ const DO = {
     type: 'relay',
     name: 'Damper convection',
     pin: 25,
-    pinMode: Pin.OUPUT, // OUTPUT
+    pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
       this.value = value;
@@ -147,7 +147,7 @@ const DO = {
     type: 'relay',
     name: 'Waterpump charging',
     pin: 26,
-    pinMode: Pin.OUPUT, // OUTPUT
+    pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
       this.value = value;
@@ -165,7 +165,7 @@ const DO = {
     type: 'relay',
     name: 'CHG pump request',
     pin: 27,
-    pinMode: Pin.OUPUT, // OUTPUT
+    pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
       this.value = value;
@@ -183,7 +183,7 @@ const DO = {
     type: 'relay',
     name: 'HP 4-way valve',
     pin: 28,
-    pinMode: Pin.OUPUT, // OUTPUT
+    pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
       //TODO: check if stuff is running... cant change if running!!!
@@ -201,7 +201,7 @@ const DO = {
     type: 'relay',
     name: 'HP fan',
     pin: 29,
-    pinMode: Pin.OUPUT, // OUTPUT
+    pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
       if(typeof value !== 'boolean') value = convertStringToBoolean(value);
