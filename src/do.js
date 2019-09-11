@@ -39,7 +39,7 @@ const {
   Pin,
 } = five;
 
-const DO = {
+export const DO = {
   board: null,
   ahuFan: {
     type: 'relay',
@@ -326,5 +326,3 @@ const DO = {
 };
 
 DO.initial = board => genericInitial(DO, 'DO', board);
-
-export {DO};

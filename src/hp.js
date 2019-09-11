@@ -14,7 +14,7 @@ const {
 } = five.Fn;
 
 
-const HP = {
+export const HP = {
   board: null,
   allowedToRun: false,
   error: false,
@@ -198,8 +198,3 @@ HP.loop = () => {
 
 
 HP.initial = board => genericInitial(HP, 'HP', board);
-
-
-export {
-  HP,
-};

@@ -20,7 +20,7 @@ const {
 
 const initialized = new Initialized('TH');
 
-const TH = {
+export const TH = {
   board: null,
   interval: 1*1000,
   threshold: 2,
@@ -266,5 +266,3 @@ const TH = {
 };
 
 TH.initial = board => genericInitial(TH, 'TH', board);
-
-export {TH};

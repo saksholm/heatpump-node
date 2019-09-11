@@ -1,6 +1,4 @@
-
-
-const GLOBALS = {
+export const GLOBALS = {
   debug: true,
   dryRun: true,
   starting: true,
@@ -46,8 +44,4 @@ const GLOBALS = {
 
   },
   mqttBase: 'iot/heatpump',
-};
-
-export {
-  GLOBALS,
 };

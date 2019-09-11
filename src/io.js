@@ -6,7 +6,7 @@ import {AI} from './ai';
 import {TH} from './th';
 import {HP} from './hp';
 
-const IO = {};
+export const IO = {};
 
 
 IO.initial = board => {
@@ -18,5 +18,3 @@ IO.initial = board => {
   TH.initial(board);
   HP.initial(board);
 };
-
-export {IO};

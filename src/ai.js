@@ -5,7 +5,7 @@ import {genericInitial} from './func';
 
 const initialized = new Initialized('AI');
 
-const AI = {
+export const AI = {
   board: null,
   AI1: 'AI1',
 
@@ -18,5 +18,3 @@ const AI = {
 };
 
 AI.initial = board => genericInitial(AI, 'AI', board);
-
-export {AI};
