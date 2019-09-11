@@ -2,8 +2,11 @@ import five from 'johnny-five';
 import {
   Initialized,
 } from './initialized.class';
-
-import {genericInitial} from './func';
+import {GLOBALS} from './globals';
+import {
+  genericInitial,
+  mqttPublish,
+} from './func';
 const {
   constrain,
   map,
@@ -32,9 +35,10 @@ export const TH = {
     value: 0,
     set: function(value) {
       this.value = value;
+      mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'th/outside',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
@@ -49,9 +53,10 @@ export const TH = {
     value: 0,
     set: function(value) {
       this.value = value;
+      mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'th/beforeCHG',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
@@ -66,9 +71,10 @@ export const TH = {
     value: 0,
     set: function(value) {
       this.value = value;
+      mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'th/betweenCHG_CX',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
@@ -83,9 +89,10 @@ export const TH = {
     value: 0,
     set: function(value) {
       this.value = value;
+      mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'th/betweenCX_FAN',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
@@ -100,9 +107,10 @@ export const TH = {
     value: 0,
     set: function(value) {
       this.value = value;
+      mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'th/exhaust',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
@@ -117,9 +125,10 @@ export const TH = {
     value: 0,
     set: function(value) {
       this.value = value;
+      mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'th/glygolIn',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
@@ -134,9 +143,10 @@ export const TH = {
     value: 0,
     set: function(value) {
       this.value = value;
+      mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'th/glygolOut',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
@@ -151,9 +161,10 @@ export const TH = {
     value: 0,
     set: function(value) {
       this.value = value;
+      mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'th/hotgas',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
@@ -168,9 +179,10 @@ export const TH = {
     value: 0,
     set: function(value) {
       this.value = value;
+      mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'th/fluidline',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
@@ -185,9 +197,10 @@ export const TH = {
     value: 0,
     set: function(value) {
       this.value = value;
+      mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'th/hxIn',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
@@ -202,9 +215,10 @@ export const TH = {
     value: 0,
     set: function(value) {
       this.value = value;
+      mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'th/hxOut',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
@@ -219,9 +233,10 @@ export const TH = {
     value: 0,
     set: function(value) {
       this.value = value;
+      mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'th/boilerUpper',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
@@ -236,9 +251,10 @@ export const TH = {
     value: 0,
     set: function(value) {
       this.value = value;
+      mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'th/boilerMiddle',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
@@ -253,9 +269,10 @@ export const TH = {
     value: 0,
     set: function(value) {
       this.value = value;
+      mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'th/boilerLower',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
@@ -265,4 +282,20 @@ export const TH = {
 
 };
 
-TH.initial = board => genericInitial(TH, 'TH', board);
+TH.onChanges = () => {
+  console.log("Mapping TH onChanges");
+  Object.keys(TH).map(key => {
+    const instance = TH[key];
+    if(key !== "board" && typeof instance !== null && instance) {
+      if(instance.output !== null && instance.type === 'thermometer10k') {
+        instance.output.on("change", function(value){
+          instance.set(value);
+          if(GLOBALS.debug) console.log(`${instance.name} value changed to ${value}`);
+        });
+        console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
+      }
+    }
+  });
+};
+
+TH.initial = board => genericInitial(TH, 'TH', board, TH.onChanges);
