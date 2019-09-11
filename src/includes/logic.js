@@ -17,7 +17,7 @@ LOGIC.loop = () => {
   setInterval(() => {
 
 
-    // TODO: boiler checks if some if allowed or not... override rules with checks
+    // TODO: boiler checks if some is allowed or not... override rules with checks
 
     // boiler upper check minimum
 
@@ -64,7 +64,10 @@ LOGIC.loop = () => {
     if(GLOBALS.boiler.middle.request && GLOBALS.heatToWater) {
       // let's use this later...
       HP.start();
-    } 
+    }
+
+
+
 
 
 
