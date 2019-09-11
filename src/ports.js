@@ -37,7 +37,7 @@ export const PORTS = {
     D27: 'chgPumpRequest',
     D28: 'hp4Way',
     D29: 'hpFan',
-    D30: 0,
+    D30: 'hpAlarm', // in
     D31: 0,
     D32: 0,
     D33: 0,
@@ -63,8 +63,8 @@ export const PORTS = {
     D53: 0, // SPI - SS
   },
   analog: {
-    A0: 0,
-    A1: 'outside',
+    A0: 'condenserPde', // AI
+    A1: 'outside', // all below is TH
     A2: 'beforeCHG',
     A3: 'betweenCHG_CX',
     A4: 'betweenCX_FAN',
