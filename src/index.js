@@ -1,22 +1,22 @@
 import five from 'johnny-five';
 import mqtt from 'mqtt';
 
-import {GLOBALS} from './includes/globals';
-import {IO} from './includes/io';
+import {GLOBALS} from './globals';
+import {IO} from './io';
 import {SECRETS} from './secrets.js';
-import {DO} from './includes/do';
-import {DI} from './includes/di';
-import {AO} from './includes/ao';
-import {AI} from './includes/ai';
-import {LOGIC} from './includes/logic';
-import {HP} from './includes/hp';
+import {DO} from './do';
+import {DI} from './di';
+import {AO} from './ao';
+import {AI} from './ai';
+import {LOGIC} from './logic';
+import {HP} from './hp';
 
 import {
   unixtimestamp,
   mqttSubscriptions,
   mqttOnMessage,
   mqttCommandTopics,
-} from './includes/func';
+} from './func';
 
 const {
   mqttServer,
