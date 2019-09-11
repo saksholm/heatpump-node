@@ -146,7 +146,6 @@ HP.stop = function(emergency=false) {
 };
 
 HP.loop = () => {
-  let count = 10;
   setInterval(() => {
 
     // check if we need to bypass this part for a while?
@@ -179,16 +178,16 @@ HP.loop = () => {
     // input is pure output...
     if(GLOBALS.dryRun || (HP.heatToWater && DO.load2Way.value !== 0)) {
 
+
       // update temperature to controller and get new value out
-      const newValue = Math.round( DO.load2Way.controller.update(TH.hxOut) );
+      const newValue = Math.round( DO.load2Way.controller.update(TH.hxOut.value) );
       // if new value is not the existing value.. we update
       if(newValue !== DO.load2Way.value) {
         DO.load2Way.set(newValue);
       }
 
-      console.log("this is fancy input pid", count, newValue);
+      if(GLOBALS.debug) console.log("this is fancy input pid", newValue, TH.hxOut.value);
 
-      count++;
     }
 
 
