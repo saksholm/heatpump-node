@@ -119,13 +119,13 @@ HP.stop = function(emergency=false) {
     wait(20000,() => {
       DO.waterpumpCharging.output.off(); // waterpump charging relay to on
       console.log("waterpump charging output off()");
-      DO.load2Way.set(0); // let's open 2way valve 20%
+      DO.load2Way.set(0); // let's open 2way valve 0%
       console.log("load 2-way to 0%");
 
       // wait 10s more before closing hp fan and close outside damper
       // and open convection damper
       wait(10000, () => {
-        DO.hpFanOutput.set(0); // hp fan output to 20%
+        DO.hpFanOutput.set(0); // hp fan output to 0%
         console.log("hp fan output to 0%");
 
         DO.hpFan.output.off(); // Fan on
