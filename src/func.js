@@ -44,7 +44,7 @@ export const mapPercentToPWM = (value,min=false,max=false) => {
   return map(value, 0,100, 0,255);
 };
 
-export const genericInitial = (module, name, board) => {
+export const genericInitial = (module, name, board, callback=null) => {
   if(module.board === null) {
     module.board = board;
   }
@@ -66,6 +66,7 @@ export const genericInitial = (module, name, board) => {
     }
   });
   console.log(`${name} initial setup............................................... DONE`);
+  if(callback) callback();
 };
 
 export const mqttSubscriptions = mqttClient => {
