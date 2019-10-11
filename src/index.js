@@ -1,5 +1,7 @@
 import five from 'johnny-five';
 import mqtt from 'mqtt';
+import EventEmitter from 'events';
+EventEmitter.defaultMaxListeners = 200;
 
 import {GLOBALS} from './globals';
 import {IO} from './io';
