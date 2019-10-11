@@ -38,8 +38,8 @@ export const PORTS = {
     D28: 'hp4Way',
     D29: 'hpFan',
     D30: 'hpAlarm', // in
-    D31: 0,
-    D32: 0,
+    D31: 'kwhMeterPulse', //in
+    D32: 'chargingWaterpumpFlow', //in
     D33: 0,
     D34: 0,
     D35: 0,
