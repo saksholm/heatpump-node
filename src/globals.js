@@ -1,6 +1,7 @@
 export const GLOBALS = {
   debug: true,
   dryRun: true,
+  printTH: false,
   starting: true,
   startupTime: 20*1000, // 20sec to not start hp
   logicLoopInterval: 1*1000,
