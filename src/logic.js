@@ -10,11 +10,13 @@ import {
 
 } from './func';
 
-export const LOGIC = {};
+export const LOGIC = {
+  board: null,
+};
 
 LOGIC.loop = () => {
 
-  setInterval(() => {
+  LOGIC.board.loop(GLOBALS.logicLoopInterval,() => {
 
 
     // TODO: boiler checks if some is allowed or not... override rules with checks
@@ -71,7 +73,7 @@ LOGIC.loop = () => {
 
 
 
-  },GLOBALS.logicLoopInterval);
+  });
 
 
 };
