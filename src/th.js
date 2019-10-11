@@ -290,7 +290,7 @@ TH.onChanges = () => {
       if(instance.output !== null && instance.type === 'thermometer10k') {
         instance.output.on("change", function(value){
           instance.set(value);
-          if(GLOBALS.debug) console.log(`${instance.name} value changed to ${value}`);
+          if(GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${value}`);
         });
         console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
       }
