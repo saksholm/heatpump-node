@@ -146,7 +146,7 @@ HP.stop = function(emergency=false) {
 };
 
 HP.loop = () => {
-  setInterval(() => {
+  HP.board.loop(GLOBALS.logicLoopInterval,() => {
 
     // check if we need to bypass this part for a while?
     if(HP.nextLoopIntervalTimestamps.hotgas <= unixtimestamp()) {
@@ -190,9 +190,7 @@ HP.loop = () => {
 
     }
 
-
-
-  },GLOBALS.logicLoopInterval);
+  });
 };
 
 
