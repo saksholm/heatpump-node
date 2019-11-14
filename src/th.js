@@ -23,14 +23,18 @@ const {
 
 const initialized = new Initialized('TH');
 
+// https://create.arduino.cc/projecthub/TheGadgetBoy/ds18b20-digital-temperature-sensor-and-arduino-9cc806
+
+
 export const TH = {
   board: null,
   interval: 1*1000,
   threshold: 2,
   outside: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Outside air temperature',
-    pin: 'A1',
+    active: true,
+    pin: 35, // TODO: CHANGE TO DIGITAL!!!!!
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -40,15 +44,17 @@ export const TH = {
     mqttCommand: '',
     mqttState: 'th/outside',
     output: null,
+    interval: 60*1000,
     initial: function() {
-      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
       initialized.done(this.name);
     },
   },
   beforeCHG: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Before CGH air temperature',
-    pin: 'A2',
+    active: false,
+    pin: 36,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -59,14 +65,16 @@ export const TH = {
     mqttState: 'th/beforeCHG',
     output: null,
     initial: function() {
-      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
   betweenCHG_CX: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Between CHG-CX air temperature',
-    pin: 'A3',
+    active: false,
+    pin: 37,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -77,14 +85,16 @@ export const TH = {
     mqttState: 'th/betweenCHG_CX',
     output: null,
     initial: function() {
-      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
   betweenCX_FAN: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Between CX-Fan air temperature',
-    pin: 'A4',
+    active: false,
+    pin: 38,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -95,14 +105,16 @@ export const TH = {
     mqttState: 'th/betweenCX_FAN',
     output: null,
     initial: function() {
-      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
   exhaust: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Exhaust air temperature',
-    pin: 'A5',
+    active: false,
+    pin: 39,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -113,14 +125,16 @@ export const TH = {
     mqttState: 'th/exhaust',
     output: null,
     initial: function() {
-      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
   glygolIn: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Glygol In temperature',
-    pin: 'A6',
+    active: false,
+    pin: 40,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -131,14 +145,16 @@ export const TH = {
     mqttState: 'th/glygolIn',
     output: null,
     initial: function() {
-      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
   glygolOut: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Glygol Out temperature',
-    pin: 'A7',
+    active: false,
+    pin: 41,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -149,14 +165,16 @@ export const TH = {
     mqttState: 'th/glygolOut',
     output: null,
     initial: function() {
-      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
   hotgas: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Hotgas temperature',
-    pin: 'A8',
+    active: false,
+    pin: 42,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -167,14 +185,16 @@ export const TH = {
     mqttState: 'th/hotgas',
     output: null,
     initial: function() {
-      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
   fluidline: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Fluidline temperature',
-    pin: 'A9',
+    active: false,
+    pin: 43,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -185,14 +205,16 @@ export const TH = {
     mqttState: 'th/fluidline',
     output: null,
     initial: function() {
-      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
   hxIn: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Heat Exchanger In water temperature',
-    pin: 'A10',
+    active: false,
+    pin: 44,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -203,14 +225,16 @@ export const TH = {
     mqttState: 'th/hxIn',
     output: null,
     initial: function() {
-      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
   hxOut: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Heat Exchanger Out water temperature',
-    pin: 'A11',
+    active: true,
+    pin: 45,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -221,14 +245,16 @@ export const TH = {
     mqttState: 'th/hxOut',
     output: null,
     initial: function() {
-      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+//      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold});
       initialized.done(this.name);
     },
   },
   boilerUpper: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Boiler Upper water temperature',
-    pin: 'A12',
+    active: false,
+    pin: 46,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -239,14 +265,16 @@ export const TH = {
     mqttState: 'th/boilerUpper',
     output: null,
     initial: function() {
-      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
   boilerMiddle: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Boiler Middle water temperature',
-    pin: 'A13',
+    active: false,
+    pin: 47,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -257,14 +285,16 @@ export const TH = {
     mqttState: 'th/boilerMiddle',
     output: null,
     initial: function() {
-      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
   boilerLower: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Boiler Lower water temperature',
-    pin: 'A14',
+    active: false,
+    pin: 48,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -275,7 +305,8 @@ export const TH = {
     mqttState: 'th/boilerLower',
     output: null,
     initial: function() {
-      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
@@ -286,11 +317,20 @@ TH.onChanges = () => {
   console.log("Mapping TH onChanges");
   Object.keys(TH).map(key => {
     const instance = TH[key];
-    if(key !== "board" && typeof instance !== null && instance) {
+    if(key !== "board" && typeof instance !== null && instance && instance.active) {
       if(instance.output !== null && instance.type === 'thermometer10k') {
         instance.output.on("change", function(value){
           instance.set(value);
           if(GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${value}`);
+        });
+        console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
+      }
+      if(instance.output !== null && instance.type === 'DS18B20') {
+        instance.output.on("change", function() {
+//          console.log(`TH ${instance.name} ${instance.output.C}C`);
+          const {celsius} = instance.output;
+          instance.set(celsius);
+          if(GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${celsius}`);
         });
         console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
       }
