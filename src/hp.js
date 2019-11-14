@@ -25,7 +25,7 @@ export const HP = {
   actualRunStartTimestamp: 0,
   restartDelay: 60*5, // 5mins
   restartTimestamp: 0,
-  maxPower: 50, // 0-100 ... not use directly
+  maxPower: 100, // 0-100 ... not use directly
   minPower: 10, // 0-100 ... not use directly
   minFan: 10, // 0-100 ... not use directly
   maxFan: 60, // 0-100 ... not use directly
@@ -36,22 +36,25 @@ export const HP = {
   nextLoopIntervalTimestamps: { // object to handle interval check skips
     hotgas: 0,
   },
+  emergencyShutdown: false,
 };
 
 HP.start = function() {
   // if error... we don't want to start at all!!!
   if(HP.error) return false;
+  if(HP.emergencyShutdown) return false;
 
   // if HP.mode is run or HP.allowedToRun is true... lets skip whole function!!
   if(HP.mode === 'run' || HP.allowedToRun === true) return false;
 
-  console.log("Starting HP..... let's settle things up first");
-  const {wait} = this.board;
+  console.log("\nStarting HP..... let's settle things up first\n");
+  const {wait} = HP.board;
 
   HP.mode = 'run';
   console.log("HP mode is 'run'");
 
   const timeoutMillis = calculateTimeout(HP.restartTimestamp, HP.restartDelay, true);
+  if(timeoutMillis/1000 !== 0) console.log(`\nWaiting for remain restartDelay ${timeoutMillis/1000}s before continuing\n`);
   wait(timeoutMillis, function() {
     HP.allowedToRun = true; // let's allow HP running (restartDelay is now over)
     console.log("HP allowed to run = true");
@@ -91,31 +94,48 @@ HP.start = function() {
 
 
     // waiting extra 10s. to start pump.
+    console.log("\nWaiting 10s more...\n");
     wait(10*1000, function() {
-      DO.hpOutput.set(10); // set HP to 10% load
-      console.log("hp output to 10%");
+      // check if we are allowed to continue.. for example emergency stop before this happen
+      if(HP.allowedToRun) {
+        HP.actualRunStartTimestamp = unixtimestamp();
+        DO.hpOutput.set(10); // set HP to 10% load
+        console.log("hp output to 10%");
+      }
     });
 
-
-    console.log("Okay... let's start");
   });
 
 };
 
 
 HP.stop = function(emergency=false) {
-
+  if(emergency) {
+    HP.emergencyShutdown = true;
+    HP.restartTimestamp = unixtimestamp();
+    console.log("\n**********************************************");
+    console.log("**                                          **");
+    console.log("**          EMERGENCY SHUTDOWN              **");
+    console.log("**                                          **");
+    console.log("**********************************************\n");
+  }
+  const {wait} = HP.board;
   // let's check if minimumRunningTime is enough... if not.. we run it to end.
   // on emergency case we want to stop immediately.
   wait(emergency ? 0 : calculateTimeout(HP.actualRunStartTimestamp, HP.minimumRunningTime, true), () => {
     HP.mode = 'stop';
+    console.log("HP mode 'stop'");
     HP.allowedToRun = false;
+    console.log("HP allowedToRun false");
 
     DO.hpOutput.set(0); // shutdown output
+    console.log("hpOutput 0");
     DO.hpAllowed.output.off();
+    console.log("hpAllowed output off");
 
 
     // wait 20s before shutting water pump, 2-way valve
+    console.log("\nWaiting 20s before continuing\n");
     wait(20000,() => {
       DO.waterpumpCharging.output.off(); // waterpump charging relay to on
       console.log("waterpump charging output off()");
@@ -124,6 +144,7 @@ HP.stop = function(emergency=false) {
 
       // wait 10s more before closing hp fan and close outside damper
       // and open convection damper
+      console.log("\nWait 10s more...\n");
       wait(10000, () => {
         DO.hpFanOutput.set(0); // hp fan output to 0%
         console.log("hp fan output to 0%");
@@ -137,7 +158,8 @@ HP.stop = function(emergency=false) {
         console.log("damper outside output off()");
 
 
-        console.log("Stopped whole process");
+        console.log("\nStopped whole process\n");
+        console.info("To run process again please type: 'emergencyReset()'");
       });
 
     });
@@ -147,7 +169,7 @@ HP.stop = function(emergency=false) {
 
 HP.loop = () => {
   HP.board.loop(GLOBALS.logicLoopInterval,() => {
-
+/*
     // check if we need to bypass this part for a while?
     if(HP.nextLoopIntervalTimestamps.hotgas <= unixtimestamp()) {
       // watch hotgas temp etc... safety things especially
@@ -172,7 +194,7 @@ HP.loop = () => {
         HP.nextLoopIntervalTimestamps.hotgas = unixtimestamp() +15;
       }
     }
-
+*/
     // some operator to handle if this should be active or not
     // count variable is basically some measurement
     // input is pure output...
@@ -186,7 +208,7 @@ HP.loop = () => {
         DO.load2Way.set(newValue);
       }
 
-      if(GLOBALS.debug) console.log("this is fancy input pid", newValue, TH.hxOut.value);
+//      if(GLOBALS.debug) console.log("this is fancy input pid", newValue, TH.hxOut.value);
 
     }
 
