@@ -69,7 +69,7 @@ export const DI = {
 
           this.set(watts, wattsPerHour);
           // at the end.. refresh counterLastResetMillis and counter;
-          console.log("COUNTTERI HIPOO, watts, wattsPerHour, actualMillisDiff", this.counter, parseFloat(watts).toFixed(2), parseFloat(wattsPerHour).toFixed(2), actualMillisDiff);
+//          console.log("COUNTTERI HIPOO, watts, wattsPerHour, actualMillisDiff", this.counter, parseFloat(watts).toFixed(2), parseFloat(wattsPerHour).toFixed(2), actualMillisDiff);
           this.counter = 0;
           this.counterLastResetMillis = unixtimestamp(null,true);
         }
@@ -127,7 +127,7 @@ export const DI = {
 
           this.set(litres, litrePerHour);
           // at the end.. refresh counterLastResetMillis and counter;
-          console.log("COUNTTERI HIPOO, litres, litrePerMin, actualMillisDiff", this.counter, parseFloat(litres).toFixed(2), parseFloat(litrePerHour).toFixed(2), actualMillisDiff);
+//          console.log("COUNTTERI HIPOO, litres, litrePerMin, actualMillisDiff", this.counter, parseFloat(litres).toFixed(2), parseFloat(litrePerHour).toFixed(2), actualMillisDiff);
           this.counter = 0;
           this.counterLastResetMillis = unixtimestamp(null,true);
         }
@@ -188,7 +188,7 @@ DI.onChanges = () => {
   Object.keys(DI).map(key => {
     const instance = DI[key];
     if(key !== "board" && typeof instance !== null && typeof instance === 'object') {
-      console.log("typeof output", typeof instance.output, key);
+//      console.log("typeof output", typeof instance.output, key);
       if(typeof instance.output !== 'undefined' && instance.output !== null) {
         if(instance.type === "flow") {
           instance.output.on("data", function() {
