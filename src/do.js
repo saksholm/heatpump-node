@@ -44,10 +44,12 @@ export const DO = {
   ahuFan: {
     type: 'relay',
     name: 'AHU Fan',
+    active: false,
     pin: 22,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
+      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
@@ -62,12 +64,14 @@ export const DO = {
   ahuFanOutput: {
     type: 'pwm',
     name: 'AHU Fan Output',
+    active: false,
     pin: 2,
     pinMode: Pin.PWM, // PWM
     value: 0,
     minValue: 15,
     maxValue: 60,
     set: function(value) {
+      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
       value = mapPercentToPWM(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, this.value);
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
@@ -90,10 +94,12 @@ export const DO = {
   hpAllowed: {
     type: 'relay',
     name: 'HP allowed',
+    active: true,
     pin: 23,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
+      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
@@ -108,10 +114,12 @@ export const DO = {
   damperOutside: {
     type: 'relay',
     name: 'Damper outside',
+    active: true,
     pin: 24,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
+      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
@@ -127,10 +135,12 @@ export const DO = {
   damperConvection: {
     type: 'relay',
     name: 'Damper convection',
+    active: true,
     pin: 25,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
+      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
@@ -146,10 +156,12 @@ export const DO = {
   waterpumpCharging: {
     type: 'relay',
     name: 'Waterpump charging',
+    active: true,
     pin: 26,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
+      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
@@ -164,10 +176,12 @@ export const DO = {
   chgPumpRequest: {
     type: 'relay',
     name: 'CHG pump request',
+    active: false,
     pin: 27,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
+      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
@@ -182,10 +196,12 @@ export const DO = {
   hp4Way: {
     type: 'relay',
     name: 'HP 4-way valve',
+    active: true,
     pin: 28,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
+      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
       //TODO: check if stuff is running... cant change if running!!!
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);    },
@@ -200,10 +216,12 @@ export const DO = {
   hpFan: {
     type: 'relay',
     name: 'HP fan',
+    active: true,
     pin: 29,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
+      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
       if(typeof value !== 'boolean') value = convertStringToBoolean(value);
       this.value = value;
       relayOnOff(this);
@@ -220,12 +238,14 @@ export const DO = {
   hpFanOutput: {
     type: 'pwm',
     name: 'HP Fan Output',
+    active: true,
     pin: 4,
     pinMode: Pin.PWM, // PWM
     value: 0,
     minValue: HP.minFan,
     maxValue: HP.maxFan,
     set: function(value) {
+      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
       this.value = constrain(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
 
@@ -250,13 +270,14 @@ export const DO = {
   load2Way: {
     type: 'pwm',
     name: 'Load 2-Way output',
+    active: true,
     pin: 3,
     pinMode: Pin.PWM, // PWM
     value: 0,
     minValue: 5, //TODO: should check what is the real minimum to use
     maxValue: 100,
     set: function(value) {
-
+      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
       this.value = constrain(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
 
@@ -287,16 +308,21 @@ export const DO = {
   hpOutput: {
     type: 'pwm',
     name: 'HP Output',
+    active: true,
     pin: 5,
     pinMode: Pin.PWM, // PWM
     value: 0,
     minValue: HP.minPower,
     maxValue: HP.maxPower,
     set: function(value) {
-      this.value = constrain(parseInt(value), this.minValue, this.maxValue);
-      DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
+      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
+      // allow to set value only if allowedToRun is true
+      if(HP.allowedToRun) {
+        this.value = constrain(parseInt(value), this.minValue, this.maxValue);
+        DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
 
-      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
+        mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
+      }
       // TODO: ramp?!? up/down
     },
     increase: function(step=1) { if(step) this.set(this.value+step) },
