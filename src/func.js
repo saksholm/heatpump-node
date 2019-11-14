@@ -55,7 +55,8 @@ export const genericInitial = (module, name, board, callback=null) => {
     if(
       key !== "board" &&
       typeof instance !== null &&
-      instance
+      instance &&
+      instance.active
     ) {
       if(typeof instance.initial === "function") {
         instance.initial(board);
@@ -65,7 +66,7 @@ export const genericInitial = (module, name, board, callback=null) => {
       }
     }
   });
-  console.log(`${name} initial setup............................................... DONE`);
+  console.log(`${name} initial setup............................................... DONE\n`);
   if(callback) callback();
 };
 
