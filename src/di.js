@@ -181,6 +181,28 @@ export const DI = {
     },
 
   },
+  ThreePhaseMonitor: {
+    type: 'button',
+    name: '3-Phase Monitor',
+    pin: 33,
+    pinMode: Pin.INPUT, // INPUT pulldown!!
+    value: 0, // 0 = false, 1 = true .... pull down
+    set: function(value) {
+      this.value = value;
+      if(value !== null) mqttPublish(DI.board.mqttClient, this.mqttState, this.value);
+      // TODO: if value is false -> trigger HP emergency stop
+      if(this.value === 1) console.log("3~ PHASE MONITOR is FAILING... should stop HP NOW... uncomment this feature");//HP.stop(true);
+    },
+    interval: 200,
+    mqttCommand: '',
+    mqttState: 'hp/threePhaseMonitor',
+    output: null,
+    initial: function() {
+      this.output = new five.Button({pin: this.pin, isPullup: true});
+      initialized.done(this.name);
+    },
+  },
+
 };
 
 DI.onChanges = () => {
@@ -198,7 +220,14 @@ DI.onChanges = () => {
           instance.output.on("data", function(){
             instance.handlePulses(instance.output.value);
           });
-        } else {
+        } else if(instance.type === "button") {
+          instance.output.on("down", function() {
+            instance.set(1);
+          });
+          instance.output.on("up", function() {
+            instance.set(0);
+          });
+        }else {
           instance.output.on("change", function(){
             instance.set(instance.output.value);
             //if(GLOBALS.debug) console.log(`${instance.name} value changed to ${instance.output.value}`);

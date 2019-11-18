@@ -37,6 +37,24 @@ export const HP = {
     hotgas: 0,
   },
   emergencyShutdown: false,
+  mqtt: {
+    status: {
+      topic: 'hp/status',
+    },
+    emergency: {
+      topic: 'hp/status',
+      value: {
+        value: 'emergencyStop',
+        name: 'Emergency Stop'
+      }
+    }
+  },
+  mqttStatus: function(val) {
+    if(val) {
+      const {topic,value} = HP.mqtt[val];
+      mqttPublish(HP.board.mqttClient, topic, value);
+    }
+  }
 };
 
 HP.start = function() {
@@ -118,6 +136,8 @@ HP.stop = function(emergency=false) {
     console.log("**          EMERGENCY SHUTDOWN              **");
     console.log("**                                          **");
     console.log("**********************************************\n");
+
+    HP.mqttStatus('emergency')
   }
   const {wait} = HP.board;
   // let's check if minimumRunningTime is enough... if not.. we run it to end.

@@ -40,7 +40,7 @@ export const PORTS = {
     D30: 'hpAlarm', // in
     D31: 'kwhMeterPulse', //in
     D32: 'chargingWaterpumpFlow', //in
-    D33: 0,
+    D33: '3-Phase Monitor',
     D34: 0,
     D35: 'outside',
     D36: 'beforeCHG',
