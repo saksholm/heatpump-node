@@ -19,6 +19,6 @@ IO.initial = board => {
   TH.initial(board);
   HP.initial(board);
 
-  // some other fixes
+  // pass board instance to LOGIC.board
   if(LOGIC.board === null) LOGIC.board = board;
 };
