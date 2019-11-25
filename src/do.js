@@ -339,8 +339,32 @@ export const DO = {
       initialized.done(this.name);
     }
   },
+  hpCGValve: {
+    type: 'relay',
+    name: 'HP CG 3-way valve',
+    active: true,
+    pin: 0,
+    pinMode: Pin.OUTPUT,
+    value: 0,
+    set: function(value) {
+      this.value = value;
+      DO.board.digitalWrite
+    },
+    mqttCommand: 'hp/hpCGValve',
+    mqttState: 'hp/hpCGValve',
+    repl: {
+      hpCGValve: this.output
+    }
+    output: null,
+    initial: function() {
+      this.output = new five.Relay({
+        pin: this.pin,
+        type: "NC",
+      });
+      initialized.done(this.name);
+    },
+  },
 
-  // 3-way valve for hp cg coil
   // maapiiri pumppu
   // hx pumppu, restart delay
   // 4-way
