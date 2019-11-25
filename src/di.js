@@ -8,6 +8,7 @@ import {
   unixtimestamp,
 } from './func';
 import {GLOBALS} from './globals';
+import {HP} from './hp.js';
 
 const initialized = new Initialized('DI');
 
@@ -181,17 +182,21 @@ export const DI = {
     },
 
   },
-  ThreePhaseMonitor: {
+  threePhaseMonitor: {
     type: 'button',
     name: '3-Phase Monitor',
     pin: 33,
     pinMode: Pin.INPUT, // INPUT pulldown!!
-    value: 0, // 0 = false, 1 = true .... pull down
+    value: 0, // 0 = false, 1 = true .... pull down ?!?!??!?!?
     set: function(value) {
       this.value = value;
       if(value !== null) mqttPublish(DI.board.mqttClient, this.mqttState, this.value);
       // TODO: if value is false -> trigger HP emergency stop
-      if(this.value === 1) console.log("3~ PHASE MONITOR is FAILING... should stop HP NOW... uncomment this feature");//HP.stop(true);
+      if(this.value === 1) {
+        console.log("\n\n\n3~ PHASE MONITOR is FAILING... \n\n\nstopping HP NOW...\n\n\n");
+        HP.stop(true);
+      }
+
     },
     interval: 200,
     mqttCommand: '',
