@@ -6,16 +6,18 @@ import {DI} from './di';
 import {AO} from './ao';
 import {AI} from './ai';
 
+/*
 import {
 
 } from './func';
-
+*/
 export const LOGIC = {
   board: null,
 };
 
 LOGIC.loop = () => {
 
+  // start LOGIC loop
   LOGIC.board.loop(GLOBALS.logicLoopInterval,() => {
 
 
@@ -64,8 +66,12 @@ LOGIC.loop = () => {
 
 
     if(GLOBALS.boiler.middle.request && GLOBALS.heatToWater) {
-      // let's use this later...
-      HP.start();
+
+      // if threePhaseMonitor value is ok then start
+      if(DI.threePhaseMonitor.value === 0) {
+        HP.start();
+      }
+
     }
 
 
@@ -73,7 +79,7 @@ LOGIC.loop = () => {
 
 
 
-  });
+  }); // LOGIC.loop ends
 
 
 };
