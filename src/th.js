@@ -6,6 +6,7 @@ import {GLOBALS} from './globals';
 import {
   genericInitial,
   mqttPublish,
+  round2Decimals,
 } from './func';
 const {
   constrain,
@@ -320,7 +321,7 @@ TH.onChanges = () => {
     if(key !== "board" && typeof instance !== null && instance && instance.active) {
       if(instance.output !== null && instance.type === 'thermometer10k') {
         instance.output.on("change", function(value){
-          instance.set(value);
+          instance.set(round2Decimals(value));
           if(GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${value}`);
         });
         console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
@@ -329,7 +330,7 @@ TH.onChanges = () => {
         instance.output.on("change", function() {
 //          console.log(`TH ${instance.name} ${instance.output.C}C`);
           const {celsius} = instance.output;
-          instance.set(celsius);
+          instance.set(round2Decimals(celsius));
           if(GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${celsius}`);
         });
         console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
