@@ -66,6 +66,7 @@ board.on("ready", function() {
     GLOBALS.starting = false;
     LOGIC.loop();
     HP.loop();
+    mqttClient.publish('state/iot/heatpump/hp/status', 'ready');
   });
 
 });
@@ -84,10 +85,10 @@ try {
     mqttSubscriptions(mqttClient);
 
     // test subscribe
-    mqttClient.subscribe('state/iot/heatpump/online', (err) => {
+    mqttClient.subscribe('state/iot/heatpump/hp/status', (err) => {
       if(!err) {
         // reply with publish
-        mqttClient.publish('state/iot/heatpump/online', 'hello');
+        mqttClient.publish('state/iot/heatpump/hp/status', 'initialising');
       }
     });
   });
