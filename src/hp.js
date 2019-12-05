@@ -76,12 +76,12 @@ HP.start = function() {
   wait(timeoutMillis, function() {
     HP.allowedToRun = true; // let's allow HP running (restartDelay is now over)
     console.log("HP allowed to run = true");
-    DO.hpAllowed.output.on(); // hp allowed relay to on
-    console.log("hp allowed output on()");
-    DO.waterpumpCharging.output.on(); // waterpump charging relay to on
-    console.log("waterpump charging output on()");
-    DO.hpFan.output.on(); // Fan on
-    console.log("hp fan output on()");
+    DO.hpAllowed.set(true) //output.on(); // hp allowed relay to on
+    console.log("hp allowed true");
+    DO.waterpumpCharging.set("on");//output.on(); // waterpump charging relay to on
+    console.log("waterpump charging true");
+    DO.hpFan.set("on"); //output.on(); // Fan on
+    console.log("hp fan on");
 
     // 4-way ?!??!
 
@@ -98,15 +98,21 @@ HP.start = function() {
     // Dampers?
 
     if(TH.outside.value > 5) {
-      DO.damperOutside.output.on();
-      console.log("damper outside output on()");
-      DO.damperConvection.output.off();
-      console.log("damper convection output off()");
+      DO.damperOutside.set("open");
+      console.log("damper outside open");
+      DO.damperConvection.set("close");
+      console.log("damper convection close");
+
+      DO.chgPumpRequest.set("off");
+      console.log("chg pump off");
     } else {
-      DO.damperOutside.output.off();
-      console.log("damper outside output off()");
-      DO.damperConvection.output.on();
-      console.log("damper convection output on()");
+      DO.damperOutside.set("close"); //output.off();
+      console.log("damper outside close");
+      DO.damperConvection.set("open"); //output.on();
+      console.log("damper convection open");
+
+      DO.chgPumpRequest.set("on");
+      console.log("chg pump on");
     }
 
 
