@@ -62,13 +62,30 @@ export const genericInitial = (module, name, board, callback=null) => {
         instance.initial(board);
       }
       if(typeof instance.repl === "object") {
-        board.repl.inject(instance.repl);
+//        board.repl.inject(instance.repl);
+        try {
+          injectRepls(module,key);
+
+        } catch(e) {
+          console.err("genericInitial catch on repls inject",e);
+        }
       }
     }
   });
   console.log(`${name} initial setup............................................... DONE\n`);
   if(callback) callback();
 };
+
+export const injectRepls = (module, key) => {
+
+  setTimeout(() => {
+    console.log(`injecting repl's from ${key}`);
+    const repl = module[key].repl;
+
+    module.board.repl.inject(repl);
+  },200);
+};
+
 
 export const mqttSubscriptions = mqttClient => {
   Object.keys(DO).map(key => {
@@ -159,4 +176,8 @@ export const relayOnOff = instance => {
 
 export const pidController = (p=0.25,i=0.01,d=0.01,time=1) => {
   return new Controller(p,i,d,time);
+};
+
+export const round2Decimals = value => {
+  return Math.round(value * 100) / 100;
 };
