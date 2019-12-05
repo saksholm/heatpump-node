@@ -12,6 +12,7 @@ import {
 } from './func';
 
 import {HP} from './hp';
+import {GLOBALS} from './globals';
 
 const initialized = new Initialized('DO');
 
@@ -48,9 +49,14 @@ export const DO = {
     pin: 22,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
+    enum: ["on","off"],
     set: function(value) {
-      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
+      if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
+      if(!this.enum.includes(value)) { GLOBALS.debug && console.warn(`${this.name} set value not match enum.. enum: ${this.enum}, value: ${value}`); return false; }
+
       this.value = value;
+      if(this.value === "on") this.output.on();
+      if(this.value === "off") this.output.off();
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: 'ahu/ahuFan',
@@ -71,7 +77,7 @@ export const DO = {
     minValue: 15,
     maxValue: 60,
     set: function(value) {
-      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
+      if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
       value = mapPercentToPWM(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, this.value);
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
@@ -98,9 +104,15 @@ export const DO = {
     pin: 23,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
+    enum: [true,false],
     set: function(value) {
-      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
+      if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
+      if(!this.enum.includes(value)) { GLOBALS.debug && console.warn(`${this.name} set value not match enum.. enum: ${this.enum}, value: ${value}`); return false; }
+
       this.value = value;
+      if(this.value === true) this.output.on();
+      if(this.value === false) this.output.off();
+
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: 'hp/hpAllowed',
@@ -117,9 +129,20 @@ export const DO = {
     active: true,
     pin: 24,
     pinMode: Pin.OUTPUT, // OUTPUT
-    value: false, // true/false
+    value: "closed", // true/false
+    enum: ["open","close"],
     set: function(value) {
-      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
+      if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
+      if(!this.enum.includes(value)) { GLOBALS.debug && console.warn(`${this.name} set value not match enum.. enum: ${this.enum}, value: ${value}`); return false; }
+
+      if(this.value === "open") {
+        this.output.open();
+        if(DO.damperConvection.value !== "close") DO.damperConvection.set("close");
+      }
+      if(this.value === "close") {
+        this.output.close();
+        if(DO.damperConvection.value !== "open") DO.damperConvection.set("open");
+      }
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
@@ -139,10 +162,25 @@ export const DO = {
     pin: 25,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
+    enum: ["open","close"],
     set: function(value) {
-      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
+      if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
+      if(!this.enum.includes(value)) { GLOBALS.debug && console.warn(`${this.name} set value not match enum.. enum: ${this.enum}, value: ${value}`); return false; }
+
+      if(this.value === "open") {
+        this.output.open();
+        if(DO.damperOutside.value !== "close") DO.damperOutside.set("close");
+      }
+      if(this.value === "close") {
+        this.output.close();
+        if(DO.damperOutside.value !== "open") DO.damperOutside.set("open");
+      }
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
+    },
+    repl: {
+      damperConvectionOpen: function() {DO.damperConvection.set("open")},
+      damperConvectionClose: function() {DO.damperConvection.set("close")},
     },
     startDelay: 30*1000, //delay 180s-90deg.. wait 120s.... running... change lastTimestamp
     mqttCommand: '', // not allowed
@@ -160,9 +198,15 @@ export const DO = {
     pin: 26,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
+    enum: ["on","off"],
     set: function(value) {
-      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
+      if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
+      if(!this.enum.includes(value)) { GLOBALS.debug && console.warn(`${this.name} set value not match enum.. enum: ${this.enum}, value: ${value}`); return false; }
+
       this.value = value;
+      if(this.value === "on") this.output.on();
+      if(this.value === "off") this.output.off();
+
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '', // not allowed
@@ -176,13 +220,18 @@ export const DO = {
   chgPumpRequest: {
     type: 'relay',
     name: 'CHG pump request',
-    active: false,
+    active: true,
     pin: 27,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
+    enum: ["on","off"],
     set: function(value) {
-      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
+      if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
+      if(!this.enum.includes(value)) { GLOBALS.debug && console.warn(`${this.name} set value not match enum.. enum: ${this.enum}, value: ${value}`); return false; }
       this.value = value;
+
+
+
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: 'hp/chgPumpRequest',
@@ -200,10 +249,16 @@ export const DO = {
     pin: 28,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
+    enum: ["heating", "cooling"],
     set: function(value) {
-      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
+      if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
+      if(!this.enum.includes(value)) { GLOBALS.debug && console.warn(`${this.name} set value not match enum.. enum: ${this.enum}, value: ${value}`); return false; }
       //TODO: check if stuff is running... cant change if running!!!
       this.value = value;
+
+      if(this.value === "heating") this.output.on();
+      if(this.value === "cooling") this.output.off();
+
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);    },
     mqttCommand: '', // not allowed!
     mqttState: 'hp/hp4Way',
@@ -221,7 +276,7 @@ export const DO = {
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     set: function(value) {
-      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
+      if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
       if(typeof value !== 'boolean') value = convertStringToBoolean(value);
       this.value = value;
       relayOnOff(this);
@@ -245,7 +300,7 @@ export const DO = {
     minValue: HP.minFan,
     maxValue: HP.maxFan,
     set: function(value) {
-      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
+      if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
       this.value = constrain(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
 
@@ -277,7 +332,8 @@ export const DO = {
     minValue: 5, //TODO: should check what is the real minimum to use
     maxValue: 100,
     set: function(value) {
-      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
+      if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
+
       this.value = constrain(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
 
@@ -315,7 +371,7 @@ export const DO = {
     minValue: HP.minPower,
     maxValue: HP.maxPower,
     set: function(value) {
-      if(!this.active) console.warn(`name: ${this.name}, type: ${this.type} not active!`); return;
+      if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
       // allow to set value only if allowedToRun is true
       if(HP.allowedToRun) {
         this.value = constrain(parseInt(value), this.minValue, this.maxValue);
@@ -346,22 +402,34 @@ export const DO = {
     pin: 0,
     pinMode: Pin.OUTPUT,
     value: 0,
+    enum: ["on", "off"],
     set: function(value) {
+      if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
+      if(!this.enum.includes(value)) { GLOBALS.debug && console.warn(`${this.name} set value not match enum.. enum: ${this.enum}, value: ${value}`); return false; }
+
       this.value = value;
-      DO.board.digitalWrite
+      if(this.value === "on") this.output.on();
+      if(this.value === "off") this.output.off();
+
+      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: 'hp/hpCGValve',
     mqttState: 'hp/hpCGValve',
-    repl: {
-      hpCGValve: this.output
-    }
     output: null,
+    repl: {
+      hpCGValveOn: function() { DO.hpCGValve.set("on") },
+      hpCGValveOff: function() { DO.hpCGValve.set("off") },
+    },
     initial: function() {
       this.output = new five.Relay({
         pin: this.pin,
         type: "NC",
       });
+
+//      DO.board.repl.inject({hpCGValveOn: function() {DO.hpCGValve.output.on() } });
+
       initialized.done(this.name);
+
     },
   },
 
