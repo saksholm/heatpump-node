@@ -16,22 +16,27 @@ const {
 
 export const AI = {
   board: null,
+  active: true,
   interval: 2*1000,
   threshold: 2,
   condenserPde: {
     type: 'pde',
     name: 'Condenser PDE',
-    pin: 'A0',
+    pin: 55, //A1
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
       this.value = value;
     },
-    meltingPa: 40, // ?
+    threshold: 2,
+    defrostPa: 40, // ?
+    cleanPa: 25,
     limitingPa: 50, // ?
     warningPa: 60, // ?
+    counterResetMillis: 5*1000,
+    counterLastResetMillis: 0,
     mqttCommand: '',
-    mqttState: '',
+    mqttState: 'hp/condenserPde',
     output: null,
     initial: function() {
       this.output = new five.Sensor({pin: this.pin, freq: AI.interval, threshold: AI.threshold}),
