@@ -25,6 +25,7 @@ export const HP = {
   actualRunStartTimestamp: 0,
   restartDelay: 60*5, // 5mins
   restartTimestamp: 0,
+  defrost: false,
   maxPower: 100, // 0-100 ... not use directly
   minPower: 10, // 0-100 ... not use directly
   minFan: 10, // 0-100 ... not use directly
@@ -38,8 +39,19 @@ export const HP = {
   },
   emergencyShutdown: false,
   mqtt: {
+/*
     status: {
       topic: 'hp/status',
+      value: {
+        value: this.mode,
+      }
+    },
+*/
+    modeChange:{
+      topic: 'hp/mode',
+      value: {
+        value: this.mode,
+      }
     },
     emergency: {
       topic: 'hp/status',
@@ -47,12 +59,21 @@ export const HP = {
         value: 'emergencyStop',
         name: 'Emergency Stop'
       }
-    }
+    },
+    defrost:{
+      topic:'hp/status',
+      value: {
+        value: 'defrosting',
+        name: 'Defrosting'
+      }
+    },
   },
   mqttStatus: function(val) {
     if(val) {
-      const {topic,value} = HP.mqtt[val];
-      mqttPublish(HP.board.mqttClient, topic, value);
+      if(Object.keys(HP.mqtt).includes(val)) {
+        const {topic,value} = HP.mqtt[val];
+        if(topic && value) mqttPublish(HP.board.mqttClient, topic, value);
+      }
     }
   }
 };
