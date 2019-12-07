@@ -27,6 +27,7 @@
     "node-pid-controller": "^1.0.1"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.7.5",
     "nodemon": "^2.0.1"
   }
 }
