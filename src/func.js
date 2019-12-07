@@ -70,6 +70,9 @@ export const genericInitial = (module, name, board, callback=null) => {
           console.err("genericInitial catch on repls inject",e);
         }
       }
+      if(instance?.mqttState?.length > 0) {
+        mqttPublish(module.board.mqttClient, instance.mqttState, instance.value);
+      }
     }
   });
   console.log(`${name} initial setup............................................... DONE\n`);
