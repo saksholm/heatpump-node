@@ -181,3 +181,22 @@ export const pidController = (p=0.25,i=0.01,d=0.01,time=1) => {
 export const round2Decimals = value => {
   return Math.round(value * 100) / 100;
 };
+
+
+export const calculateThermistorValue = (raw, {beta, roomTemp, balanceResistor, resistorRoomTemp, maxAdc}) => {
+  // (c) original idea is from: https://www.allaboutcircuits.com/projects/measuring-temperature-with-an-ntc-thermistor/
+
+  const rThermistor = balanceResistor * ( (maxAdc / raw) - 1);
+  const tKelvin = (beta * roomTemp) / (beta + (roomTemp * Math.log(rThermistor / resistorRoomTemp)));
+  const tCelsius = tKelvin - 273.15;  // convert kelvin to celsius
+
+  if(GLOBALS.debug) {
+    console.log("calculateThermistorValue called raw:", raw);
+    console.log("rThermistor", rThermistor);
+    console.log("tKelvin", tKelvin);
+    console.log("tCelsius", tCelsius);
+  }
+
+  return tCelsius;
+
+};
