@@ -70,7 +70,7 @@ export const DO = {
   ahuFanOutput: {
     type: 'pwm',
     name: 'AHU Fan Output',
-    active: false,
+    active: true,
     pin: 2,
     pinMode: Pin.PWM, // PWM
     value: 0,
@@ -248,7 +248,7 @@ export const DO = {
     active: true,
     pin: 28,
     pinMode: Pin.OUTPUT, // OUTPUT
-    value: false, // true/false
+    value: "heating",
     enum: ["heating", "cooling"],
     set: function(value) {
       if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
@@ -297,6 +297,7 @@ export const DO = {
     pin: 4,
     pinMode: Pin.PWM, // PWM
     value: 0,
+    defaultValue: 20,
     minValue: HP.minFan,
     maxValue: HP.maxFan,
     set: function(value) {
@@ -368,6 +369,7 @@ export const DO = {
     pin: 5,
     pinMode: Pin.PWM, // PWM
     value: 0,
+    defaultValue: 20,
     minValue: HP.minPower,
     maxValue: HP.maxPower,
     set: function(value) {
