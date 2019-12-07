@@ -401,7 +401,7 @@ export const DO = {
     active: true,
     pin: 0,
     pinMode: Pin.OUTPUT,
-    value: 0,
+    value: "off",
     enum: ["on", "off"],
     set: function(value) {
       if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
