@@ -50,8 +50,8 @@ export const HP = {
     modeChange:{
       topic: 'hp/mode',
       value: {
-        value: this.mode,
-      }
+        value: function(){ return this.mode}
+      },
     },
     emergency: {
       topic: 'hp/status',
