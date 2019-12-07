@@ -63,8 +63,8 @@ export const PORTS = {
     D53: 0, // SPI - SS
   },
   analog: {
-    A0: 'condenserPde', // AI
-    A1: 0, //'outside', // all below is TH
+    A0: 0,
+    A1: 'condenserPde',
     A2: 0,
     A3: 0,
     A4: 0,
