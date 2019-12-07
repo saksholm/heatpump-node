@@ -39,6 +39,7 @@ export const DI = {
     },
   },
   kwhMeterPulse: {
+    active: true,
     type: 'pulseIn',
     name: 'kWh pulse in',
     scale: 10000,
@@ -87,7 +88,8 @@ export const DI = {
         }
       }
     },
-
+    mqttCommand: '',
+    mqttState: 'hp/kwhMeterPulse',
 
   },
   chargingWaterpumpFlow: {
@@ -180,6 +182,8 @@ export const DI = {
       });
 */
     },
+    mqttCommand: '',
+    mqttState: 'hp/chargingWaterpumpFlow',
 
   },
   threePhaseMonitor: {
