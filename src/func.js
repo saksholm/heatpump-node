@@ -203,3 +203,8 @@ export const calculateThermistorValue = (raw, {beta, roomTemp, balanceResistor, 
   return tCelsius;
 
 };
+
+export const defaultForSet = (instance,value) => {
+  if(!instance.active) { console.warn(`name: ${instance.name}, type: ${instance.type} not active!`); return; }
+  if(!instance.enum?.includes(value)) { GLOBALS.debug && console.warn(`${instance.name} set value not match enum.. enum: ${instance.enum}, value: ${value}`); return false; }
+};

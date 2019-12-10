@@ -9,6 +9,7 @@ import {
   convertStringToBoolean,
   relayOnOff,
   pidController,
+  defaultForSet,
 } from './func';
 
 import {HP} from './hp';
@@ -406,8 +407,7 @@ export const DO = {
     value: "off",
     enum: ["on", "off"],
     set: function(value) {
-      if(!this.active) { console.warn(`name: ${this.name}, type: ${this.type} not active!`); return; }
-      if(!this.enum.includes(value)) { GLOBALS.debug && console.warn(`${this.name} set value not match enum.. enum: ${this.enum}, value: ${value}`); return false; }
+      defaultForSet(this,value);
 
       this.value = value;
       if(this.value === "on") this.output.on();
