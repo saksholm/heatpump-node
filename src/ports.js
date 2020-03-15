@@ -8,12 +8,12 @@ export const PORTS = {
     D0: 0, // RX
     D1: 0, // TX
     PWM: {
-      D2: 'ahuFanOutput',
-      D3: 'load2Way',
+      D2: 0,  ///  INT.0
+      D3: 0, // INT.1
       D4: 'hpFanOutput',
       D5: 'hpOutput',
-      D6: 0,
-      D7: 0,
+      D6: 'ahuFanOutput',,
+      D7: 'load2Way',
       D8: 0,
       D9: 0,
       D10: 0,
@@ -42,10 +42,10 @@ export const PORTS = {
     D32: 'chargingWaterpumpFlow', //in
     D33: '3-Phase Monitor',
     D34: 0,
-    D35: 'outside',
-    D36: 'beforeCHG',
-    D37: 'betweenCHG_CX',
-    D38: 'betweenCX_FAN',
+    D35: 'outside', // 6th pin on top (right)
+    D36: 'beforeCHG', // 7th pin on top (left)
+    D37: 'betweenCHG_CX', // 7th pin on top (right)
+    D38: 'betweenCX_FAN', //8th pin on top (left)
     D39: 'exhaust',
     D40: 'glygolIn',
     D41: 'glygolOut',
