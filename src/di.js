@@ -20,6 +20,7 @@ export const DI = {
   board: null,
   interval: 1*1000,
   hpAlarm: {
+    active: false,
     type: 'digitalIn',
     name: 'HP Alarm',
     pin: 30,
@@ -39,7 +40,7 @@ export const DI = {
     },
   },
   kwhMeterPulse: {
-    active: true,
+    active: false,
     type: 'pulseIn',
     name: 'kWh pulse in',
     scale: 10000,
@@ -93,6 +94,7 @@ export const DI = {
 
   },
   chargingWaterpumpFlow: {
+    active: false,
     type: 'flow',
     name: 'Waterpump flow',
     scale: 100, // ??? l/min
@@ -187,6 +189,7 @@ export const DI = {
 
   },
   threePhaseMonitor: {
+    active: false,
     type: 'button',
     name: '3-Phase Monitor',
     pin: 33,
@@ -218,7 +221,7 @@ DI.onChanges = () => {
   console.log("Mapping DI onChanges");
   Object.keys(DI).map(key => {
     const instance = DI[key];
-    if(key !== "board" && typeof instance !== null && typeof instance === 'object') {
+    if(key !== "board" && typeof instance !== null && typeof instance === 'object' && instance.active) {
 //      console.log("typeof output", typeof instance.output, key);
       if(typeof instance.output !== 'undefined' && instance.output !== null) {
         if(instance.type === "flow") {
