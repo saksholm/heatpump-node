@@ -8,6 +8,8 @@ import {
   mqttPublish,
   round2Decimals,
   calculateThermistorValue,
+  validateTemperatures,
+  setupDS18B20,
 } from './func';
 const {
   constrain,
@@ -30,13 +32,15 @@ const initialized = new Initialized('TH');
 
 export const TH = {
   board: null,
-  interval: 1*1000,
+  interval: 3*1000,
   threshold: 2,
+
   outside: {
     type: 'DS18B20',
     name: 'Outside air temperature',
-    active: false,
-    pin: 35, // TODO: CHANGE TO DIGITAL!!!!!
+    active: true,
+    pin: 35, // odd
+//    address: 0x41771942bff,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -46,17 +50,18 @@ export const TH = {
     mqttCommand: '',
     mqttState: 'th/outside',
     output: null,
-    interval: 60*1000,
+    interval: 5*1000, //60*1000,
     initial: function() {
-      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+      this.output = setupDS18B20(this);
       initialized.done(this.name);
     },
   },
   beforeCHG: {
     type: 'DS18B20',
     name: 'Before CGH air temperature',
-    active: false,
+    active: true,
     pin: 36,
+//    address: 0x41771942bff,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -67,16 +72,18 @@ export const TH = {
     mqttState: 'th/beforeCHG',
     output: null,
     initial: function() {
-      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
-//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = setupDS18B20(this);
+  //      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
+
     },
   },
   betweenCHG_CX: {
     type: 'DS18B20',
     name: 'Between CHG-CX air temperature',
-    active: false,
+    active: true,
     pin: 37,
+//    address: 0x21316adc9aa,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -87,8 +94,8 @@ export const TH = {
     mqttState: 'th/betweenCHG_CX',
     output: null,
     initial: function() {
-      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
-//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = setupDS18B20(this);
+  //      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
@@ -97,6 +104,7 @@ export const TH = {
     name: 'Between CX-Fan air temperature',
     active: false,
     pin: 38,
+//    address: 0x213137fbaaa,
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
@@ -107,8 +115,8 @@ export const TH = {
     mqttState: 'th/betweenCX_FAN',
     output: null,
     initial: function() {
-      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
-//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = setupDS18B20(this);
+  //      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
@@ -127,6 +135,7 @@ export const TH = {
     mqttState: 'th/exhaust',
     output: null,
     initial: function() {
+
       this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
 //      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
@@ -235,7 +244,7 @@ export const TH = {
   hxOut: {
     type: 'DS18B20',
     name: 'Heat Exchanger Out water temperature',
-    active: true,
+    active: false,
     pin: 45,
     pinMode: Pin.INPUT,
     value: 0,
@@ -293,10 +302,10 @@ export const TH = {
     },
   },
   boilerLower: {
-    type: 'thermometer10k',
+    type: 'DS18B20',
     name: 'Boiler Lower water temperature',
-    active: true,
-    pin: 54,
+    active: false,
+    pin: 48,
     pinMode: Pin.INPUT,
     interval: 10*1000,
     threshold: 0.1,
@@ -318,7 +327,8 @@ export const TH = {
     output: null,
     initial: function() {
       const {thermistorSpecs} = this;
-//      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
+/*
       this.output = new five.Thermometer({
         controller: "ANALOG",
         pin: this.pin,
@@ -327,6 +337,7 @@ export const TH = {
           return calculateThermistorValue(raw, thermistorSpecs);
         }
       });
+*/
 //      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
@@ -337,41 +348,55 @@ export const TH = {
 TH.onChanges = () => {
   console.log("Mapping TH onChanges");
   Object.keys(TH).map(key => {
-    const instance = TH[key];
-    if(key !== "board" && typeof instance !== null && instance && instance.active) {
-      if(instance.output !== null && instance.type === 'thermometer10k') {
-        instance.output.on("data", function(value){
+    setTimeout(() => {
+      const instance = TH[key];
+      if(key !== "board" && typeof instance !== null && instance && instance.active) {
+        if(instance.output !== null && instance.type === 'thermometer10k') {
+          instance.output.on("data", function(value){
 
-          const {celsius} = value;
-          if(instance.value !== celsius) {
-            const roundedCelsius = round2Decimals(celsius);
-            if(typeof instance.threshold === "number") {
-              // if change is gte/lte threshold
-              if(roundedCelsius >= (instance.value + instance.threshold) || roundedCelsius <= instance.value - instance.threshold ) {
+            const {celsius} = value;
+            if(instance.value !== celsius) {
+              const roundedCelsius = round2Decimals(celsius);
+              if(typeof instance.threshold === "number") {
+                // if change is gte/lte threshold
+                if(roundedCelsius >= (instance.value + instance.threshold) || roundedCelsius <= instance.value - instance.threshold ) {
+                  instance.set(roundedCelsius);
+                  if(GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${value}`);
+                }
+              } else {
+                // set value just based on interval
                 instance.set(roundedCelsius);
                 if(GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${value}`);
               }
-            } else {
-              // set value just based on interval
-              instance.set(roundedCelsius);
-              if(GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${value}`);
+
             }
 
-          }
+          });
+          console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
+        }
+        if(instance.output !== null && instance.type === 'DS18B20') {
+          instance.output.on("error", function(err) {
+            console.log(`Error on reading TH ${instance.name}: ${err}`);
+          });
 
-        });
-        console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
+          instance.output.on("change", function() {
+            const {celsius, address} = instance.output;
+            if(validateTemperatures(celsius)) {
+              console.log(`Thermometer at address: 0x${address.toString(16)}`);
+              console.log(`TH ${instance.name} ${celsius}C`);
+              instance.set(round2Decimals(celsius));
+              if(GLOBALS.debug && GLOBALS.printTH) console.warn(`${instance.name} value changed to ${celsius}`);
+            } else {
+              console.log("ignoring temp", celsius, instance.name);
+            }
+
+          });
+          console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
+        }
       }
-      if(instance.output !== null && instance.type === 'DS18B20') {
-        instance.output.on("change", function() {
-//          console.log(`TH ${instance.name} ${instance.output.C}C`);
-          const {celsius} = instance.output;
-          instance.set(round2Decimals(celsius));
-          if(GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${celsius}`);
-        });
-        console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
-      }
-    }
+
+
+    }, 200);
   });
 };
 
