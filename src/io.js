@@ -5,6 +5,7 @@ import {AO} from './ao';
 import {AI} from './ai';
 import {TH} from './th';
 import {HP} from './hp';
+import {LCD} from './lcd';
 import {LOGIC} from './logic';
 
 export const IO = {};
@@ -12,6 +13,12 @@ export const IO = {};
 
 IO.initial = board => {
   console.log("Start initialising io's");
+
+
+  // pass board instance to LOGIC.board
+  if(LOGIC.board === null) LOGIC.board = board;
+
+//  LCD.initial(board);
   DO.initial(board);
   DI.initial(board);
 //  AO.initial(board); // not need at the moment
@@ -19,6 +26,20 @@ IO.initial = board => {
   TH.initial(board);
   HP.initial(board);
 
-  // pass board instance to LOGIC.board
-  if(LOGIC.board === null) LOGIC.board = board;
+
+  board.wait(2000, () => {
+
+    board.repl.inject({
+      info: () => console.log("Hello, this is your info :D"),
+      stop: () => HP.stop(true),
+      emergencyReset: () => {
+        if(HP.emergencyShutdown) HP.emergencyShutdown = false;
+      }
+    });
+
+
+    console.log("ACTIVE PINS", GLOBALS.activePins);
+  });
+
+
 };
