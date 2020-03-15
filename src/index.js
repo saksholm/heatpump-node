@@ -10,6 +10,7 @@ import {DO} from './do';
 import {DI} from './di';
 import {AO} from './ao';
 import {AI} from './ai';
+import {LCD} from './lcd';
 import {LOGIC} from './logic';
 import {HP} from './hp';
 
@@ -27,7 +28,7 @@ const {
 } = SECRETS;
 
 const mqttClient = mqtt.connect(mqttServer, {username: mqttUser, password: mqttPass});
-const board = new five.Board({timeout: 3600});
+const board = new five.Board({port: '/dev/cu.usbmodem14201', timeout: 3600});
 
 try {
   mqttClient.commandTopics = mqttCommandTopics(); // create dynamic mqttCommandTopics array to mqttClient instance
@@ -43,7 +44,11 @@ board.on("ready", function() {
   GLOBALS.startupTimestamp = unixtimestamp();
 
   try{
-    IO.initial(this);
+    console.log("waiting for initialising");
+    this.wait(5000, () => {
+      console.log("init started");
+      IO.initial(this);
+    });
   } catch(e) {
     console.log("ERROR, in IO.initial catch",e);
   }
@@ -69,11 +74,16 @@ board.on("ready", function() {
     mqttClient.publish('state/iot/heatpump/hp/status', 'ready');
   });
 
+
 });
+
+
+
 
 board.on("error", function(error) {
   console.log("Board error", error);
-})
+});
+
 
 board.on("close", function() {
   console.log("Board closed :/");
