@@ -71,8 +71,8 @@ export const DO = {
   ahuFanOutput: {
     type: 'pwm',
     name: 'AHU Fan Output',
-    active: true,
-    pin: 2,
+    active: false,
+    pin: 6,
     pinMode: Pin.PWM, // PWM
     value: 0,
     minValue: 15,
@@ -101,7 +101,7 @@ export const DO = {
   hpAllowed: {
     type: 'relay',
     name: 'HP allowed',
-    active: true,
+    active: false,
     pin: 23,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
@@ -127,7 +127,7 @@ export const DO = {
   damperOutside: {
     type: 'relay',
     name: 'Damper outside',
-    active: true,
+    active: false,
     pin: 24,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "closed", // true/false
@@ -159,7 +159,7 @@ export const DO = {
   damperConvection: {
     type: 'relay',
     name: 'Damper convection',
-    active: true,
+    active: false,
     pin: 25,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
@@ -195,7 +195,7 @@ export const DO = {
   waterpumpCharging: {
     type: 'relay',
     name: 'Waterpump charging',
-    active: true,
+    active: false,
     pin: 26,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
@@ -221,7 +221,7 @@ export const DO = {
   chgPumpRequest: {
     type: 'relay',
     name: 'CHG pump request',
-    active: true,
+    active: false,
     pin: 27,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
@@ -246,7 +246,7 @@ export const DO = {
   hp4Way: {
     type: 'relay',
     name: 'HP 4-way valve',
-    active: true,
+    active: false,
     pin: 28,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "heating",
@@ -272,7 +272,7 @@ export const DO = {
   hpFan: {
     type: 'relay',
     name: 'HP fan',
-    active: true,
+    active: false,
     pin: 29,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
@@ -294,7 +294,7 @@ export const DO = {
   hpFanOutput: {
     type: 'pwm',
     name: 'HP Fan Output',
-    active: true,
+    active: false,
     pin: 4,
     pinMode: Pin.PWM, // PWM
     value: 0,
@@ -328,7 +328,7 @@ export const DO = {
     type: 'pwm',
     name: 'Load 2-Way output',
     active: true,
-    pin: 3,
+    pin: 7,
     pinMode: Pin.PWM, // PWM
     value: 0,
     minValue: 5, //TODO: should check what is the real minimum to use
@@ -366,7 +366,7 @@ export const DO = {
   hpOutput: {
     type: 'pwm',
     name: 'HP Output',
-    active: true,
+    active: false,
     pin: 5,
     pinMode: Pin.PWM, // PWM
     value: 0,
@@ -401,8 +401,8 @@ export const DO = {
   hpCGValve: {
     type: 'relay',
     name: 'HP CG 3-way valve',
-    active: true,
-    pin: 0,
+    active: false,
+    pin: 0, // TODO: WTF!!
     pinMode: Pin.OUTPUT,
     value: "off",
     enum: ["on", "off"],
