@@ -1,23 +1,3 @@
-//#include <AccelStepperFirmata.h>
-#include <SerialFirmata.h>
-#include <FirmataFeature.h>
-#include <DigitalInputFirmata.h>
-//#include <ServoFirmata.h>
-#include <I2CFirmata.h>
-#include <OneWireFirmata.h>
-#include <FirmataExt.h>
-#include <AnalogOutputFirmata.h>
-#include <AnalogInputFirmata.h>
-#include <Encoder7Bit.h>
-#include <DigitalOutputFirmata.h>
-#include <AnalogFirmata.h>
-//#include <EthernetClientStream.h>
-//#include <StepperFirmata.h>
-#include <FirmataReporting.h>
-#include <FirmataScheduler.h>
-#include <ConfigurableFirmata.h>
-#include <AnalogWrite.h>
-
 /*
   Firmata is a generic protocol for communicating with microcontrollers
   from software on a host computer. It is intended to work with
@@ -180,13 +160,13 @@ AnalogInputFirmata analogInput;
 #include <AnalogOutputFirmata.h>
 AnalogOutputFirmata analogOutput;
 
-//#include <Servo.h>
-//#include <ServoFirmata.h>
-//ServoFirmata servo;
+#include <Servo.h>
+#include <ServoFirmata.h>
+ServoFirmata servo;
 // ServoFirmata depends on AnalogOutputFirmata
-//#if defined ServoFirmata_h && ! defined AnalogOutputFirmata_h
-//#error AnalogOutputFirmata must be included to use ServoFirmata
-//#endif
+#if defined ServoFirmata_h && ! defined AnalogOutputFirmata_h
+#error AnalogOutputFirmata must be included to use ServoFirmata
+#endif
 
 #include <Wire.h>
 #include <I2CFirmata.h>
@@ -197,11 +177,11 @@ OneWireFirmata oneWire;
 
 // StepperFirmata is deprecated as of ConfigurableFirmata v2.10.0. Please update your
 // client implementation to use the new, more full featured and scalable AccelStepperFirmata.
-//#include <StepperFirmata.h>
-//StepperFirmata stepper;
+#include <StepperFirmata.h>
+StepperFirmata stepper;
 
-//#include <AccelStepperFirmata.h>
-//AccelStepperFirmata accelStepper;
+#include <AccelStepperFirmata.h>
+AccelStepperFirmata accelStepper;
 
 #include <SerialFirmata.h>
 SerialFirmata serial;
