@@ -60,6 +60,17 @@ export const genericInitial = (module, name, board, callback=null) => {
     ) {
       if(typeof instance.initial === "function") {
         instance.initial(board);
+        const check = GLOBALS.activePins.find(x => x.pin === instance.pin);
+
+        if(check) { console.log("\n\n\n\n\n\n\nPIN IS ALREADY IN USE!!!!!", instance.pin, "\n\n\n\n\n\n\n\n\n\n"); }
+        const obj = {
+          module: name,
+          name: instance.name,
+          pin: instance.pin,
+          type: instance.type,
+        };
+        if(instance.address) obj.address = instance.address;
+        GLOBALS.activePins.push(obj);
       }
       if(typeof instance.repl === "object") {
 //        board.repl.inject(instance.repl);
@@ -207,4 +218,18 @@ export const calculateThermistorValue = (raw, {beta, roomTemp, balanceResistor, 
 export const defaultForSet = (instance,value) => {
   if(!instance.active) { console.warn(`name: ${instance.name}, type: ${instance.type} not active!`); return; }
   if(!instance.enum?.includes(value)) { GLOBALS.debug && console.warn(`${instance.name} set value not match enum.. enum: ${instance.enum}, value: ${value}`); return false; }
+};
+
+export const validateTemperatures = value => {
+  if(parseInt(value) > 120) return false;
+  if(parseInt(value) < -40) return false;
+  return value;
+}
+export const setupDS18B20 = instance => {
+  return new five.Thermometer({
+    controller: "DS18B20",
+    pin: instance.pin,
+    freq: instance.interval || TH.interval,
+    address: instance.address || undefined,
+  });
 };
