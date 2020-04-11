@@ -49,6 +49,8 @@ export const genericInitial = (module, name, board, callback=null) => {
     module.board = board;
   }
 
+  let ds18b20delayCount = 1;
+
   Object.keys(module).map(key => {
     const instance = module[key];
 
@@ -59,7 +61,20 @@ export const genericInitial = (module, name, board, callback=null) => {
       instance.active
     ) {
       if(typeof instance.initial === "function") {
-        instance.initial(board);
+
+        if(instance.type === 'lcd2004') {
+          console.log("182318723687163218763128638712867368271687231687168237687321867381627687132")
+        }
+
+        let delay = 0;
+        if(instance.type === 'DS18B20') {
+          delay = 100*ds18b20delayCount;
+          ds18b20delayCount = ds18b20delayCount + 1;
+          setTimeout(() => instance.initial(), delay);
+        } else {
+          instance.initial();
+        }
+
         const check = GLOBALS.activePins.find(x => x.pin === instance.pin);
 
         if(check) { console.log("\n\n\n\n\n\n\nPIN IS ALREADY IN USE!!!!!", instance.pin, "\n\n\n\n\n\n\n\n\n\n"); }
@@ -217,7 +232,9 @@ export const calculateThermistorValue = (raw, {beta, roomTemp, balanceResistor, 
 
 export const defaultForSet = (instance,value) => {
   if(!instance.active) { console.warn(`name: ${instance.name}, type: ${instance.type} not active!`); return; }
-  if(!instance.enum?.includes(value)) { GLOBALS.debug && console.warn(`${instance.name} set value not match enum.. enum: ${instance.enum}, value: ${value}`); return false; }
+  if(instance.enum) {
+    if(!instance.enum?.includes(value)) { GLOBALS.debug && console.warn(`${instance.name} set value not match enum.. enum: ${instance.enum}, value: ${value}`); return false; }
+  }
 };
 
 export const validateTemperatures = value => {
@@ -226,10 +243,30 @@ export const validateTemperatures = value => {
   return value;
 }
 export const setupDS18B20 = instance => {
+
   return new five.Thermometer({
     controller: "DS18B20",
     pin: instance.pin,
     freq: instance.interval || TH.interval,
     address: instance.address || undefined,
   });
+};
+
+export const increaseValue = (instance, step=1) => {
+  //increase: function(step=1) { if(step) this.set(this.value+step) },
+  instance.set(instance.value+step);
+};
+
+export const decreaseValue = (instance,step=1) => {
+  //decrease: function(step=1) { if(step) this.set(this.value-step) },
+  instance.set(instance.value-step);
+};
+
+export const valueToOnOff = instance => {
+  // TODO: handle instance.enum
+  if(instance.value === "on") instance.output?.on();
+  if(instance.value === "off") instance.output?.off();
+  if(instance.value === true) instance.output?.on();
+  if(instance.value === false) instance.output?.off();
+
 };
