@@ -73,7 +73,6 @@ export const TH = {
     output: null,
     initial: function() {
       this.output = setupDS18B20(this);
-  //      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
 
     },
@@ -95,14 +94,13 @@ export const TH = {
     output: null,
     initial: function() {
       this.output = setupDS18B20(this);
-  //      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
   betweenCX_FAN: {
     type: 'DS18B20',
     name: 'Between CX-Fan air temperature',
-    active: false,
+    active: true,
     pin: 38,
 //    address: 0x213137fbaaa,
     pinMode: Pin.INPUT,
@@ -116,14 +114,13 @@ export const TH = {
     output: null,
     initial: function() {
       this.output = setupDS18B20(this);
-  //      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
       initialized.done(this.name);
     },
   },
   exhaust: {
     type: 'DS18B20',
     name: 'Exhaust air temperature',
-    active: false,
+    active: true,
     pin: 39,
     pinMode: Pin.INPUT,
     value: 0,
@@ -136,15 +133,14 @@ export const TH = {
     output: null,
     initial: function() {
 
-      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
-//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = setupDS18B20(this);
       initialized.done(this.name);
     },
   },
   glygolIn: {
     type: 'DS18B20',
     name: 'Glygol In temperature',
-    active: false,
+    active: true,
     pin: 40,
     pinMode: Pin.INPUT,
     value: 0,
@@ -156,15 +152,14 @@ export const TH = {
     mqttState: 'th/glygolIn',
     output: null,
     initial: function() {
-      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
-//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = setupDS18B20(this);
       initialized.done(this.name);
     },
   },
   glygolOut: {
     type: 'DS18B20',
     name: 'Glygol Out temperature',
-    active: false,
+    active: true,
     pin: 41,
     pinMode: Pin.INPUT,
     value: 0,
@@ -176,15 +171,14 @@ export const TH = {
     mqttState: 'th/glygolOut',
     output: null,
     initial: function() {
-      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
-//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = setupDS18B20(this);
       initialized.done(this.name);
     },
   },
   hotgas: {
     type: 'DS18B20',
     name: 'Hotgas temperature',
-    active: false,
+    active: true,
     pin: 42,
     pinMode: Pin.INPUT,
     value: 0,
@@ -196,15 +190,14 @@ export const TH = {
     mqttState: 'th/hotgas',
     output: null,
     initial: function() {
-      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
-//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = setupDS18B20(this);
       initialized.done(this.name);
     },
   },
   fluidline: {
     type: 'DS18B20',
     name: 'Fluidline temperature',
-    active: false,
+    active: true,
     pin: 43,
     pinMode: Pin.INPUT,
     value: 0,
@@ -216,15 +209,14 @@ export const TH = {
     mqttState: 'th/fluidline',
     output: null,
     initial: function() {
-      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
-//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = setupDS18B20(this);
       initialized.done(this.name);
     },
   },
   hxIn: {
     type: 'DS18B20',
     name: 'Heat Exchanger In water temperature',
-    active: false,
+    active: true,
     pin: 44,
     pinMode: Pin.INPUT,
     value: 0,
@@ -236,15 +228,14 @@ export const TH = {
     mqttState: 'th/hxIn',
     output: null,
     initial: function() {
-      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
-//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = setupDS18B20(this);
       initialized.done(this.name);
     },
   },
   hxOut: {
     type: 'DS18B20',
     name: 'Heat Exchanger Out water temperature',
-    active: false,
+    active: true,
     pin: 45,
     pinMode: Pin.INPUT,
     value: 0,
@@ -256,15 +247,14 @@ export const TH = {
     mqttState: 'th/hxOut',
     output: null,
     initial: function() {
-//      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
-//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold});
+      this.output = setupDS18B20(this);
       initialized.done(this.name);
     },
   },
   boilerUpper: {
     type: 'DS18B20',
     name: 'Boiler Upper water temperature',
-    active: false,
+    active: true,
     pin: 46,
     pinMode: Pin.INPUT,
     value: 0,
@@ -276,15 +266,14 @@ export const TH = {
     mqttState: 'th/boilerUpper',
     output: null,
     initial: function() {
-      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
-//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = setupDS18B20(this);
       initialized.done(this.name);
     },
   },
   boilerMiddle: {
     type: 'DS18B20',
     name: 'Boiler Middle water temperature',
-    active: false,
+    active: true,
     pin: 47,
     pinMode: Pin.INPUT,
     value: 0,
@@ -296,15 +285,14 @@ export const TH = {
     mqttState: 'th/boilerMiddle',
     output: null,
     initial: function() {
-      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
-//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = setupDS18B20(this);
       initialized.done(this.name);
     },
   },
   boilerLower: {
     type: 'DS18B20',
     name: 'Boiler Lower water temperature',
-    active: false,
+    active: true,
     pin: 48,
     pinMode: Pin.INPUT,
     interval: 10*1000,
@@ -318,7 +306,6 @@ export const TH = {
     },
     value: 0,
     set: function(value) {
-      console.log(`this is ${this.name} th, set value: ${value}`);
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
@@ -326,19 +313,7 @@ export const TH = {
     mqttState: 'th/boilerLower',
     output: null,
     initial: function() {
-      const {thermistorSpecs} = this;
-      this.output = new five.Thermometer({controller: "DS18B20", pin: this.pin, freq: this.interval || TH.interval});
-/*
-      this.output = new five.Thermometer({
-        controller: "ANALOG",
-        pin: this.pin,
-        freq: this.interval || TH.interval,
-        toCelsius: function(raw) {
-          return calculateThermistorValue(raw, thermistorSpecs);
-        }
-      });
-*/
-//      this.output = new five.Sensor({pin: this.pin, freq: TH.interval, threshold: TH.threshold}),
+      this.output = setupDS18B20(this);
       initialized.done(this.name);
     },
   },
@@ -382,8 +357,8 @@ TH.onChanges = () => {
           instance.output.on("change", function() {
             const {celsius, address} = instance.output;
             if(validateTemperatures(celsius)) {
-              console.log(`Thermometer at address: 0x${address.toString(16)}`);
-              console.log(`TH ${instance.name} ${celsius}C`);
+              if(GLOBALS.debug && GLOBALS.printTH) console.log(`Thermometer at address: 0x${address.toString(16)}`);
+              if(GLOBALS.debug && GLOBALS.printTH) console.log(`TH ${instance.name} ${celsius}C`);
               instance.set(round2Decimals(celsius));
               if(GLOBALS.debug && GLOBALS.printTH) console.warn(`${instance.name} value changed to ${celsius}`);
             } else {
@@ -396,7 +371,7 @@ TH.onChanges = () => {
       }
 
 
-    }, 200);
+    }, 20000);
   });
 };
 
