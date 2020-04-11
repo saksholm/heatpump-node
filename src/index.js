@@ -44,11 +44,8 @@ board.on("ready", function() {
   GLOBALS.startupTimestamp = unixtimestamp();
 
   try{
-    console.log("waiting for initialising");
-    this.wait(5000, () => {
-      console.log("init started");
-      IO.initial(this);
-    });
+    console.log("init started");
+    IO.initial(this);
   } catch(e) {
     console.log("ERROR, in IO.initial catch",e);
   }
