@@ -1,7 +1,7 @@
 export const GLOBALS = {
   debug: true,
   dryRun: true,
-  printTH: true,
+  printTH: false,
   starting: true,
   activePins: [],
   startupTime: 20*1000, // 20sec to not start hp
