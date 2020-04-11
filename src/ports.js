@@ -2,6 +2,12 @@
   "reserved" ports :D
   ... just a memo basically
 */
+//1 = 0x213137fbaaa
+//2 = 0x41771942bff
+//3 = 0x417721fb0ff
+//4 = 0x21316adc9aa
+//5 = 0x316a2793460
+//6 = 0x319a27948a4
 
 export const PORTS = {
   digital: {
