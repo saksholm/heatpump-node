@@ -6,11 +6,14 @@ import {DI} from './di';
 import {AO} from './ao';
 import {AI} from './ai';
 
-/*
 import {
+  boilerLogic
+} from './logic.boiler';
 
-} from './func';
-*/
+import {
+  defrostLogic
+} from './logic.defrost';
+
 export const LOGIC = {
   board: null,
 };
@@ -20,95 +23,9 @@ LOGIC.loop = () => {
   // start LOGIC loop
   LOGIC.board.loop(GLOBALS.logicLoopInterval,() => {
 
+    boilerLogic();
 
-    // TODO: boiler checks if some is allowed or not... override rules with checks
-
-    // boiler upper check minimum
-
-    if( (TH.boilerUpper.value + GLOBALS.boiler.deadZone) < GLOBALS.boiler.upper.softMinimum) {
-      GLOBALS.boiler.upper.request = true;
-      GLOBALS.upperHeatingResistorAllowed = true;
-    }
-    // boiler upper check maximum
-    if( (TH.boilerUpper.value - GLOBALS.boiler.deadZone) > GLOBALS.boiler.upper.softMaximum) {
-      GLOBALS.boiler.upper.request = false;
-      GLOBALS.upperHeatingResistorAllowed = false;
-    }
-
-    // boiler middle check minimum
-    if( (TH.boilerMiddle.value + GLOBALS.boiler.deadZone) < GLOBALS.boiler.middle.softMinimum) {
-      GLOBALS.boiler.middle.request = true;
-      GLOBALS.heatToWater = true; // allow
-    }
-    // boiler middle softMaximum
-    if( (TH.boilerMiddle.value - GLOBALS.boiler.deadZone) > GLOBALS.boiler.middle.softMaximum) {
-      GLOBALS.boiler.middle.request = false;
-      GLOBALS.heatToWater = false;
-    }
-
-    // boiler check lower minimum
-    if( ( TH.boilerLower.value + GLOBALS.boiler.deadZone) < GLOBALS.boiler.lower.softMinimum) {
-
-      // do we allow lower request if middle is above softMaximum?
-      if(GLOBALS.boiler.middle.request) {
-        GLOBALS.boiler.lower.request = true;
-        GLOBALS.heatToWater = true;
-      }
-
-
-    }
-
-    // boiler check lower maximum
-    if( (TH.boilerLower.value - GLOBALS.boiler.deadZone) > GLOBALS.boiler.lower.softMaximum) {
-      GLOBALS.boiler.lower.request = false;
-      GLOBALS.heatToWater = false;
-    }
-
-
-    if(GLOBALS.boiler.middle.request && GLOBALS.heatToWater) {
-
-      // if threePhaseMonitor value is ok then start
-      if(DI.threePhaseMonitor.value === 0) {
-        HP.start();
-      }
-
-    }
-
-
-    // DEFROST
-    //TOOD: prevent this to run every run...
-    if(HP.defrost === false && AI.condenserPde.value >= AI.condenserPde.defrostPa ) {
-      // condenser Pa is over melting Pa limit
-      HP.defrost = true;
-      HP.mode = 'defrost';
-      HP.mqttStatus('modeChange');
-      // increase fanSpeed ?
-      if(DO.hpFanOutput.value < DO.hpFanOutput.maxValue) {
-        DO.hpFanOutput.set(DO.hpFanOutput.value + 10); // increase fan speed by 5%
-      }
-
-      if(DO.hpFanOutput.value === DO.hpFanOutput.maxValue ) {
-        // cannot increase fanspeed in given bounds.. lower hpOutput
-        DO.hpOutput.set(DO.hpOutput.set(DO.hpOutput.value - 10)); // decrease hpoutput by 5%
-      }
-
-    }
-
-    if(HP.defrost === true && AI.condenserPde.value <= AI.condenserPde.cleanPa) {
-      HP.defrost = false;
-      HP.mode = 'heating';
-      HP.mqttStatus('modeChange');
-
-      DO.hpFanOutput.set(DO.hpFanOutput.value - 10);
-      DO.hpOutput.set(DO.hpOutput.value + 10);
-
-    }
-
-
-
-
-
-
+    defrostLogic();
 
   }); // LOGIC.loop ends
 
