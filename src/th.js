@@ -32,7 +32,7 @@ const initialized = new Initialized('TH');
 
 export const TH = {
   board: null,
-  interval: 3*1000,
+  interval: 5*1000, // 5sec
   threshold: 2,
 
   outside: {
@@ -50,7 +50,7 @@ export const TH = {
     mqttCommand: '',
     mqttState: 'th/outside',
     output: null,
-    interval: 5*1000, //60*1000,
+    interval: 60*1000, // 1min
     initial: function() {
       this.output = setupDS18B20(this);
       initialized.done(this.name);
@@ -144,6 +144,7 @@ export const TH = {
     pin: 40,
     pinMode: Pin.INPUT,
     value: 0,
+    interval: 10*1000, // 10sec
     set: function(value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
@@ -163,6 +164,7 @@ export const TH = {
     pin: 41,
     pinMode: Pin.INPUT,
     value: 0,
+    interval: 10*1000, // 10sec
     set: function(value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
@@ -258,6 +260,7 @@ export const TH = {
     pin: 46,
     pinMode: Pin.INPUT,
     value: 0,
+    interval: 30*1000,
     set: function(value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
@@ -277,6 +280,7 @@ export const TH = {
     pin: 47,
     pinMode: Pin.INPUT,
     value: 0,
+    interval: 30*1000,
     set: function(value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
@@ -295,16 +299,8 @@ export const TH = {
     active: true,
     pin: 48,
     pinMode: Pin.INPUT,
-    interval: 10*1000,
-    threshold: 0.1,
-    thermistorSpecs: {
-      beta: 3380,
-      roomTemp: 298.15, // 25c in Kelvins
-      balanceResistor: 9942,
-      resistorRoomTemp: 10000,
-      maxAdc: 1023,
-    },
     value: 0,
+    interval: 30*1000,
     set: function(value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
