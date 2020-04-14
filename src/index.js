@@ -28,7 +28,11 @@ const {
 } = SECRETS;
 
 const mqttClient = mqtt.connect(mqttServer, {username: mqttUser, password: mqttPass});
-const board = new five.Board({port: '/dev/cu.usbmodem14201', timeout: 3600});
+const board = new five.Board({
+//  port: '/dev/cu.usbmodem14201',  // auto detect
+  timeout: 3600,
+  samplingInterval: 1000,
+});
 
 try {
   mqttClient.commandTopics = mqttCommandTopics(); // create dynamic mqttCommandTopics array to mqttClient instance
