@@ -97,7 +97,7 @@ HP.start = function() {
   wait(timeoutMillis, function() {
     HP.allowedToRun = true; // let's allow HP running (restartDelay is now over)
     console.log("HP allowed to run = true");
-    DO.hpAllowed.set(true) //output.on(); // hp allowed relay to on
+    DO.hpAllowed.set("on") //output.on(); // hp allowed relay to on
     console.log("hp allowed true");
     DO.waterpumpCharging.set("on");//output.on(); // waterpump charging relay to on
     console.log("waterpump charging true");
@@ -177,7 +177,7 @@ HP.stop = function(emergency=false) {
 
     DO.hpOutput.set(0); // shutdown output
     console.log("hpOutput 0");
-    DO.hpAllowed.output.off();
+    DO.hpAllowed.set("off");
     console.log("hpAllowed output off");
 
 
