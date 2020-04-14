@@ -233,7 +233,11 @@ export const calculateThermistorValue = (raw, {beta, roomTemp, balanceResistor, 
 export const defaultForSet = (instance,value) => {
   if(!instance.active) { console.warn(`name: ${instance.name}, type: ${instance.type} not active!`); return; }
   if(instance.enum) {
-    if(!instance.enum?.includes(value)) { GLOBALS.debug && console.warn(`${instance.name} set value not match enum.. enum: ${instance.enum}, value: ${value}`); return false; }
+    if(!instance.enum?.includes(value)) {
+      GLOBALS.debug && console.warn(`${instance.name} set value not match enum.. enum: ${instance.enum}, value: ${value}`);
+      console.warn("Now failing defaultForSet... NAME:", instance.name, "and value is: ", value, "and enums are: ", instance.enum);
+      return false;
+    }
   }
 };
 
@@ -241,9 +245,9 @@ export const validateTemperatures = value => {
   if(parseInt(value) > 120) return false;
   if(parseInt(value) < -40) return false;
   return value;
-}
-export const setupDS18B20 = instance => {
+};
 
+export const setupDS18B20 = instance => {
   return new five.Thermometer({
     controller: "DS18B20",
     pin: instance.pin,
