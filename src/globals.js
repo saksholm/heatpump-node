@@ -15,7 +15,7 @@ export const GLOBALS = {
   heatToAir: false,
   groundWarmerThanAir: false,
   deadZone: 0.3,
-  relayLow: true,
+  relayLow: false,
   boiler: {
     upperHeatingResistorAllowed: true,
     lowerHeatingResistorAllowed: false,
