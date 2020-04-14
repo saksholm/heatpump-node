@@ -6,6 +6,7 @@ import {GLOBALS} from './globals';
 import {
   genericInitial,
   mqttPublish,
+  defaultForSet,
 } from './func';
 
 const initialized = new Initialized('AI');
@@ -26,6 +27,7 @@ export const AI = {
     pinMode: Pin.INPUT,
     value: 0,
     set: function(value) {
+      defaultForSet(this,value);
       this.value = value;
     },
     threshold: 2,
