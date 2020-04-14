@@ -51,10 +51,10 @@ export const DO = {
     name: 'AHU Fan',
     active: true,
     pin: 22,
-    pinMode: Pin.OUTPUT, // OUTPUT
-    value: false, // true/false
+//    pinMode: Pin.OUTPUT, // OUTPUT
+    value: "off", // true/false
     enum: ["on","off"],
-    relayType: 'NC',
+    relayType: 'NO',
     set: function(value) {
       defaultForSet(this,value);
 
@@ -68,13 +68,17 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
+      this.set("off");
       initialized.done(this.name);
+    },
+    repl: {
+      ahuFan: function(value) { DO.ahuFan.set(value) },
     },
   },
   ahuFanOutput: {
     type: 'pwm',
     name: 'AHU Fan Output',
-    active: false,
+    active: true,
     pin: 6,
     pinMode: Pin.PWM, // PWM
     value: 0,
@@ -108,9 +112,9 @@ export const DO = {
     active: true,
     pin: 23,
     pinMode: Pin.OUTPUT, // OUTPUT
-    value: false, // true/false
-    enum: [true,false],
-    relayType: 'NC',
+    value: "on", // true/false
+    enum: ["on","off"],
+    relayType: 'NO',
     set: function(value) {
       defaultForSet(this,value);
 
@@ -124,6 +128,7 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
+      this.set("off");
       initialized.done(this.name);
     },
   },
@@ -135,17 +140,17 @@ export const DO = {
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "closed", // true/false
     enum: ["open","close"],
-    relayType: 'NC',
+    relayType: 'NO',
     set: function(value) {
       defaultForSet(this,value);
 
       if(this.value === "open") {
         this.output.open();
-        if(DO.damperConvection.value !== "close") DO.damperConvection.set("close");
+        if(DO.damperConvection.value !== "close") DO.damperConvection.output.off(); //("close");
       }
       if(this.value === "close") {
         this.output.close();
-        if(DO.damperConvection.value !== "open") DO.damperConvection.set("open");
+        if(DO.damperConvection.value !== "open") DO.damperConvection.output.on(); //set("open");
       }
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
@@ -156,6 +161,7 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
+      this.set("close");
       initialized.done(this.name);
     },
   },
@@ -167,17 +173,17 @@ export const DO = {
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     enum: ["open","close"],
-    relayType: 'NC',
+    relayType: 'NO',
     set: function(value) {
       defaultForSet(this,value);
 
       if(this.value === "open") {
         this.output.open();
-        if(DO.damperOutside.value !== "close") DO.damperOutside.set("close");
+        if(DO.damperOutside.value !== "close") DO.damperOutside.output.off(); //set("close");
       }
       if(this.value === "close") {
         this.output.close();
-        if(DO.damperOutside.value !== "open") DO.damperOutside.set("open");
+        if(DO.damperOutside.value !== "open") DO.damperOutside.output.on(); //set("open");
       }
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
@@ -192,6 +198,7 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
+      this.set("open");
       initialized.done(this.name);
     },
   },
@@ -203,7 +210,7 @@ export const DO = {
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     enum: ["on","off"],
-    relayType: 'NC',
+    relayType: 'NO',
     set: function(value) {
       defaultForSet(this,value);
 
@@ -217,6 +224,7 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
+      this.set("off");
       initialized.done(this.name);
     },
   },
@@ -228,7 +236,7 @@ export const DO = {
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
     enum: ["on","off"],
-    relayType: 'NC',
+    relayType: 'NO',
     set: function(value) {
       defaultForSet(this,value);
       this.value = value;
@@ -239,6 +247,7 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
+      this.set("off");
       initialized.done(this.name);
     },
   },
@@ -250,7 +259,7 @@ export const DO = {
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "heating",
     enum: ["heating", "cooling"],
-    relayType: 'NC',
+    relayType: 'NO',
     set: function(value) {
       defaultForSet(this,value);
 
@@ -266,6 +275,7 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
+      this.set("heating");
       initialized.done(this.name);
     },
   },
@@ -276,7 +286,7 @@ export const DO = {
     pin: 29,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: false, // true/false
-    relayType: 'NC',
+    relayType: 'NO',
     set: function(value) {
       defaultForSet(this,value);
 
@@ -290,13 +300,14 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
+            this.set("off");
       initialized.done(this.name);
     },
   },
   hpFanOutput: {
     type: 'pwm',
     name: 'HP Fan Output',
-    active: false,
+    active: true,
     pin: 4,
     pinMode: Pin.PWM, // PWM
     value: 0,
@@ -369,7 +380,7 @@ export const DO = {
   hpOutput: {
     type: 'pwm',
     name: 'HP Output',
-    active: false,
+    active: true,
     pin: 5,
     pinMode: Pin.PWM, // PWM
     value: 0,
@@ -405,12 +416,12 @@ export const DO = {
   hpCGValve: {
     type: 'relay',
     name: 'HP CG 3-way valve',
-    active: false,
+    active: true,
     pin: 0, // TODO: WTF!!
     pinMode: Pin.OUTPUT,
     value: "off",
     enum: ["on", "off"],
-    relayType: 'NC',
+    relayType: 'NO',
     set: function(value) {
       defaultForSet(this,value);
 
@@ -434,7 +445,7 @@ export const DO = {
       });
 
 //      DO.board.repl.inject({hpCGValveOn: function() {DO.hpCGValve.output.on() } });
-
+      this.set("off");
       initialized.done(this.name);
 
     },
