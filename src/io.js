@@ -18,6 +18,11 @@ IO.initial = board => {
   // pass board instance to LOGIC.board
   if(LOGIC.board === null) LOGIC.board = board;
 
+  // initialising I2C
+  board.i2cConfig({
+
+  });
+
 //  LCD.initial(board);
   DO.initial(board);
   DI.initial(board);

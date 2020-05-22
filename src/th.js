@@ -10,6 +10,8 @@ import {
   calculateThermistorValue,
   validateTemperatures,
   setupDS18B20,
+  setupI2C_DS18B20,
+  handleI2C_TH_Data,
 } from './func';
 const {
   constrain,
@@ -19,6 +21,7 @@ const {
   sum,
   toFixed,
   uid,
+
 } = five.Fn;
 
 const {
@@ -33,15 +36,17 @@ const initialized = new Initialized('TH');
 export const TH = {
   board: null,
   interval: 5*1000, // 5sec
+  changeIntervalMaxTimes: 10, // 10 times interval... OR changeIntervalMax...
+  changeIntervalMax: 10*60*1000, //10mins
   threshold: 2,
 
+  thI2CReads: {}, // this is just initial.. contains all I2C data!!!
+
   outside: {
-    type: 'DS18B20',
+    type: 'I2C_DS18B20',
     name: 'Outside air temperature',
     active: true,
-    pin: 35, // odd
-//    address: 0x41771942bff,
-    pinMode: Pin.INPUT,
+    objectName: 'th1',
     value: 0,
     set: function(value) {
       this.value = value;
@@ -49,20 +54,17 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/outside',
-    output: null,
-    interval: 60*1000, // 1min
+    interval: 5*1000,//60*1000, // 1min
     initial: function() {
-      this.output = setupDS18B20(this);
+      setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
   },
   beforeCHG: {
-    type: 'DS18B20',
+    type: 'I2C_DS18B20',
     name: 'Before CGH air temperature',
     active: true,
-    pin: 36,
-//    address: 0x41771942bff,
-    pinMode: Pin.INPUT,
+    objectName: 'th2',
     value: 0,
     set: function(value) {
       this.value = value;
@@ -70,20 +72,16 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/beforeCHG',
-    output: null,
     initial: function() {
-      this.output = setupDS18B20(this);
+      setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
-
     },
   },
   betweenCHG_CX: {
-    type: 'DS18B20',
+    type: 'I2C_DS18B20',
     name: 'Between CHG-CX air temperature',
     active: true,
-    pin: 37,
-//    address: 0x21316adc9aa,
-    pinMode: Pin.INPUT,
+    objectName: 'th3',
     value: 0,
     set: function(value) {
       this.value = value;
@@ -91,19 +89,16 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/betweenCHG_CX',
-    output: null,
     initial: function() {
-      this.output = setupDS18B20(this);
+      setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
   },
   betweenCX_FAN: {
-    type: 'DS18B20',
+    type: 'I2C_DS18B20',
     name: 'Between CX-Fan air temperature',
     active: true,
-    pin: 38,
-//    address: 0x213137fbaaa,
-    pinMode: Pin.INPUT,
+    objectName: 'th4',
     value: 0,
     set: function(value) {
       this.value = value;
@@ -111,18 +106,16 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/betweenCX_FAN',
-    output: null,
     initial: function() {
-      this.output = setupDS18B20(this);
+      setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
   },
   exhaust: {
-    type: 'DS18B20',
+    type: 'I2C_DS18B20',
     name: 'Exhaust air temperature',
     active: true,
-    pin: 39,
-    pinMode: Pin.INPUT,
+    objectName: 'th5',
     value: 0,
     set: function(value) {
       this.value = value;
@@ -130,19 +123,16 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/exhaust',
-    output: null,
     initial: function() {
-
-      this.output = setupDS18B20(this);
+      setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
   },
   glygolIn: {
-    type: 'DS18B20',
+    type: 'I2C_DS18B20',
     name: 'Glygol In temperature',
     active: true,
-    pin: 40,
-    pinMode: Pin.INPUT,
+    objectName: 'th6',
     value: 0,
     interval: 10*1000, // 10sec
     set: function(value) {
@@ -153,16 +143,15 @@ export const TH = {
     mqttState: 'th/glygolIn',
     output: null,
     initial: function() {
-      this.output = setupDS18B20(this);
+      setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
   },
   glygolOut: {
-    type: 'DS18B20',
+    type: 'I2C_DS18B20',
     name: 'Glygol Out temperature',
     active: true,
-    pin: 41,
-    pinMode: Pin.INPUT,
+    objectName: 'th7',
     value: 0,
     interval: 10*1000, // 10sec
     set: function(value) {
@@ -171,18 +160,16 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/glygolOut',
-    output: null,
     initial: function() {
-      this.output = setupDS18B20(this);
+      setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
   },
   hotgas: {
-    type: 'DS18B20',
+    type: 'I2C_DS18B20',
     name: 'Hotgas temperature',
     active: true,
-    pin: 42,
-    pinMode: Pin.INPUT,
+    objectName: 'th8',
     value: 0,
     set: function(value) {
       this.value = value;
@@ -190,18 +177,16 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/hotgas',
-    output: null,
     initial: function() {
-      this.output = setupDS18B20(this);
+      setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
   },
   fluidline: {
-    type: 'DS18B20',
+    type: 'I2C_DS18B20',
     name: 'Fluidline temperature',
     active: true,
-    pin: 43,
-    pinMode: Pin.INPUT,
+    objectName: 'th9',
     value: 0,
     set: function(value) {
       this.value = value;
@@ -209,18 +194,16 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/fluidline',
-    output: null,
     initial: function() {
-      this.output = setupDS18B20(this);
+      setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
   },
   hxIn: {
-    type: 'DS18B20',
+    type: 'I2C_DS18B20',
     name: 'Heat Exchanger In water temperature',
     active: true,
-    pin: 44,
-    pinMode: Pin.INPUT,
+    objectName: 'th10',
     value: 0,
     set: function(value) {
       this.value = value;
@@ -228,18 +211,16 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/hxIn',
-    output: null,
     initial: function() {
-      this.output = setupDS18B20(this);
+      setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
   },
   hxOut: {
-    type: 'DS18B20',
+    type: 'I2C_DS18B20',
     name: 'Heat Exchanger Out water temperature',
     active: true,
-    pin: 45,
-    pinMode: Pin.INPUT,
+    objectName: 'th11',
     value: 0,
     set: function(value) {
       this.value = value;
@@ -247,18 +228,16 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/hxOut',
-    output: null,
     initial: function() {
-      this.output = setupDS18B20(this);
+      setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
   },
   boilerUpper: {
-    type: 'DS18B20',
+    type: 'I2C_DS18B20',
     name: 'Boiler Upper water temperature',
     active: true,
-    pin: 46,
-    pinMode: Pin.INPUT,
+    objectName: 'th12',
     value: 0,
     interval: 30*1000,
     set: function(value) {
@@ -267,18 +246,16 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/boilerUpper',
-    output: null,
     initial: function() {
-      this.output = setupDS18B20(this);
+      setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
   },
   boilerMiddle: {
-    type: 'DS18B20',
+    type: 'I2C_DS18B20',
     name: 'Boiler Middle water temperature',
     active: true,
-    pin: 47,
-    pinMode: Pin.INPUT,
+    objectName: 'th13',
     value: 0,
     interval: 30*1000,
     set: function(value) {
@@ -287,18 +264,16 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/boilerMiddle',
-    output: null,
     initial: function() {
-      this.output = setupDS18B20(this);
+      setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
   },
   boilerLower: {
-    type: 'DS18B20',
+    type: 'I2C_DS18B20',
     name: 'Boiler Lower water temperature',
     active: true,
-    pin: 48,
-    pinMode: Pin.INPUT,
+    objectName: 'th14',
     value: 0,
     interval: 30*1000,
     set: function(value) {
@@ -307,9 +282,8 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/boilerLower',
-    output: null,
     initial: function() {
-      this.output = setupDS18B20(this);
+      setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
   },
@@ -317,6 +291,7 @@ export const TH = {
 };
 
 TH.onChanges = () => {
+
   console.log("Mapping TH onChanges");
   Object.keys(TH).map(key => {
     setTimeout(() => {
@@ -364,11 +339,34 @@ TH.onChanges = () => {
           });
           console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
         }
+
+        if(instance.type === 'I2C_DS18B20') {
+
+        }
+
       }
 
 
     }, 20000);
   });
+
+
+  // I2C readings:
+
+  setInterval(() => {
+    // address 2
+    // register 99 is spoofed (requested all temperatures)
+    // bytes 28 = 14 temperatures, 2bytes each
+
+    TH.board.i2cReadOnce(0x02, 99, 28, function(bytes) {
+     handleI2C_TH_Data(bytes, TH.thI2CReads);
+    });
+//    console.log("thObj", TH.thI2CReads);
+}, 2000);
+
 };
 
-TH.initial = board => genericInitial(TH, 'TH', board, TH.onChanges);
+
+
+
+TH.initial = board => board.wait(5000, () => genericInitial(TH, 'TH', board, TH.onChanges));

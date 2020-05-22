@@ -4,6 +4,6 @@ export class Initialized {
   }
 
   done (text) {
-    console.log(`${this.io}, ${text}... DONE`);
+    console.log(`${this.io}, ${text}`.padEnd(40,"."), `DONE`);
   }
 }
