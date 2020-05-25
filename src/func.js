@@ -307,12 +307,6 @@ export const setupI2C_DS18B20 = (instance=false, board=false) => {
       changeIntervalMaxTimeout(GLOBALS.timersTH[objectName].changeIntervalMax, instance);
       changeIntervalMaxTimesTimeout(GLOBALS.timersTH[objectName].changeIntervalMaxTimes, instance);
 
-      /*
-      // interval times changeIntervalMaxTimes is exceeded... report change
-((thObj[thKey].valueChangedTimestamp + TH.changeIntervalMaxTimes * instance.interval) <= timestamp) ||
-
-      */
-
     } else {
       console.error(`ERROR: ${name} not contains objectName property!`);
     }
@@ -332,7 +326,7 @@ const changeIntervalMaxTimeout = (timer, instance) => {
     } = instance;
     instance.set(value); // re sending same value...
     // manipulate changes object
-    TH.thI2CReads[objectName].valueChangedTimestamp = timestamp();
+    TH.thI2CReads[objectName].valueChangedTimestamp = unixtimestamp();
     TH.thI2CReads[objectName].valueChangedTimestampAgo = 0;
 
     // call another timer routine to reset:
@@ -349,7 +343,7 @@ const changeIntervalMaxTimesTimeout = (timer, instance) => {
     } = instance;
     instance.set(value); // re sending same value...
     // manipulate changes object
-    TH.thI2CReads[objectName].valueChangedTimestamp = timestamp();
+    TH.thI2CReads[objectName].valueChangedTimestamp = unixtimestamp();
     TH.thI2CReads[objectName].valueChangedTimestampAgo = 0;
 
     // call another timer routine to reset:
