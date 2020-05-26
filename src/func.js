@@ -30,8 +30,9 @@ export const calculateTimeout = (timestamp, delay, milliseconds=false) => {
 
   if( timestamp === 0) timeout = 0;
   if(timestamp !== 0) {
-    if( timestamp + delay <= unixtimestamp() ) timeout = 0;
-    if( unixtimestamp() - timestamp <= delay)  timeout = (timestamp + delay) - unixtimestamp();
+    const unixtimestamp = unixtimestamp();
+    if( timestamp + delay <= unixtimestamp  timeout = 0;
+    if( unixtimestamp - timestamp <= delay)  timeout = (timestamp + delay) - unixtimestamp;
   }
   if(milliseconds) return timeout * 1000;
   return timeout;
