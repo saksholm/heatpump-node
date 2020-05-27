@@ -15,10 +15,11 @@ const LCD = {
     name: 'LCD Screen',
     type: 'lcd2004',
     rotateActive: false,
-    rotateSpeed: 10*1000, // 10s.
+    defaultRotateSpeed: 10*1000, // 10s.
+    nextRotateSpeed: null,
     rotateHandler: null,
     activeInterval: null,
-    rotateCurrent: "temperatures",
+    nextScreen: "temperatures",
     active: true,
     output: null,
     initial: function() {
@@ -47,6 +48,7 @@ const LCD = {
         lcd.cursor(3,0).print("foobar");
 
         setTimeout(function() {
+          LCD.screen.nextRotateSpeed = LCD.screen.defaultRotateSpeed;
           LCD.screen.startRotate();
         },5000);
 
@@ -123,23 +125,29 @@ const LCD = {
     startRotate: function () {
       this.rotateActive = true;
 
-//      console.log("starting screen rotation");
-      switch(LCD.screen.rotateCurrent) {
+      switch(LCD.screen.nextScreen) {
         case "basic":
+          this.nextRotateSpeed = 5*1000;
           LCD.screen.menus.basic();
-          LCD.screen.rotateCurrent = "temperatures";
+          // next screen:
+          LCD.screen.nextScreen = "temperatures";
           break;
+
         case "temperatures":
-        LCD.screen.menus.temperatures();
-        LCD.screen.rotateCurrent = "basic";
+          this.nextRotateSpeed = 15*1000;
+          LCD.screen.menus.temperatures();
+          // next screen:
+          LCD.screen.nextScreen = "basic";
           break;
 
       }
 
       this.rotateHandler = setInterval(function() {
         LCD.screen.restartRotate();
-      },this.rotateSpeed);
+      },this.nextRotateSpeed || this.defaultRotateSpeed);
+
     },
+
     stopRotate: function() {
       this.rotateActive = false;
       clearInterval(this.rotateHandler);
