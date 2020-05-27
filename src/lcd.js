@@ -46,6 +46,7 @@ const LCD = {
         lcd.cursor(1,0).print("lol");
         lcd.cursor(2,0).print("fffff");
         lcd.cursor(3,0).print("foobar");
+        lcd.cursor(0,49);
 
         setTimeout(function() {
           LCD.screen.nextRotateSpeed = LCD.screen.defaultRotateSpeed;
@@ -62,7 +63,7 @@ const LCD = {
           lcd.cursor(0,0).print(`counter1: ${parseInt(count)}`);
           lcd.cursor(1,0).print(`counter2: ${parseInt(++count)}`);
           lcd.cursor(2,0).print(`status: basic`);
-
+          lcd.cursor(0,49);
         },1000);
 
         LCD.screen.activeInterval = setInterval(function() {
@@ -71,7 +72,7 @@ const LCD = {
 
           lcd.cursor(0,10).print(`${parseInt(count)}`);
           lcd.cursor(1,10).print(`${parseInt(++count)}`);
-
+          lcd.cursor(0,49);
           count++;
         }, 2000);
 
@@ -100,6 +101,7 @@ const LCD = {
           lcd.cursor(1,14).print(`:10::${TH.hxIn.value.toFixed(1)}`);
           lcd.cursor(2,14).print(`:11::${TH.hxOut.value.toFixed(1)}`);
           lcd.cursor(3,14).print(`:12::${TH.boilerUpper.value.toFixed(1)}`);
+          lcd.cursor(0,49);
 
           LCD.screen.activeInterval = setInterval(function() {
             // 1 column
@@ -117,10 +119,44 @@ const LCD = {
             lcd.cursor(1,16).print(`${TH.hxIn.value.toFixed(1)}`);
             lcd.cursor(2,16).print(`${TH.hxOut.value.toFixed(1)}`);
             lcd.cursor(3,16).print(`${TH.boilerUpper.value.toFixed(1)}`);
+            lcd.cursor(0,49);
           },1000);
 
 
       },
+
+      runningMan: function() {
+        const lcd = LCD.screen.output;
+        const frames = [":runninga:", ":runningb:"];
+        let frame = 1, col = 0, row = 0;
+
+
+        // These calls will store the "runninga" and "runningb"
+        // characters in the LCD's built-in memory. The LCD
+        // allows up to 8 custom characters to be pre-loaded
+        // into memory.
+        //
+        // http://johnny-five.io/api/lcd/#predefined-characters
+        //
+        lcd.useChar("runninga");
+        lcd.useChar("runningb");
+
+        LCD.screen.activeInterval = setInterval(function() {
+          lcd.clear().cursor(row, col).print(
+            frames[frame ^= 1]
+          );
+          lcd.cursor(0,49);
+
+          if (++col === lcd.cols) {
+            col = 0;
+            if (++row === lcd.rows) {
+              row = 0;
+            }
+          }
+        }, 400);
+      },
+
+
     },
     startRotate: function () {
       this.rotateActive = true;
@@ -136,6 +172,13 @@ const LCD = {
         case "temperatures":
           this.nextRotateSpeed = 15*1000;
           LCD.screen.menus.temperatures();
+          // next screen:
+          LCD.screen.nextScreen = "runningMan";
+          break;
+
+        case "runningMan":
+          this.nextRotateSpeed = 10*1000;
+          LCD.screen.menus.runningMan();
           // next screen:
           LCD.screen.nextScreen = "basic";
           break;
