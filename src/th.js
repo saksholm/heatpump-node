@@ -36,9 +36,10 @@ const initialized = new Initialized('TH');
 export const TH = {
   board: null,
   interval: 5*1000, // 5sec
+  threshold: 0.1, // TODO: implement this also
   changeIntervalMaxTimes: 10, // 10 times interval... OR changeIntervalMax...
   changeIntervalMax: 10*60*1000, //10mins
-  threshold: 2,
+
 
   thI2CReads: {}, // this is just initial.. contains all I2C data!!!
 
