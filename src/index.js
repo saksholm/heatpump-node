@@ -29,7 +29,7 @@ const {
 
 const mqttClient = mqtt.connect(mqttServer, {username: mqttUser, password: mqttPass});
 const board = new five.Board({
-//  port: '/dev/cu.usbmodem14201',  // auto detect
+  port: '/dev/tty.usbmodem14101', // mega... otherwise it can try to connect to UNO
   timeout: 3600,
   samplingInterval: 1000,
 });
