@@ -9,6 +9,10 @@ import {
   genericInitial,
 } from './func'
 
+import {
+  hotgasWatch,
+} from './hp.hotgasWatch';
+
 const {
   constrain,
 } = five.Fn;
@@ -113,6 +117,7 @@ HP.start = function() {
 
     DO.load2Way.set(20); // let's open 2way valve 20%
     console.log("load 2-way to 20%");
+
     DO.hpFanOutput.set(20); // hp fan output to 20%
     console.log("hp fan output to 20%");
 
@@ -189,6 +194,10 @@ HP.stop = function(emergency=false) {
       DO.load2Way.set(0); // let's open 2way valve 0%
       console.log("load 2-way to 0%");
 
+      // turn pid controller target to 0
+      DO.load2Way.controller.setTarget(0);
+      console.log("load 2-way pid controller to 0");
+
       // wait 10s more before closing hp fan and close outside damper
       // and open convection damper
       console.log("\nWait 10s more...\n");
@@ -216,32 +225,9 @@ HP.stop = function(emergency=false) {
 
 HP.loop = () => {
   HP.board.loop(GLOBALS.logicLoopInterval,() => {
-/*
-    // check if we need to bypass this part for a while?
-    if(HP.nextLoopIntervalTimestamps.hotgas <= unixtimestamp()) {
-      // watch hotgas temp etc... safety things especially
-      if(TH.hotgas.value > (HP.maxHotgas + GLOBALS.deadZone)) {
-        console.log("HP hotgas is maybe little bit too hot...");
 
-        // too hot hotgas! drop output demand by half
-        if(DO.hpOutput.value > DO.hpOutput.minValue) {
-          const cutOutputToHalf = Math.round(DO.hpOutput.value / 2);
-          DO.hpOutput.set(cutOutputToHalf);
+    hotgasWatch();
 
-          console.log("... cut hp output demand to half");
-        }
-
-        if(DO.load2Way.value < DO.load2Way.maxValue) {
-          const doubleOutput = Math.round(DO.load2Way.value * 2);
-          DO.load2Way.set(doubleOutput);
-          console.log("... and doubled load 2-way valve output");
-        }
-        // should put next legit check time?! so this have time to stabilize things
-        // for 15s?
-        HP.nextLoopIntervalTimestamps.hotgas = unixtimestamp() +15;
-      }
-    }
-*/
     // some operator to handle if this should be active or not
     // count variable is basically some measurement
     // input is pure output...
@@ -255,7 +241,9 @@ HP.loop = () => {
         DO.load2Way.set(newValue);
       }
 
-//      if(GLOBALS.debug) console.log("this is fancy input pid", newValue, TH.hxOut.value);
+
+
+
 
     }
 
