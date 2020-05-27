@@ -15,10 +15,11 @@ const LCD = {
     name: 'LCD Screen',
     type: 'lcd2004',
     rotateActive: false,
-    rotateSpeed: 5*1000, // 5s.
+    rotateSpeed: 10*1000, // 10s.
     rotateHandler: null,
-    rotateCurrent: 0,
-    active: false,
+    activeInterval: null,
+    rotateCurrent: "temperatures",
+    active: true,
     output: null,
     initial: function() {
       // I2C LCD, PCF8574
@@ -38,61 +39,117 @@ const LCD = {
       starting: function() {
         const lcd = LCD.screen.output;
 
-        console.log("starting.... lcd", lcd);
+        console.log("starting.... lcd");
         lcd.clear();
         lcd.cursor(0,0).print("hello world :D");
         lcd.cursor(1,0).print("lol");
         lcd.cursor(2,0).print("fffff");
         lcd.cursor(3,0).print("foobar");
 
-/*
+        setTimeout(function() {
+          LCD.screen.startRotate();
+        },5000);
+
+      },
+      basic: function() {
+        const lcd = LCD.screen.output;
+
         let count = 0;
-        setInterval(function() {
-          // start screen rotation after 10s.
-//          LCD.screen.startRotate();
-
-//console.log(`Outside: ${TH.outside.value}`);
-//console.log(`Before CHG: ${TH.beforeCHG.value}`);
-
+        setTimeout(function() {
           lcd.clear();
-          lcd.cursor(0,0).print(`Outside: ${parseInt(count)}`);
-          lcd.cursor(1,0).print(`Before CHG: ${parseInt(++count)}`);
+          lcd.cursor(0,0).print(`counter1: ${parseInt(count)}`);
+          lcd.cursor(1,0).print(`counter2: ${parseInt(++count)}`);
+          lcd.cursor(2,0).print(`status: basic`);
+
+        },1000);
+
+        LCD.screen.activeInterval = setInterval(function() {
+          // start screen rotation after 10s.
+
+
+          lcd.cursor(0,10).print(`${parseInt(count)}`);
+          lcd.cursor(1,10).print(`${parseInt(++count)}`);
 
           count++;
-        }, 200);
-*/
+        }, 2000);
+
       },
+
 
       temperatures: function() {
         const lcd = LCD.screen.output;
+
           lcd.clear();
-          lcd.cursor(0,0).print(`Outside: ${TH.outside.value}`);
-          lcd.cursor(1,0).print(`Before CHG: ${TH.beforeCHG.value}`);
+          lcd.useChar(10);
+          lcd.useChar(11);
+          lcd.useChar(12);
+          // 1 column
+          lcd.cursor(0,0).print(`1:${TH.outside.value.toFixed(1)}`);
+          lcd.cursor(1,0).print(`2:${TH.beforeCHG.value.toFixed(1)}`);
+          lcd.cursor(2,0).print(`3:${TH.betweenCHG_CX.value.toFixed(1)}`);
+          lcd.cursor(3,0).print(`4:${TH.betweenCX_FAN.value.toFixed(1)}`);
+          // 2 column
+          lcd.cursor(0,7).print(`5:${TH.exhaust.value.toFixed(1)}`);
+          lcd.cursor(1,7).print(`6:${TH.glygolIn.value.toFixed(1)}`);
+          lcd.cursor(2,7).print(`7:${TH.glygolOut.value.toFixed(1)}`);
+          lcd.cursor(3,7).print(`8:${TH.hotgas.value.toFixed(1)}`);
+          // 3 column
+          lcd.cursor(0,14).print(`9:${TH.fluidline.value.toFixed(1)}`);
+          lcd.cursor(1,14).print(`:10::${TH.hxIn.value.toFixed(1)}`);
+          lcd.cursor(2,14).print(`:11::${TH.hxOut.value.toFixed(1)}`);
+          lcd.cursor(3,14).print(`:12::${TH.boilerUpper.value.toFixed(1)}`);
+
+          LCD.screen.activeInterval = setInterval(function() {
+            // 1 column
+            lcd.cursor(0,2).print(`${TH.outside.value.toFixed(1)}`);
+            lcd.cursor(1,2).print(`${TH.beforeCHG.value.toFixed(1)}`);
+            lcd.cursor(2,2).print(`${TH.betweenCHG_CX.value.toFixed(1)}`);
+            lcd.cursor(3,2).print(`${TH.betweenCX_FAN.value.toFixed(1)}`);
+            // 2 column
+            lcd.cursor(0,9).print(`${TH.exhaust.value.toFixed(1)}`);
+            lcd.cursor(1,9).print(`${TH.glygolIn.value.toFixed(1)}`);
+            lcd.cursor(2,9).print(`${TH.glygolOut.value.toFixed(1)}`);
+            lcd.cursor(3,9).print(`${TH.hotgas.value.toFixed(1)}`);
+            // 3 column
+            lcd.cursor(0,16).print(`${TH.fluidline.value.toFixed(1)}`);
+            lcd.cursor(1,16).print(`${TH.hxIn.value.toFixed(1)}`);
+            lcd.cursor(2,16).print(`${TH.hxOut.value.toFixed(1)}`);
+            lcd.cursor(3,16).print(`${TH.boilerUpper.value.toFixed(1)}`);
+          },1000);
+
+
       },
     },
     startRotate: function () {
       this.rotateActive = true;
+
+//      console.log("starting screen rotation");
+      switch(LCD.screen.rotateCurrent) {
+        case "basic":
+          LCD.screen.menus.basic();
+          LCD.screen.rotateCurrent = "temperatures";
+          break;
+        case "temperatures":
+        LCD.screen.menus.temperatures();
+        LCD.screen.rotateCurrent = "basic";
+          break;
+
+      }
+
       this.rotateHandler = setInterval(function() {
-
-        console.log("starting screen rotation");
-        if(LCD.screen.rotateCurrent === 0) {
-          LCD.screen.menus.temperatures();
-          LCD.screen.rotateCurrent = 1;
-        }
-        if(LCD.screen.rotateCurrent === 1) {
-          LCD.screen.menus.starting();
-          LCD.screen.rotateCurrent = 0;
-        }
-
-
-
-
+        LCD.screen.restartRotate();
       },this.rotateSpeed);
     },
     stopRotate: function() {
       this.rotateActive = false;
       clearInterval(this.rotateHandler);
+      clearInterval(this.activeInterval);
     },
+
+    restartRotate: function() {
+      this.stopRotate();
+      this.startRotate();
+    }
 
   },
 
