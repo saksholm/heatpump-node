@@ -23,7 +23,7 @@ IO.initial = board => {
 
   });
 
-//  LCD.initial(board);
+  LCD.initial(board);
   DO.initial(board);
   DI.initial(board);
 //  AO.initial(board); // not need at the moment
