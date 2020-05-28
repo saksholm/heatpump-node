@@ -6,13 +6,8 @@ import {DI} from './di';
 import {AO} from './ao';
 import {AI} from './ai';
 
-import {
-  boilerLogic
-} from './logic.boiler';
-
-import {
-  defrostLogic
-} from './logic.defrost';
+import {boilerLogic} from './logic.boiler';
+import {defrostLogic} from './logic.defrost';
 
 export const LOGIC = {
   board: null,
@@ -24,7 +19,6 @@ LOGIC.loop = () => {
   LOGIC.board.loop(GLOBALS.logicLoopInterval,() => {
 
     boilerLogic();
-
     defrostLogic();
 
   }); // LOGIC.loop ends
