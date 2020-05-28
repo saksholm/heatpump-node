@@ -4,6 +4,7 @@ import {
 } from './initialized.class';
 
 import {TH} from './th';
+import {GLOBALS} from './globals';
 
 import {genericInitial} from './func';
 
@@ -32,20 +33,25 @@ const LCD = {
         cols: 20,
       });
 
-
       console.log("this output", this.output);
       initialized.done(this.name);
     },
     menus: {
       starting: function() {
         const lcd = LCD.screen.output;
+        lcd.useChar(10);
+        lcd.useChar(11);
+        lcd.useChar(12);
+        lcd.useChar("runninga");
+        lcd.useChar("runningb");
+
 
         console.log("starting.... lcd");
         lcd.clear();
-        lcd.cursor(0,0).print("hello world :D");
-        lcd.cursor(1,0).print("lol");
-        lcd.cursor(2,0).print("fffff");
-        lcd.cursor(3,0).print("foobar");
+        lcd.cursor(0,0).print("####################");
+        lcd.cursor(1,0).print("#  HP Controller   #");
+        lcd.cursor(2,0).print(`#  v.${GLOBALS.version.padEnd(14, " ")}#`);
+        lcd.cursor(3,0).print("####################");
         lcd.cursor(0,49);
 
         setTimeout(function() {
@@ -83,9 +89,6 @@ const LCD = {
         const lcd = LCD.screen.output;
 
           lcd.clear();
-          lcd.useChar(10);
-          lcd.useChar(11);
-          lcd.useChar(12);
           // 1 column
           lcd.cursor(0,0).print(`1:${TH.outside.value.toFixed(1)}`);
           lcd.cursor(1,0).print(`2:${TH.beforeCHG.value.toFixed(1)}`);
@@ -138,8 +141,6 @@ const LCD = {
         //
         // http://johnny-five.io/api/lcd/#predefined-characters
         //
-        lcd.useChar("runninga");
-        lcd.useChar("runningb");
 
         LCD.screen.activeInterval = setInterval(function() {
           lcd.clear().cursor(row, col).print(
