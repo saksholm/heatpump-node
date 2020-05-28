@@ -8,6 +8,7 @@ import {AO} from './ao';
 import {AI} from './ai';
 import {TH} from './th';
 import {HP} from './hp';
+import {LCD} from './lcd';
 
 const {
   map,
@@ -63,10 +64,6 @@ export const genericInitial = (module, name, board, callback=null) => {
       instance.active
     ) {
       if(typeof instance.initial === "function") {
-
-        if(instance.type === 'lcd2004') {
-          console.log("182318723687163218763128638712867368271687231687168237687321867381627687132")
-        }
 
         let delay = 0;
         if(instance.type === 'DS18B20') {
@@ -249,6 +246,17 @@ export const validateTemperatures = value => {
   return value;
 };
 
+export const checkThreshold = (value, instance) => {
+  if(value > instance.value) {
+    if(value - instance.value >= (instance.threshold || TH.threshold) ) return true;
+  }
+  if(value < instance.value) {
+    if(instance.value - value >= (instance.threshold || TH.threshold) ) return true;
+  }
+
+  return false;
+};
+
 export const setupDS18B20 = instance => {
   return new five.Thermometer({
     controller: "DS18B20",
@@ -289,9 +297,14 @@ export const setupI2C_DS18B20 = (instance=false, board=false) => {
         if(value !== null && instance.value !== value) {
           if(validateTemperatures(value)) {
             // validated temperature... save it
-            instance.set(round2Decimals(value));
+            if(checkThreshold(value,instance)) {
+              if(GLOBALS.printTH) console.log(`${name.padEnd(40, ".")} - temperature read AND over threshold!`, value);
+              instance.set(round2Decimals(value));
+            } else {
+              if(GLOBALS.printTH) console.log(`${name.padEnd(40, ".")} - temperature read`, value);
+            }
 
-            if(GLOBALS.printTH) console.log(`${name.padEnd(40, ".")} - temperature read`, value);
+
           }
         }
 
@@ -444,3 +457,38 @@ export const handleI2C_TH_Data = (bytes,thObj={},scale=100, ret=false) => {
     }
   }
 }
+
+export const createLCDDataScreen = displayElements => {
+  if(displayElements?.length > 0) {
+    const lcd = LCD.screen.output;
+    lcd.clear();
+
+    let count = 1;
+    displayElements.map((obj,idx) => {
+      const {name,lcdName, value} = obj.element;
+      const displayName = lcdName || 'xxxx';
+      if(lcdName === undefined) console.warn(`Missing lcdName instance in '${name}'`);
+      lcd.cursor(idx,0).print(`${displayName.padEnd(15," ")} ${value.toFixed(1)}`);
+    });
+    lcd.cursor(0,49);
+
+    LCD.screen.activeInterval = setInterval(function() {
+      displayElements.map((obj,idx) => {
+        const {name,lcdName,value} = obj.element;
+        lcd.cursor(idx,15).print(`${value.toFixed(1).padStart(5," ")}`);
+      });
+      lcd.cursor(0,49);
+    },1500);
+  }
+}
+
+export const setStatus = status => {
+  GLOBALS.status = status;
+  // TODO: mqtt update
+};
+
+export const lcdNextScreenHelper = (instance, nextScreen, nextRotateSpeed=LCD.screen.defaultRotateSpeed) => {
+  LCD.screen.nextRotateSpeed = nextRotateSpeed
+  LCD.screen.nextScreen = nextScreen || "basic";
+  instance();
+};
