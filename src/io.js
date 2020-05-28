@@ -10,23 +10,25 @@ import {LOGIC} from './logic';
 
 export const IO = {};
 
+import {
+  setStatus,
+} from './func';
 
 IO.initial = board => {
   console.log("Start initialising io's");
+  setStatus('Initialising io');
 
 
   // pass board instance to LOGIC.board
   if(LOGIC.board === null) LOGIC.board = board;
 
   // initialising I2C
-  board.i2cConfig({
-
-  });
+  board.i2cConfig({});
 
   LCD.initial(board);
   DO.initial(board);
   DI.initial(board);
-//  AO.initial(board); // not need at the moment
+  //AO.initial(board); // not need at the moment
   AI.initial(board);
   TH.initial(board);
   HP.initial(board);
