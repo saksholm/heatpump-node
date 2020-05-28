@@ -19,6 +19,7 @@ import {
   mqttSubscriptions,
   mqttOnMessage,
   mqttCommandTopics,
+  setStatus,
 } from './func';
 
 const {
@@ -73,6 +74,7 @@ board.on("ready", function() {
     LOGIC.loop();
     HP.loop();
     mqttClient.publish('state/iot/heatpump/hp/status', 'ready');
+    setStatus('Ready');
   });
 
 
@@ -83,11 +85,13 @@ board.on("ready", function() {
 
 board.on("error", function(error) {
   console.log("Board error", error);
+  setStatus('Board error');
 });
 
 
 board.on("close", function() {
   console.log("Board closed :/");
+  setStatus('Board closed');
 });
 
 try {
