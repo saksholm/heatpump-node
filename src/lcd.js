@@ -3,10 +3,19 @@ import {
   Initialized,
 } from './initialized.class';
 
-import {TH} from './th';
 import {GLOBALS} from './globals';
+import {TH} from './th';
+import {HP} from './hp';
+import {DO} from './do';
 
-import {genericInitial} from './func';
+import {
+  genericInitial,
+  createLCDDataScreen,
+  lcdNextScreenHelper,
+} from './func';
+
+import {runningBoxes} from './lcd.runningBoxes';
+import {lcdBasic} from './lcd.basic';
 
 const initialized = new Initialized('LCD');
 
@@ -16,11 +25,11 @@ const LCD = {
     name: 'LCD Screen',
     type: 'lcd2004',
     rotateActive: false,
-    defaultRotateSpeed: 10*1000, // 10s.
+    defaultRotateSpeed: 5*1000, // 5s.
     nextRotateSpeed: null,
     rotateHandler: null,
     activeInterval: null,
-    nextScreen: "temperatures",
+    nextScreen: "runningBoxes",
     active: true,
     output: null,
     initial: function() {
@@ -33,18 +42,15 @@ const LCD = {
         cols: 20,
       });
 
-      console.log("this output", this.output);
       initialized.done(this.name);
     },
     menus: {
-      starting: function() {
+      startupScreen: function() {
         const lcd = LCD.screen.output;
         lcd.useChar(10);
         lcd.useChar(11);
         lcd.useChar(12);
-        lcd.useChar("runninga");
-        lcd.useChar("runningb");
-
+        lcd.useChar("sfbox");
 
         console.log("starting.... lcd");
         lcd.clear();
@@ -54,134 +60,76 @@ const LCD = {
         lcd.cursor(3,0).print("####################");
         lcd.cursor(0,49);
 
+
+
         setTimeout(function() {
           LCD.screen.nextRotateSpeed = LCD.screen.defaultRotateSpeed;
           LCD.screen.startRotate();
-        },5000);
-
-      },
-      basic: function() {
-        const lcd = LCD.screen.output;
-
-        let count = 0;
-        setTimeout(function() {
-          lcd.clear();
-          lcd.cursor(0,0).print(`counter1: ${parseInt(count)}`);
-          lcd.cursor(1,0).print(`counter2: ${parseInt(++count)}`);
-          lcd.cursor(2,0).print(`status: basic`);
-          lcd.cursor(0,49);
         },1000);
 
-        LCD.screen.activeInterval = setInterval(function() {
-          // start screen rotation after 10s.
+      },
+      runningBoxes: () => runningBoxes(),
+      basic: () => lcdBasic(),
 
 
-          lcd.cursor(0,10).print(`${parseInt(count)}`);
-          lcd.cursor(1,10).print(`${parseInt(++count)}`);
-          lcd.cursor(0,49);
-          count++;
-        }, 2000);
 
+
+      temperatures1: function() {
+
+        const displayElements = [
+          {element: TH.outside},
+          {element: TH.beforeCHG},
+          {element: TH.betweenCHG_CX},
+          {element: TH.betweenCX_FAN}
+        ];
+
+        createLCDDataScreen(displayElements);
       },
 
 
-      temperatures: function() {
-        const lcd = LCD.screen.output;
+      temperatures2: function() {
+        const displayElements = [
+          {element: TH.exhaust},
+          {element: TH.glygolIn},
+          {element: TH.glygolOut},
+          {element: TH.hotgas}
+        ];
 
-          lcd.clear();
-          // 1 column
-          lcd.cursor(0,0).print(`1:${TH.outside.value.toFixed(1)}`);
-          lcd.cursor(1,0).print(`2:${TH.beforeCHG.value.toFixed(1)}`);
-          lcd.cursor(2,0).print(`3:${TH.betweenCHG_CX.value.toFixed(1)}`);
-          lcd.cursor(3,0).print(`4:${TH.betweenCX_FAN.value.toFixed(1)}`);
-          // 2 column
-          lcd.cursor(0,7).print(`5:${TH.exhaust.value.toFixed(1)}`);
-          lcd.cursor(1,7).print(`6:${TH.glygolIn.value.toFixed(1)}`);
-          lcd.cursor(2,7).print(`7:${TH.glygolOut.value.toFixed(1)}`);
-          lcd.cursor(3,7).print(`8:${TH.hotgas.value.toFixed(1)}`);
-          // 3 column
-          lcd.cursor(0,14).print(`9:${TH.fluidline.value.toFixed(1)}`);
-          lcd.cursor(1,14).print(`:10::${TH.hxIn.value.toFixed(1)}`);
-          lcd.cursor(2,14).print(`:11::${TH.hxOut.value.toFixed(1)}`);
-          lcd.cursor(3,14).print(`:12::${TH.boilerUpper.value.toFixed(1)}`);
-          lcd.cursor(0,49);
-
-          LCD.screen.activeInterval = setInterval(function() {
-            // 1 column
-            lcd.cursor(0,2).print(`${TH.outside.value.toFixed(1)}`);
-            lcd.cursor(1,2).print(`${TH.beforeCHG.value.toFixed(1)}`);
-            lcd.cursor(2,2).print(`${TH.betweenCHG_CX.value.toFixed(1)}`);
-            lcd.cursor(3,2).print(`${TH.betweenCX_FAN.value.toFixed(1)}`);
-            // 2 column
-            lcd.cursor(0,9).print(`${TH.exhaust.value.toFixed(1)}`);
-            lcd.cursor(1,9).print(`${TH.glygolIn.value.toFixed(1)}`);
-            lcd.cursor(2,9).print(`${TH.glygolOut.value.toFixed(1)}`);
-            lcd.cursor(3,9).print(`${TH.hotgas.value.toFixed(1)}`);
-            // 3 column
-            lcd.cursor(0,16).print(`${TH.fluidline.value.toFixed(1)}`);
-            lcd.cursor(1,16).print(`${TH.hxIn.value.toFixed(1)}`);
-            lcd.cursor(2,16).print(`${TH.hxOut.value.toFixed(1)}`);
-            lcd.cursor(3,16).print(`${TH.boilerUpper.value.toFixed(1)}`);
-            lcd.cursor(0,49);
-          },1000);
-
-
+        createLCDDataScreen(displayElements);
       },
 
-      runningMan: function() {
-        const lcd = LCD.screen.output;
-        const frames = [":runninga:", ":runningb:"];
-        let frame = 1, col = 0, row = 0;
 
 
-        // These calls will store the "runninga" and "runningb"
-        // characters in the LCD's built-in memory. The LCD
-        // allows up to 8 custom characters to be pre-loaded
-        // into memory.
-        //
-        // http://johnny-five.io/api/lcd/#predefined-characters
-        //
-
-        LCD.screen.activeInterval = setInterval(function() {
-          lcd.clear().cursor(row, col).print(
-            frames[frame ^= 1]
-          );
-          lcd.cursor(0,49);
-
-          if (++col === lcd.cols) {
-            col = 0;
-            if (++row === lcd.rows) {
-              row = 0;
-            }
-          }
-        }, 400);
-      },
 
 
     },
     startRotate: function () {
       this.rotateActive = true;
 
+      // screen instances...
+      const {
+        basic,
+        temperatures1,
+        temperatures2,
+        runningMan
+      } = LCD.screen.menus;
+
       switch(LCD.screen.nextScreen) {
         case "basic":
-          this.nextRotateSpeed = 5*1000;
-          LCD.screen.menus.basic();
-          // next screen:
-          LCD.screen.nextScreen = "temperatures";
+          // instance, nextScreen
+          lcdNextScreenHelper(basic,"temperatures1");
           break;
 
-        case "temperatures":
-          this.nextRotateSpeed = 15*1000;
-          LCD.screen.menus.temperatures();
-          // next screen:
-          LCD.screen.nextScreen = "runningMan";
+        case "temperatures1":
+          lcdNextScreenHelper(temperatures1, "temperatures2");
           break;
 
-        case "runningMan":
-          this.nextRotateSpeed = 10*1000;
-          LCD.screen.menus.runningMan();
-          // next screen:
-          LCD.screen.nextScreen = "basic";
+        case "temperatures2":
+          lcdNextScreenHelper(temperatures2, "basic");
+          break;
+
+        case "runningBoxes":
+          lcdNextScreenHelper(runningBoxes, "temperatures1", 10*1000);
           break;
 
       }
@@ -210,7 +158,7 @@ const LCD = {
 };
 
 LCD.initial = board => genericInitial(LCD, 'LCD', board, function() {
-  if(LCD.screen.active) LCD.screen.menus.starting();
+  if(LCD.screen.active) LCD.screen.menus.startupScreen();
 
 });
 
