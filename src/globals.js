@@ -1,5 +1,6 @@
 export const GLOBALS = {
   version: '0.1',
+  status: 'starting',
   debug: true,
   dryRun: true,
   printTH: true,
