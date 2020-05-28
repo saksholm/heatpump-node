@@ -46,6 +46,7 @@ export const TH = {
   outside: {
     type: 'I2C_DS18B20',
     name: 'Outside air temperature',
+    lcdName: 'Outside',
     active: true,
     objectName: 'th1',
     value: 0,
@@ -63,7 +64,8 @@ export const TH = {
   },
   beforeCHG: {
     type: 'I2C_DS18B20',
-    name: 'Before CGH air temperature',
+    name: 'Before CHG air temperature',
+    lcdName: 'BeforeCHG',
     active: true,
     objectName: 'th2',
     value: 0,
@@ -81,6 +83,7 @@ export const TH = {
   betweenCHG_CX: {
     type: 'I2C_DS18B20',
     name: 'Between CHG-CX air temperature',
+    lcdName: 'CHG-CX',
     active: true,
     objectName: 'th3',
     value: 0,
@@ -98,6 +101,7 @@ export const TH = {
   betweenCX_FAN: {
     type: 'I2C_DS18B20',
     name: 'Between CX-Fan air temperature',
+    lcdName: 'CX-Fan',
     active: true,
     objectName: 'th4',
     value: 0,
@@ -115,6 +119,7 @@ export const TH = {
   exhaust: {
     type: 'I2C_DS18B20',
     name: 'Exhaust air temperature',
+    lcdName: 'Exhaust',
     active: true,
     objectName: 'th5',
     value: 0,
@@ -132,6 +137,7 @@ export const TH = {
   glygolIn: {
     type: 'I2C_DS18B20',
     name: 'Glygol In temperature',
+    lcdName: 'GlygolIn',
     active: true,
     objectName: 'th6',
     value: 0,
@@ -151,6 +157,7 @@ export const TH = {
   glygolOut: {
     type: 'I2C_DS18B20',
     name: 'Glygol Out temperature',
+    lcdName: 'GlygolOut',
     active: true,
     objectName: 'th7',
     value: 0,
@@ -169,6 +176,7 @@ export const TH = {
   hotgas: {
     type: 'I2C_DS18B20',
     name: 'Hotgas temperature',
+    lcdName: 'Hotgas',
     active: true,
     objectName: 'th8',
     value: 0,
