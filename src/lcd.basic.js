@@ -28,6 +28,9 @@ export const lcdBasic = () => {
 //  },1000);
 
   LCD.screen.activeInterval = setInterval(function() {
+    lcd.cursor(0,8).print(`${GLOBALS.status.padEnd(11, " ")}`);
+    lcd.cursor(1,9).print(`${HP.mode.padEnd(11," ")}`);
+
     lcd.cursor(2,6).print(`${DO.hpOutput.value.toString().padStart(3, " ")}`);
     lcd.cursor(3,6).print(`${DO.hpFanOutput.value.toString().padStart(3, " ")}`);
     lcd.cursor(2,17).print(`${DO.load2Way.value.toString().padStart(3, " ")}`);
