@@ -25,11 +25,15 @@ const LCD = {
     name: 'LCD Screen',
     type: 'lcd2004',
     rotateActive: false,
+    autoReset: 30*60*1000,
     defaultRotateSpeed: 5*1000, // 5s.
     nextRotateSpeed: null,
     rotateHandler: null,
     activeInterval: null,
+    currentInstance: null,
     nextScreen: "runningBoxes",
+    stickyScreen: "basic",
+    stickyScreenTime: 5*60*1000, // 5mins
     active: true,
     output: null,
     initial: function() {
@@ -62,7 +66,7 @@ const LCD = {
 
 
 
-        setTimeout(function() {
+        setTimeout(() => {
           LCD.screen.nextRotateSpeed = LCD.screen.defaultRotateSpeed;
           LCD.screen.startRotate();
         },1000);
@@ -70,11 +74,7 @@ const LCD = {
       },
       runningBoxes: () => runningBoxes(),
       basic: () => lcdBasic(),
-
-
-
-
-      temperatures1: function() {
+      temperatures1: () => {
 
         const displayElements = [
           {element: TH.outside},
@@ -87,7 +87,7 @@ const LCD = {
       },
 
 
-      temperatures2: function() {
+      temperatures2: () => {
         const displayElements = [
           {element: TH.exhaust},
           {element: TH.glygolIn},
@@ -99,10 +99,8 @@ const LCD = {
       },
 
 
+    }, // end of menus object
 
-
-
-    },
     startRotate: function () {
       this.rotateActive = true;
 
@@ -111,32 +109,27 @@ const LCD = {
         basic,
         temperatures1,
         temperatures2,
-        runningMan
+        runningBoxes,
       } = LCD.screen.menus;
 
       switch(LCD.screen.nextScreen) {
         case "basic":
-          // instance, nextScreen
-          lcdNextScreenHelper(basic,"temperatures1");
+          lcdNextScreenHelper("basic",basic,"temperatures1");
           break;
-
         case "temperatures1":
-          lcdNextScreenHelper(temperatures1, "temperatures2");
+          lcdNextScreenHelper("temperatures1", temperatures1, "temperatures2");
           break;
-
         case "temperatures2":
-          lcdNextScreenHelper(temperatures2, "basic");
+          lcdNextScreenHelper("temperatures2", temperatures2, "basic");
           break;
-
         case "runningBoxes":
-          lcdNextScreenHelper(runningBoxes, "temperatures1", 10*1000);
+          lcdNextScreenHelper("runningBoxes",runningBoxes, "temperatures1", 10*1000);
           break;
-
       }
 
       this.rotateHandler = setInterval(function() {
         LCD.screen.restartRotate();
-      },this.nextRotateSpeed || this.defaultRotateSpeed);
+      }, this.nextRotateSpeed || this.defaultRotateSpeed);
 
     },
 
