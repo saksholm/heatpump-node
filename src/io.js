@@ -14,6 +14,8 @@ import {
   setStatus,
 } from './func';
 
+import './cron';
+
 IO.initial = board => {
   console.log("Start initialising io's");
   setStatus('Initialising io');
@@ -41,12 +43,15 @@ IO.initial = board => {
       stop: () => HP.stop(true),
       emergencyReset: () => {
         if(HP.emergencyShutdown) HP.emergencyShutdown = false;
-      }
+      },
+      resetLcd: () => LCD.screen.initial(),
     });
 
 
     console.log("ACTIVE PINS", GLOBALS.activePins);
+
   });
+
 
 
 };
