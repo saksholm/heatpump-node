@@ -223,8 +223,12 @@ export const DI = {
     value: 'closed',
     set: function(value) {
       this.value = value;
+      if(this.value === 'open') {
+        HP.alarmA = true;
+        HP.alarmAReason = 'Hotgas Over-temperature Protection';
+      }
     },
-    mqttState: 'hp/hotgasOvertemperatureProtection',
+    mqttState: 'hp/hotgasOvertemperatureProtection active',
     initial: function() {
       this.output = new five.Switch({pin: this.pin, type: 'NC'});
       initialized.done(this.name);
@@ -239,6 +243,10 @@ export const DI = {
     value: 'closed',
     set: function(value) {
       this.value = value;
+      if(this.value === 'open') {
+        HP.alarmA = true;
+        HP.alarmAReason = 'Low Pressure Switch active';
+      }
     },
     mqttState: 'hp/lowPressureSwitch',
     initial: function() {
@@ -255,6 +263,10 @@ export const DI = {
     value: 'closed',
     set: function(value) {
       this.value = value;
+      if(this.value === 'open') {
+        HP.alarmA = true;
+        HP.alarmAReason = 'High Pressure Switch active';
+      }
     },
     mqttState: 'hp/highPressureSwitch',
     initial: function() {

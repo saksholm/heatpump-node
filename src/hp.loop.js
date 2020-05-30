@@ -15,6 +15,12 @@ const {
 
 export const hpLoop = () => {
   HP.board.loop(GLOBALS.logicLoopInterval,() => {
+    if(HP.alarmA && !['stop', 'stopping'].includes(HP.mode)) {
+      // emergency stopping hp
+      console.log(`HP Alarm A :: ...is active with reason: ${HP.alarmAReason}`);
+      HP.stop(true);
+    }
+
 
     const timestamp = unixtimestamp();
 

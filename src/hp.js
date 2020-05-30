@@ -23,6 +23,10 @@ export const HP = {
   allowedToRun: false,
   error: false,
   mode: 'stop',
+  alarmA: false,
+  alarmB: false,
+  alarmAReason: null,
+  alarmBReason: null,
   running: false,
   lastStopTime: 0,
   minimumRunningTime: 60*3, // 3min
