@@ -3,7 +3,7 @@ export const GLOBALS = {
   status: 'starting',
   debug: true,
   dryRun: true,
-  printTH: true,
+  printTH: false,
   starting: true,
   activePins: [],
   timersTH: [],
