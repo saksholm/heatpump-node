@@ -6,6 +6,10 @@ import {DI} from './di';
 import {AO} from './ao';
 import {AI} from './ai';
 
+import {
+  unixtimestamp,
+} from './func';
+
 export const boilerLogic = () => {
   // TODO: boiler checks if some is allowed or not... override rules with checks
 
@@ -50,13 +54,20 @@ export const boilerLogic = () => {
   }
 
 
-  if(GLOBALS.boiler.middle.request && GLOBALS.heatToWater) {
+  if(!['starting', 'run', 'stopping'].includes(HP.mode)) {
 
-    // if threePhaseMonitor value is ok then start
-    if(DI.threePhaseMonitor.value === 0) {
-      HP.start();
+    if(GLOBALS.boiler.middle.request && GLOBALS.heatToWater) {
+
+      // if threePhaseMonitor value is ok then start
+      if(DI.threePhaseMonitor.value === 0) {
+
+        if(HP.restartTimestamp + HP.restartDelay <= unixtimestamp()) {
+          console.log("LOGIC boiler :: Allowed to start after restartDelay... FINALLY!!!!!!!!!!!!!!!!! HP.mode = ", HP.mode);
+          HP.start();
+        }
+      }
     }
-
   }
+
 
 };
