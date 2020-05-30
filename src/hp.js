@@ -25,21 +25,26 @@ export const HP = {
   mode: 'stop',
   running: false,
   lastStopTime: 0,
-  minimumRunningTime: 60*5, // 5min
+  minimumRunningTime: 60*3, // 3min
   actualRunStartTimestamp: 0,
   restartDelay: 60*5, // 5mins
   restartTimestamp: 0,
   defrost: false,
-  maxPower: 100, // 0-100 ... not use directly
+  maxPower: 25, // 0-100 ... not use directly
   minPower: 10, // 0-100 ... not use directly
   minFan: 10, // 0-100 ... not use directly
   maxFan: 60, // 0-100 ... not use directly
   maxHotgas: 80, // 80c
   maxFluidline: 30, // TODO: ask????
   hxInMaximum: 35,
-  hxOutTarget: 45,
+  hxOutTarget: 40,
+  hotgasWatchInterval: 15, // in seconds
+  outputWatchInterval: 5, // in seconds
+  fanWatchInterval: 10, // in seconds
   nextLoopIntervalTimestamps: { // object to handle interval check skips
     hotgas: 0,
+    output: 0,
+    fan: 0,
   },
   emergencyShutdown: false,
   mqtt: {
