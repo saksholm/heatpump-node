@@ -5,21 +5,23 @@ import {TH} from './th';
 import {
   calculateTimeout,
   unixtimestamp,
+  setStatus,
 } from './func';
 
 export const hpStart = function() {
   // if error... we don't want to start at all!!!
   if(HP.error) return false;
   if(HP.emergencyShutdown) return false;
+  if(HP.mode === 'stopping') return false;
 
-  // if HP.mode is run or HP.allowedToRun is true... lets skip whole function!!
-  if(HP.mode === 'run' || HP.allowedToRun === true) return false;
+  // if HP.mode is something on array or HP.allowedToRun is true... lets skip whole function!!
+  if(['run','starting','stopping','heating','cooling','drying'].includes(HP.mode) || HP.allowedToRun === true) return false;
 
   console.log("\nStarting HP..... let's settle things up first\n");
   const {wait} = HP.board;
 
-  HP.mode = 'run';
-  console.log("HP mode is 'run'");
+  HP.mode = 'starting';
+  console.log("HP mode is 'starting'");
 
   const timeoutMillis = calculateTimeout(HP.restartTimestamp, HP.restartDelay, true);
   if(timeoutMillis/1000 !== 0) console.log(`\nWaiting for remain restartDelay ${timeoutMillis/1000}s before continuing\n`);
@@ -36,7 +38,8 @@ export const hpStart = function() {
     // 4-way ?!??!
 
 
-
+    DO.load2Way.controller.reset();
+    console.log(`load 2-way pid controller reseted!`);
     DO.load2Way.controller.setTarget(HP.hxOutTarget);
     console.log(`load 2-way controller set to ${HP.hxOutTarget}c target out temp` )
 
@@ -46,7 +49,9 @@ export const hpStart = function() {
     DO.hpFanOutput.set(20); // hp fan output to 20%
     console.log("hp fan output to 20%");
 
-    // Dampers?
+
+
+    // TODO: create additional watcher for outside/chgIn temps to change if needed!!!
 
     if(TH.outside.value > 5) {
       DO.damperOutside.set("open");
@@ -73,6 +78,10 @@ export const hpStart = function() {
     wait(10*1000, function() {
       // check if we are allowed to continue.. for example emergency stop before this happen
       if(HP.allowedToRun) {
+        setStatus('running');
+        HP.mode = 'run';
+
+        console.log("HP.mode = 'run'");
         HP.actualRunStartTimestamp = unixtimestamp();
         DO.hpOutput.set(10); // set HP to 10% load
         console.log("hp output to 10%");
