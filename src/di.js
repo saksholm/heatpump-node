@@ -227,6 +227,39 @@ export const DI = {
     mqttState: 'hp/hotgasOvertemperatureProtection',
     initial: function() {
       this.output = new five.Switch({pin: this.pin, type: 'NC'});
+      initialized.done(this.name);
+    },
+  },
+
+  lowPressureSwitch: {
+    active: true,
+    type: 'digitalIn',
+    name: 'Low Pressure Switch',
+    pin: 35,
+    value: 'closed',
+    set: function(value) {
+      this.value = value;
+    },
+    mqttState: 'hp/lowPressureSwitch',
+    initial: function() {
+      this.output = new five.Switch({pin: this.pin, type: 'NC'});
+      initialized.done(this.name);
+    },
+
+  },
+  highPressureSwitch: {
+    active: true,
+    type: 'digitalIn',
+    name: 'High Pressure Switch',
+    pin: 36,
+    value: 'closed',
+    set: function(value) {
+      this.value = value;
+    },
+    mqttState: 'hp/highPressureSwitch',
+    initial: function() {
+      this.output = new five.Switch({pin: this.pin, type: 'NC'});
+      initialized.done(this.name);
     },
   },
 

@@ -48,20 +48,20 @@ export const PORTS = {
     D32: 'chargingWaterpumpFlow', //in
     D33: '3-Phase Monitor',
     D34: 'hotgasOvertemperatureProtection',
-    D35: 'outside', // 6th pin on top (right)
-    D36: 'beforeCHG', // 7th pin on top (left)
-    D37: 'betweenCHG_CX', // 7th pin on top (right)
-    D38: 'betweenCX_FAN', //8th pin on top (left)
-    D39: 'exhaust',
-    D40: 'glygolIn',
-    D41: 'glygolOut',
-    D42: 'hotgas',
-    D43: 'fluidline',
-    D44: 'hxIn',
-    D45: 'hxOut',
-    D46: 'boilerUpper',
-    D47: 'boilerMiddle',
-    D48: 'boilerLower',
+    D35: 'Low Pressure Switch', //'outside', // 6th pin on top (right)
+    D36: 'High Pressure Switch', //'beforeCHG', // 7th pin on top (left)
+    D37: 0, //'betweenCHG_CX', // 7th pin on top (right)
+    D38: 0, //'betweenCX_FAN', //8th pin on top (left)
+    D39: 0, //'exhaust',
+    D40: 0, //'glygolIn',
+    D41: 0, //'glygolOut',
+    D42: 0, //'hotgas',
+    D43: 0, //'fluidline',
+    D44: 0, //'hxIn',
+    D45: 0, //'hxOut',
+    D46: 0, //'boilerUpper',
+    D47: 0, //'boilerMiddle',
+    D48: 0, //'boilerLower',
     D49: 0,
     D50: 0, // SPI - MISO
     D51: 0, // SPI - MOSI
