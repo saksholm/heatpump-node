@@ -31,9 +31,9 @@ export const calculateTimeout = (timestamp, delay, milliseconds=false) => {
 
   if( timestamp === 0) timeout = 0;
   if(timestamp !== 0) {
-    const unixtimestamp = unixtimestamp();
-    if( timestamp + delay <= unixtimestamp )  timeout = 0;
-    if( unixtimestamp - timestamp <= delay )  timeout = (timestamp + delay) - unixtimestamp;
+    const currentTimestamp = unixtimestamp();
+    if( timestamp + delay <= currentTimestamp )  timeout = 0;
+    if( currentTimestamp - timestamp <= delay )  timeout = (timestamp + delay) - currentTimestamp;
   }
   if(milliseconds) return timeout * 1000;
   return timeout;
@@ -394,13 +394,17 @@ const readI2CDS18B20 = (instance, board) => {
 
 */
 export const increaseValue = (instance, step=1) => {
-  //increase: function(step=1) { if(step) this.set(this.value+step) },
-  instance.set(instance.value+step);
+  let newValue = instance.value+step;
+  if(newValue > instance.maxValue) newValue = instance.maxValue;
+  if(newValue < instance.minValue) newValue = instance.minValue;
+  instance.set(newValue);
 };
 
 export const decreaseValue = (instance,step=1) => {
-  //decrease: function(step=1) { if(step) this.set(this.value-step) },
-  instance.set(instance.value-step);
+  let newValue = instance.value - step;
+  if(newValue < instance.minValue) newValue = instance.minValue;
+  if(newValue > instance.maxValue) newValue = instance.maxValue;
+  instance.set(newValue);
 };
 
 export const valueToOnOff = instance => {
@@ -487,8 +491,9 @@ export const setStatus = status => {
   // TODO: mqtt update
 };
 
-export const lcdNextScreenHelper = (instance, nextScreen, nextRotateSpeed=LCD.screen.defaultRotateSpeed) => {
-  LCD.screen.nextRotateSpeed = nextRotateSpeed
+export const lcdNextScreenHelper = (instanceName, instance, nextScreen, nextRotateSpeed=LCD.screen.defaultRotateSpeed) => {
+  LCD.screen.nextRotateSpeed = LCD.screen.stickyScreen === instanceName ? LCD.screen.stickyScreenTime : nextRotateSpeed;
   LCD.screen.nextScreen = nextScreen || "basic";
+  LCD.screen.currentInstance = instance;
   instance();
 };
