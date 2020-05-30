@@ -47,7 +47,7 @@ export const PORTS = {
     D31: 'kwhMeterPulse', //in
     D32: 'chargingWaterpumpFlow', //in
     D33: '3-Phase Monitor',
-    D34: 0,
+    D34: 'hotgasOvertemperatureProtection',
     D35: 'outside', // 6th pin on top (right)
     D36: 'beforeCHG', // 7th pin on top (left)
     D37: 'betweenCHG_CX', // 7th pin on top (right)
