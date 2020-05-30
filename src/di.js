@@ -272,6 +272,43 @@ DI.onChanges = () => {
     if(key !== "board" && typeof instance !== null && typeof instance === 'object' && instance.active) {
 //      console.log("typeof output", typeof instance.output, key);
       if(typeof instance.output !== 'undefined' && instance.output !== null) {
+        switch(instance.type) {
+          case "flow":
+            instance.output.on("data", function() {
+              instance.handleFlow(instance.output.value);
+            });
+            break;
+          case "pulseIn":
+            instance.output.on("data", function(){
+              instance.handlePulses(instance.output.value);
+            });
+            break;
+          case "button":
+            instance.output.on("up", function() {
+              instance.set(0);
+            });
+            instance.output.on("down", function() {
+              instance.set(1);
+            });
+            break;
+          case "digitalIn":
+            instance.output.on("open", function() {
+              instance.set("open");
+            });
+            instance.output.on("close", function() {
+              instance.set("close");
+            });
+            break;
+          default:
+            instance.output.on("change", function(){
+              instance.set(instance.output.value);
+              //if(GLOBALS.debug) console.log(`${instance.name} value changed to ${instance.output.value}`);
+            });
+            break;
+        }
+
+        console.log(`DI, ${instance.name} onChanges watchers activated.... DONE`);
+        /*
         if(instance.type === "flow") {
           instance.output.on("data", function() {
             instance.handleFlow(instance.output.value);
@@ -294,6 +331,7 @@ DI.onChanges = () => {
           });
           console.log(`DI, ${instance.name} onChanges watchers activated.... DONE`);
         }
+        */
       }
     }
   });
