@@ -73,6 +73,7 @@ export const DO = {
     },
     repl: {
       ahuFan: function(value) { DO.ahuFan.set(value) },
+      relay1: function(value) { DO.ahuFan.set(value) },
     },
   },
   ahuFanOutput: {
@@ -130,6 +131,10 @@ export const DO = {
       this.output = new five.Relay(this.pin, this.relayType);
       this.set("off");
       initialized.done(this.name);
+    },
+    repl: {
+      hpAllowed: function(value) { DO.hpAllowed.set(value) },
+      relay2: function(value) { DO.hpAllowed.set(value) },
     },
   },
   damperOutside: {
@@ -324,6 +329,7 @@ export const DO = {
 
       // TODO: ramp?!? up/down
     },
+    shutdown: function() {this.value = 0;},
     increase: function(step=1){increaseValue(this,step)},
     decrease: function(step=1){decreaseValue(this,step)},
     mqttCommand: 'hp/fanOutput',
@@ -357,11 +363,12 @@ export const DO = {
 
       // TODO: ramp?!? up/down
     },
+    shutdown: function() {this.value = 0;},
     increase: function(step=1){increaseValue(this,step)},
     decrease: function(step=1){decreaseValue(this,step)},
     controller: null,
     controller_p: 0.25,
-    controller_i: 0.01,
+    controller_i: 0.02,//0.01,
     controller_d: 0.01,
     controller_time: 2,
     startDelay: 10*1000, // delay 90s-90deg.. wait 30s
@@ -399,6 +406,7 @@ export const DO = {
       }
       // TODO: ramp?!? up/down
     },
+    shutdown: function() {this.value = 0;},
     increase: function(step=1){increaseValue(this,step)},
     decrease: function(step=1){decreaseValue(this,step)},
     mqttCommand: '', // not allowed
