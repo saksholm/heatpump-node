@@ -215,6 +215,21 @@ export const DI = {
     },
   },
 
+  hotgasOvertemperatureProtection: {
+    active: true,
+    type: 'digitalIn',
+    name: 'Hotgas Over-temperature Protection',
+    pin: 34,
+    value: 'closed',
+    set: function(value) {
+      this.value = value;
+    },
+    mqttState: 'hp/hotgasOvertemperatureProtection',
+    initial: function() {
+      this.output = new five.Switch({pin: this.pin, type: 'NC'});
+    },
+  },
+
 };
 
 DI.onChanges = () => {
