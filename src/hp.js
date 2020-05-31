@@ -7,6 +7,7 @@ import {
   calculateTimeout,
   mapPercentToPWM,
   genericInitial,
+  mqttPublish,
 } from './func'
 
 const {
@@ -50,6 +51,10 @@ export const HP = {
     output: 0,
     fan: 0,
   },
+  timeoutHandlers: {
+    startStep1: null,
+    startStep2: null,
+  },
   emergencyShutdown: false,
   mqtt: {
 /*
@@ -92,6 +97,6 @@ export const HP = {
 };
 
 HP.start = () => hpStart();
-HP.stop = () => hpStop();
+HP.stop = (emergency=false) => hpStop(emergency);
 HP.loop = () => hpLoop();
 HP.initial = board => genericInitial(HP, 'HP', board);
