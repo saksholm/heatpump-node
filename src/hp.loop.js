@@ -15,12 +15,16 @@ const {
 
 export const hpLoop = () => {
   HP.board.loop(GLOBALS.logicLoopInterval,() => {
-    if(HP.alarmA && !['stop', 'stopping'].includes(HP.mode)) {
-      // emergency stopping hp
-      console.log(`HP Alarm A :: ...is active with reason: ${HP.alarmAReason}`);
-      HP.stop(true);
-    }
 
+    if(HP.alarmA) {
+      if(!['stop', 'stopping', 'alarmA'].includes(HP.mode)) {
+        // emergency stopping hp
+        console.log(`HP Alarm A :: ...is active with reason: ${HP.alarmAReason}`);
+        HP.stop(true);
+      }
+
+      return false;
+    }
 
     const timestamp = unixtimestamp();
 
@@ -66,7 +70,7 @@ export const hpLoop = () => {
 
               // call only if not stop/stopping/starting
               if(!['stop', 'stopping', 'starting'].includes(HP.mode)) {
-                console.log(`HP loop :: STOPPING HP, because load2Way (${DO.load2Way.value}) is more than 90% open and hpOutput is minimum, HP.mode = ${HP.mode}`);
+                console.log(`HP.loop :: STOPPING HP, because load2Way (${DO.load2Way.value}) is more than 90% open and hpOutput is minimum, HP.mode = ${HP.mode}`);
                 HP.stop();
               }
             }
@@ -77,7 +81,7 @@ export const hpLoop = () => {
             // if load2Way is <65 and hpOutput is not maxValue
             if(DO.load2Way.value < 65 && DO.hpOutput.value < DO.hpOutput.maxValue) {
               DO.hpOutput.increase(1);
-              console.log(`HP loop :: increasing hpOutput (to ${DO.hpOutput.value}) by 1% because load2Way (${DO.load2Way.value}) is less than 65%, HP.mode = ${HP.mode}`);
+              console.log(`HP.loop :: increasing hpOutput (to ${DO.hpOutput.value}) by 1% because load2Way (${DO.load2Way.value}) is less than 65%, HP.mode = ${HP.mode}`);
             }
           }
           HP.nextLoopIntervalTimestamps.output = timestamp;
@@ -88,7 +92,7 @@ export const hpLoop = () => {
           // prevent hpFanOutput increasing when HP.mode = stop/starting/stopping
           if(!['stop', 'starting', 'stopping'].includes(HP.mode)) {
             DO.hpFanOutput.increase(1);
-            console.log(`HP loop :: increasing hpFanOutput (to ${DO.hpFanOutput.value}) by 1%, HP.mode = ${HP.mode}`);
+            console.log(`HP.loop :: increasing hpFanOutput (to ${DO.hpFanOutput.value}) by 1%, HP.mode = ${HP.mode}`);
           }
 
 
