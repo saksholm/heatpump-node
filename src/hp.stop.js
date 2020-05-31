@@ -8,7 +8,16 @@ import {
 } from './func';
 
 export const hpStop = function(emergency=false) {
-  HP.mode = 'stopping';
+  if(['stop','stopping', 'alarmA'].includes(HP.mode)) return false;
+
+  if(HP.alarmA && HP.mode !== 'alarmA') {
+    HP.mode = 'alarmA';
+    if(HP.timeoutHandlers.startStep1 !== null) clearTimeout(HP.timeoutHandlers.startStep1);
+    if(HP.timeoutHandlers.startStep2 !== null) clearTimeout(HP.timeoutHandlers.startStep2);
+  }
+
+  console.log("CALLING hpSTOP!!!!!!");
+  if(!HP.alarmA) HP.mode = 'stopping';
   HP.allowedToRun = false;
   console.log("HP allowedToRun false");
 
@@ -30,7 +39,7 @@ export const hpStop = function(emergency=false) {
   console.log("STOPPING in...... calculatedTimeoutMillis", calculatedTimeoutMillis, "emergency: ", emergency);
 
   wait(emergency ? 0 : calculatedTimeoutMillis, () => {
-    HP.mode = 'stop';
+    if(!HP.alarmA) HP.mode = 'stop';
     HP.restartTimestamp = unixtimestamp();
 
     console.log("HP mode 'stop'");
