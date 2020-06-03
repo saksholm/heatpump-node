@@ -72,8 +72,10 @@ export const DO = {
       initialized.done(this.name);
     },
     repl: {
-      ahuFan: function(value) { DO.ahuFan.set(value) },
-      relay1: function(value) { DO.ahuFan.set(value) },
+      ahuFan: value => DO.ahuFan.set(value),
+      ahuFanOn: () => DO.ahuFan.set('on'),
+      ahuFanOff: () => DO.ahuFan.set('off'),
+      relay1: value => DO.ahuFan.set(value),
     },
   },
   ahuFanOutput: {
@@ -98,7 +100,7 @@ export const DO = {
     mqttCommand: 'ahu/ahuFanOutput',
     mqttState: 'ahu/ahuFanOutput',
     repl: {
-      ahuFanOutput: function(value) { DO.ahuFanOutput.set(value) }
+      ahuFanOutput: value => DO.ahuFanOutput.set(value),
     },
     output: null,
     initial: function() {
@@ -133,8 +135,10 @@ export const DO = {
       initialized.done(this.name);
     },
     repl: {
-      hpAllowed: function(value) { DO.hpAllowed.set(value) },
-      relay2: function(value) { DO.hpAllowed.set(value) },
+      hpAllowed: value => DO.hpAllowed.set(value),
+      hpAllowedOn: () => DO.hpAllowed.set('on'),
+      hpAllowedOff: () => DO.hpAllowed.set('off'),
+      relay2: value => DO.hpAllowed.set(value),
     },
   },
   damperOutside: {
@@ -169,6 +173,12 @@ export const DO = {
       this.set("close");
       initialized.done(this.name);
     },
+    repl: {
+      damperOutside: value => DO.damperOutside.set(value),
+      damperOutsideOpen: () => DO.damperOutside.set("open"),
+      damperOutsideClose: () => DO.damperOutside.set("close"),
+      relay3: value => DO.damperOutside.set(value),
+    },
   },
   damperConvection: {
     type: 'relay',
@@ -194,8 +204,10 @@ export const DO = {
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
     repl: {
-      damperConvectionOpen: function() {DO.damperConvection.set("open")},
-      damperConvectionClose: function() {DO.damperConvection.set("close")},
+      damperConvectionOpen: () => DO.damperConvection.set("open"),
+      damperConvectionClose: () => DO.damperConvection.set("close"),
+      damperConvection: value => DO.damperConvection.set(value),
+      relay4: value => DO.damperConvection.set(value),
     },
     startDelay: 30*1000, //delay 180s-90deg.. wait 120s.... running... change lastTimestamp
     mqttCommand: '', // not allowed
@@ -232,6 +244,12 @@ export const DO = {
       this.set("off");
       initialized.done(this.name);
     },
+    repl: {
+      waterpumpCharging: value => DO.waterpumpCharging.set(value),
+      waterpumpChargingOn: () => DO.waterpumpCharging.set('on'),
+      waterpumpChargingOff: () => DO.waterpumpCharging.set('off'),
+      relay5: value => DO.waterpumpCharging.set(value),
+    },
   },
   chgPumpRequest: {
     type: 'relay',
@@ -254,6 +272,12 @@ export const DO = {
       this.output = new five.Relay(this.pin, this.relayType);
       this.set("off");
       initialized.done(this.name);
+    },
+    repl: {
+      chgPumpRequest: value => DO.chgPumpRequest.set(value),
+      chgPumpRequestOn: () => DO.chgPumpRequest.set('on'),
+      chgPumpRequestOff: () => DO.chgPumpRequest.set('off'),
+      relay6: value => DO.chgPumpRequest.set(value),
     },
   },
   hp4Way: {
@@ -283,6 +307,12 @@ export const DO = {
       this.set("heating");
       initialized.done(this.name);
     },
+    repl: {
+      hp4Way: value => DO.hp4Way.set(value),
+      hp4WayCooling: () => DO.hp4Way.set('cooling'),
+      hp4WayHeating: () => DO.hp4Way.set('heating'),
+      relay7: value => DO.hp4Way.set(value),
+    },
   },
   hpFan: {
     type: 'relay',
@@ -290,7 +320,8 @@ export const DO = {
     active: true,
     pin: 29,
     pinMode: Pin.OUTPUT, // OUTPUT
-    value: false, // true/false
+    value: false,
+    enum: ['on','off'],
     relayType: 'NO',
     set: function(value) {
       defaultForSet(this,value);
@@ -305,8 +336,14 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
-            this.set("off");
+      this.set("off");
       initialized.done(this.name);
+    },
+    repl: {
+      hpFan: value => DO.hpFan.set(value),
+      hpFanOn: () => DO.hpFan.set('on'),
+      hpFanOff: () => DO.hpFan.set('off'),
+      relay8: value => DO.hpFan.set(value),
     },
   },
   hpFanOutput: {
@@ -424,7 +461,7 @@ export const DO = {
   hpCGValve: {
     type: 'relay',
     name: 'HP CG 3-way valve',
-    active: true,
+    active: false,
     pin: 0, // TODO: WTF!!
     pinMode: Pin.OUTPUT,
     value: "off",
