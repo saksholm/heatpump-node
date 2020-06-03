@@ -68,7 +68,7 @@ export const HP = {
     modeChange:{
       topic: 'hp/mode',
       value: {
-        value: function(){ return this.mode}
+        value: function(){ return HP.mode},
       },
     },
     emergency: {
@@ -90,7 +90,7 @@ export const HP = {
     if(val) {
       if(Object.keys(HP.mqtt).includes(val)) {
         const {topic,value} = HP.mqtt[val];
-        if(topic && value) mqttPublish(HP.board.mqttClient, topic, value);
+        if(topic && value) mqttPublish(HP.board.mqttClient, topic, value.value);
       }
     }
   }
