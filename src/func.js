@@ -230,14 +230,17 @@ export const calculateThermistorValue = (raw, {beta, roomTemp, balanceResistor, 
 };
 
 export const defaultForSet = (instance,value) => {
-  if(!instance.active) { console.warn(`name: ${instance.name}, type: ${instance.type} not active!`); return; }
+  if(!instance.active) { console.warn(`name: ${instance.name}, type: ${instance.type} not active!`); return false; }
   if(instance.enum) {
-    if(!instance.enum?.includes(value)) {
+    if(typeof value === 'undefined' || !instance.enum?.includes(value)) {
       GLOBALS.debug && console.warn(`${instance.name} set value not match enum.. enum: ${instance.enum}, value: ${value}`);
       console.warn("Now failing defaultForSet... NAME:", instance.name, "and value is: ", value, "and enums are: ", instance.enum);
       return false;
     }
   }
+  if(!value) return false;
+
+  return true;
 };
 
 export const validateTemperatures = value => {
@@ -409,11 +412,14 @@ export const decreaseValue = (instance,step=1) => {
 
 export const valueToOnOff = instance => {
   // TODO: handle instance.enum
-  if(instance.value === "on") instance.output?.on();
-  if(instance.value === "off") instance.output?.off();
-  if(instance.value === true) instance.output?.on();
-  if(instance.value === false) instance.output?.off();
-
+  if(instance.output !== null) {
+    if(instance.value === "on") instance.output?.on();
+    if(instance.value === "off") instance.output?.off();
+    if(instance.value === true) instance.output?.on();
+    if(instance.value === false) instance.output?.off();
+    if(instance.value === "open") instance.output?.open();
+    if(instance.value === "close") instance.output?.close();
+  }
 };
 
 
