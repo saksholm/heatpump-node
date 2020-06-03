@@ -90,6 +90,7 @@ export const HP = {
     if(val) {
       if(Object.keys(HP.mqtt).includes(val)) {
         const {topic,value} = HP.mqtt[val];
+        // TODO: maybe have to refactor this idea..
         if(topic && value) mqttPublish(HP.board.mqttClient, topic, value.value);
       }
     }
