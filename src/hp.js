@@ -22,6 +22,7 @@ import {hpLoop} from './hp.loop';
 export const HP = {
   board: null,
   allowedToRun: false,
+  manual: true,
   error: false,
   mode: 'stop',
   alarmA: false,

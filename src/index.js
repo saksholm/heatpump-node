@@ -60,7 +60,12 @@ board.on("ready", function() {
     stop: () => HP.stop(true),
     emergencyReset: () => {
       if(HP.emergencyShutdown) HP.emergencyShutdown = false;
-    }
+    },
+    hpMode: value => {
+      if(HP.manual) {
+        HP.mode = value;
+      }
+    },
   });
 
   // clear stuff

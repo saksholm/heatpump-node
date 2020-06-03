@@ -18,6 +18,13 @@ LOGIC.loop = () => {
   // start LOGIC loop
   LOGIC.board.loop(GLOBALS.logicLoopInterval,() => {
 
+    // manual mode hack
+    if(HP.manual && HP.mode !== 'manual') {
+      HP.mode = 'manual';
+      HP.allowedToRun = true;
+      HP.start();
+    }
+
     boilerLogic();
     defrostLogic();
 

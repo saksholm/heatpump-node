@@ -54,7 +54,13 @@ export const boilerLogic = () => {
   }
 
 
-  if(!['starting', 'run', 'stopping', 'alarmA'].includes(HP.mode)) {
+  if(![
+    'starting',
+    'run',
+    'stopping',
+    'alarmA',
+    'manual',
+  ].includes(HP.mode)) {
 
     if(GLOBALS.boiler.middle.request && GLOBALS.heatToWater) {
 

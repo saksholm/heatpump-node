@@ -12,16 +12,36 @@ export const hpStart = function() {
   // if error... we don't want to start at all!!!
   if(HP.error) return false;
   if(HP.emergencyShutdown) return false;
-  if(['stopping', 'alarmA'].includes(HP.mode)) return false;
 
+  if(HP.mode === 'manual') console.log("HP is now in 'manual' mode........ Choose your poison!!");
+
+/*
+  if([
+    'stopping',
+    'alarmA',
+    'manual',
+  ].includes(HP.mode)) return false;
+*/
   // if HP.mode is something on array or HP.allowedToRun is true... lets skip whole function!!
-  if(['run','starting','stopping','heating','cooling','drying'].includes(HP.mode) || HP.allowedToRun === true) return false;
+  if([
+    'run',
+    'starting',
+    'stopping',
+    'heating',
+    'cooling',
+    'drying',
+    'alarmA',
+    'manual',
+  ].includes(HP.mode) || HP.allowedToRun === true) return false;
 
   console.log("\nStarting HP..... let's settle things up first\n");
   const {wait} = HP.board;
 
-  HP.mode = 'starting';
-  console.log("HP mode is 'starting'");
+
+  if(HP.mode !== 'manual') {
+    HP.mode = 'starting';
+    console.log("HP mode is 'starting'");
+  }
 
   const timeoutMillis = calculateTimeout(HP.restartTimestamp, HP.restartDelay, true);
   if(timeoutMillis/1000 !== 0) console.log(`\nWaiting for remain restartDelay ${timeoutMillis/1000}s before continuing\n`);
