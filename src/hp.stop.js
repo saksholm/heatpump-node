@@ -38,7 +38,7 @@ export const hpStop = function(emergency=false) {
   const calculatedTimeoutMillis = calculateTimeout(HP.actualRunStartTimestamp, HP.minimumRunningTime, true);
   console.log("STOPPING in...... calculatedTimeoutMillis", calculatedTimeoutMillis, "emergency: ", emergency);
 
-  wait(emergency ? 0 : calculatedTimeoutMillis, () => {
+  HP.timeoutHandlers.stopStep1 = setTimeout(() => {
     if(!HP.alarmA) HP.mode = 'stop';
     HP.restartTimestamp = unixtimestamp();
 
@@ -52,7 +52,7 @@ export const hpStop = function(emergency=false) {
 
     // wait 20s before shutting water pump, 2-way valve
     console.log("\nWaiting 20s before continuing\n");
-    wait(20000,() => {
+    HP.timeoutHandlers.stopStep2 = setTimeout(() => {
       DO.waterpumpCharging.output.off(); // waterpump charging relay to on
       console.log("waterpump charging output off()");
       DO.load2Way.shutdown(); // let's open 2way valve 0%
@@ -65,7 +65,7 @@ export const hpStop = function(emergency=false) {
       // wait 10s more before closing hp fan and close outside damper
       // and open convection damper
       console.log("\nWait 10s more...\n");
-      wait(10000, () => {
+      HP.timeoutHandlers.stopStep3 = setTimeout(() => {
         DO.hpFanOutput.shutdown(); // hp fan output to 0%
         console.log("hp fan output to 0%");
 
@@ -83,9 +83,13 @@ export const hpStop = function(emergency=false) {
           console.info("To run process again please type: 'emergencyReset()'");
         }
 
-      });
+        clearTimeout(HP.timeoutHandlers.stopStep1);
+        clearTimeout(HP.timeoutHandlers.stopStep2);
+        clearTimeout(HP.timeoutHandlers.stopStep3);
+      },10000);
 
-    });
-  });
+    },20000);
+
+  }, emergency ? 0 : calculatedTimeoutMillis);
 
 };

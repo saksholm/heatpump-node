@@ -54,6 +54,9 @@ export const HP = {
   timeoutHandlers: {
     startStep1: null,
     startStep2: null,
+    stopStep1: null,
+    stopStep2: null,
+    stopStep3: null,
   },
   emergencyShutdown: false,
   mqtt: {

@@ -29,6 +29,11 @@ export const hpStart = function() {
 
   HP.timeoutHandlers.startStep1 = setTimeout(() => {
 
+    // clear stopHandlers?!
+    HP.timeoutHandlers.stopStep1 && clearTimeout(HP.timeoutHandlers.stopStep1);
+    HP.timeoutHandlers.stopStep2 && clearTimeout(HP.timeoutHandlers.stopStep2);
+    HP.timeoutHandlers.stopStep3 && clearTimeout(HP.timeoutHandlers.stopStep3);
+
      HP.allowedToRun = true; // let's allow HP running (restartDelay is now over)
      console.log("HP allowed to run = true");
      DO.hpAllowed.set("on") //output.on(); // hp allowed relay to on
@@ -88,6 +93,9 @@ export const hpStart = function() {
          HP.actualRunStartTimestamp = unixtimestamp();
          DO.hpOutput.set(10); // set HP to 10% load
          console.log("hp output to 10%");
+
+         clearTimeout(HP.timeoutHandlers.startStep1);
+         clearTimeout(HP.timeoutHandlers.startStep2);
        }
      },10*1000);
 
