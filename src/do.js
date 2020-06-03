@@ -56,7 +56,7 @@ export const DO = {
     enum: ["on","off"],
     relayType: 'NO',
     set: function(value) {
-      defaultForSet(this,value);
+      if(!defaultForSet(this,value)) return;
 
       this.value = value;
       valueToOnOff(this);
@@ -88,7 +88,7 @@ export const DO = {
     minValue: 15,
     maxValue: 60,
     set: function(value) {
-      defaultForSet(this,value);
+      if(!defaultForSet(this,value)) return;
 
       value = mapPercentToPWM(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, this.value);
@@ -119,7 +119,7 @@ export const DO = {
     enum: ["on","off"],
     relayType: 'NO',
     set: function(value) {
-      defaultForSet(this,value);
+      if(!defaultForSet(this,value)) return;
 
       this.value = value;
       valueToOnOff(this);
@@ -147,21 +147,35 @@ export const DO = {
     active: true,
     pin: 24,
     pinMode: Pin.OUTPUT, // OUTPUT
-    value: "closed", // true/false
+    value: "close", // true/false
     enum: ["open","close"],
     relayType: 'NO',
-    set: function(value) {
-      defaultForSet(this,value);
+    set: function(value, skip=false) {
+      if(!defaultForSet(this,value)) return;
+
+      this.value = value;
 
       if(this.value === "open") {
         this.output.open();
-        if(DO.damperConvection.value !== "close") DO.damperConvection.output.off(); //("close");
+
+        // skip is used to prevent race condition
+        if(!skip) {
+          if(DO.damperConvection.value !== "close") {
+            DO.damperConvection.set('close', true);
+          }
+        }
       }
       if(this.value === "close") {
         this.output.close();
-        if(DO.damperConvection.value !== "open") DO.damperConvection.output.on(); //set("open");
+
+        // skip is used to prevent race condition
+        if(!skip) {
+          if(DO.damperConvection.value !== "open") {
+            DO.damperConvection.set('open', true);
+          }
+        }
       }
-      this.value = value;
+
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
     startDelay: 30*1000, //delay 180s-90deg.. wait 120s.... running... change lastTimestamp
@@ -186,21 +200,35 @@ export const DO = {
     active: true,
     pin: 25,
     pinMode: Pin.OUTPUT, // OUTPUT
-    value: false, // true/false
+    value: "open", // true/false
     enum: ["open","close"],
     relayType: 'NO',
-    set: function(value) {
-      defaultForSet(this,value);
+    set: function(value, skip=false) {
+      if(!defaultForSet(this,value)) return;
+      this.value = value;
 
       if(this.value === "open") {
         this.output.open();
-        if(DO.damperOutside.value !== "close") DO.damperOutside.output.off(); //set("close");
+
+        // skip is used to prevent race condition
+        if(!skip) {
+          if(DO.damperOutside.value !== "close") {
+            DO.damperOutside.set('close', true);
+          }
+        }
       }
       if(this.value === "close") {
         this.output.close();
-        if(DO.damperOutside.value !== "open") DO.damperOutside.output.on(); //set("open");
+
+        // skip is used to prevent race condition
+        if(!skip) {
+          if(DO.damperOutside.value !== "open") {
+            DO.damperOutside.set('open',true);
+          }
+        }
       }
-      this.value = value;
+
+
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
     repl: {
@@ -229,8 +257,7 @@ export const DO = {
     enum: ["on","off"],
     relayType: 'NO',
     set: function(value) {
-      defaultForSet(this,value);
-
+      if(!defaultForSet(this,value)) return;
       this.value = value;
       valueToOnOff(this);
 
@@ -261,7 +288,7 @@ export const DO = {
     enum: ["on","off"],
     relayType: 'NO',
     set: function(value) {
-      defaultForSet(this,value);
+      if(!defaultForSet(this,value)) return;
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
@@ -290,7 +317,7 @@ export const DO = {
     enum: ["heating", "cooling"],
     relayType: 'NO',
     set: function(value) {
-      defaultForSet(this,value);
+      if(!defaultForSet(this,value)) return;
 
       //TODO: check if stuff is running... cant change if running!!!
       this.value = value;
@@ -324,7 +351,7 @@ export const DO = {
     enum: ['on','off'],
     relayType: 'NO',
     set: function(value) {
-      defaultForSet(this,value);
+      if(!defaultForSet(this,value)) return;
 
       if(typeof value !== 'boolean') value = convertStringToBoolean(value);
       this.value = value;
@@ -357,7 +384,7 @@ export const DO = {
     minValue: HP.minFan,
     maxValue: HP.maxFan,
     set: function(value) {
-      defaultForSet(this,value);
+      if(!defaultForSet(this,value)) return;
 
       this.value = constrain(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
@@ -372,7 +399,7 @@ export const DO = {
     mqttCommand: 'hp/fanOutput',
     mqttState: 'hp/fanOutput',
     repl: {
-      hpFanOutput: function(value) { DO.hpFanOutput.set(value) }
+      hpFanOutput: value => DO.hpFanOutput.set(value),
     },
     output: null,
     initial: function() {
@@ -391,7 +418,7 @@ export const DO = {
     minValue: 5, //TODO: should check what is the real minimum to use
     maxValue: 100,
     set: function(value) {
-      defaultForSet(this,value);
+      if(!defaultForSet(this,value)) return;
 
       this.value = constrain(value, this.minValue, this.maxValue);
       DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
@@ -419,7 +446,10 @@ export const DO = {
       this.controller = pidController(this.controller_p, this.controller_i, this.controller_d, this.controller_time);
       initialized.done(this.name);
 
-    }
+    },
+    repl: {
+      load2Way: value => DO.load2Way.set(value),
+    },
   },
   hpOutput: {
     type: 'pwm',
@@ -432,7 +462,7 @@ export const DO = {
     minValue: HP.minPower,
     maxValue: HP.maxPower,
     set: function(value) {
-      defaultForSet(this,value);
+      if(!defaultForSet(this,value)) return;
 
       // allow to set value only if allowedToRun is true
       if(HP.allowedToRun) {
@@ -449,7 +479,7 @@ export const DO = {
     mqttCommand: '', // not allowed
     mqttState: 'hp/hpOutput',
     repl: {
-      hpOutput: function(value) { DO.hpOutput.set(value)},
+      hpOutput: value => DO.hpOutput.set(value),
     },
     output: null,
     initial: function() {
@@ -468,7 +498,7 @@ export const DO = {
     enum: ["on", "off"],
     relayType: 'NO',
     set: function(value) {
-      defaultForSet(this,value);
+      if(!defaultForSet(this,value)) return;
 
       this.value = value;
       if(this.value === "on") this.output.on();
@@ -480,8 +510,8 @@ export const DO = {
     mqttState: 'hp/hpCGValve',
     output: null,
     repl: {
-      hpCGValveOn: function() { DO.hpCGValve.set("on") },
-      hpCGValveOff: function() { DO.hpCGValve.set("off") },
+      hpCGValveOn: () => DO.hpCGValve.set("on"),
+      hpCGValveOff: () => DO.hpCGValve.set("off"),
     },
     initial: function() {
       this.output = new five.Relay({
