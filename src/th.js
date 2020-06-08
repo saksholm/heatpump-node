@@ -368,6 +368,7 @@ TH.onChanges = () => {
     // bytes 28 = 14 temperatures, 2bytes each
 
     TH.board.i2cReadOnce(0x02, 99, 28, function(bytes) {
+//     console.log("this is bytes", bytes);
      handleI2C_TH_Data(bytes, TH.thI2CReads);
     });
 //    console.log("thObj", TH.thI2CReads);
