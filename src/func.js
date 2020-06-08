@@ -41,8 +41,9 @@ export const calculateTimeout = (timestamp, delay, milliseconds=false) => {
 
 export const mapPercentToPWM = (value,min=false,max=false) => {
   value = parseInt(value);
-  if(min && value < min) console.warn(`value (${value})is under minimum (${min})`);
-  if(max && value > max) console.warn(`value (${value})is over maximum (${max})`);
+  // moved these to defaultForSet check
+//  if(min && value < min) console.warn(`value (${value}) is under minimum (${min})`);
+//  if(max && value > max) console.warn(`value (${value}) is over maximum (${max})`);
   value = constrain(value, (min ? min : 0), (max ? max : 100));
   return map(value, 0,100, 0,255);
 };
@@ -192,10 +193,12 @@ export const convertStringToBoolean = str => {
 export const relayOnOff = instance => {
   switch (instance.value) {
     case true:
+    case "on":
       console.log("turn on");
       instance.output.on();
       break;
     case false:
+    case "off":
       console.log("turn off");
       instance.output.off();
       break;
@@ -230,6 +233,7 @@ export const calculateThermistorValue = (raw, {beta, roomTemp, balanceResistor, 
 };
 
 export const defaultForSet = (instance,value) => {
+  console.log("defaultForSet in: ", value);
   if(!instance.active) { console.warn(`name: ${instance.name}, type: ${instance.type} not active!`); return false; }
   if(instance.enum) {
     if(typeof value === 'undefined' || !instance.enum?.includes(value)) {
@@ -238,7 +242,13 @@ export const defaultForSet = (instance,value) => {
       return false;
     }
   }
-  if(!value) return false;
+
+  if(instance.minValue) {
+    if(value < instance.minValue) console.warn(`value (${value}) is under minimum (${instance.minValue})`);
+  }
+  if(instance.maxValue) {
+    if(value > instance.maxValue) console.warn(`value (${value}) is over maximum (${instance.maxValue})`);
+  }
 
   return true;
 };
