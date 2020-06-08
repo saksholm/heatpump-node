@@ -68,7 +68,7 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
-      this.set("off");
+      this.set(this.value);
       initialized.done(this.name);
     },
     repl: {
@@ -89,9 +89,9 @@ export const DO = {
     maxValue: 60,
     set: function(value) {
       if(!defaultForSet(this,value)) return;
+      this.value = value;
 
-      value = mapPercentToPWM(value, this.minValue, this.maxValue);
-      DO.board.analogWrite(this.pin, this.value);
+      DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       // TODO: ramp?!? up/down
     },
@@ -115,9 +115,9 @@ export const DO = {
     active: true,
     pin: 23,
     pinMode: Pin.OUTPUT, // OUTPUT
-    value: "on", // true/false
+    value: "off", // true/false
     enum: ["on","off"],
-    relayType: 'NO',
+    relayType: 'NC',
     set: function(value) {
       if(!defaultForSet(this,value)) return;
 
@@ -131,7 +131,7 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
-      this.set("off");
+      this.set(this.value);
       initialized.done(this.name);
     },
     repl: {
@@ -184,7 +184,7 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
-      this.set("close");
+      this.set(this.value);
       initialized.done(this.name);
     },
     repl: {
@@ -243,7 +243,7 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
-      this.set("open");
+      this.set(this.value);
       initialized.done(this.name);
     },
   },
@@ -253,9 +253,9 @@ export const DO = {
     active: true,
     pin: 26,
     pinMode: Pin.OUTPUT, // OUTPUT
-    value: false, // true/false
+    value: "off", // true/false
     enum: ["on","off"],
-    relayType: 'NO',
+    relayType: 'NC',
     set: function(value) {
       if(!defaultForSet(this,value)) return;
       this.value = value;
@@ -268,7 +268,7 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
-      this.set("off");
+      this.set(this.value);
       initialized.done(this.name);
     },
     repl: {
@@ -284,7 +284,7 @@ export const DO = {
     active: true,
     pin: 27,
     pinMode: Pin.OUTPUT, // OUTPUT
-    value: false, // true/false
+    value: "off", // true/false
     enum: ["on","off"],
     relayType: 'NO',
     set: function(value) {
@@ -297,7 +297,7 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
-      this.set("off");
+      this.set(this.value);
       initialized.done(this.name);
     },
     repl: {
@@ -316,22 +316,28 @@ export const DO = {
     value: "heating",
     enum: ["heating", "cooling"],
     relayType: 'NO',
-    set: function(value) {
+    set: function(value, initial=false) {
       if(!defaultForSet(this,value)) return;
 
       //TODO: check if stuff is running... cant change if running!!!
-      this.value = value;
 
-      if(this.value === "heating") this.output.on();
-      if(this.value === "cooling") this.output.off();
+      if(!['starting','stopping','heating','cooling','run'].includes(HP.mode) || initial === true) {
+        this.value = value;
+        if(this.value === "heating") this.output.on();
+        if(this.value === "cooling") this.output.off();
 
-      mqttPublish(DO.board.mqttClient, this.mqttState, this.value);    },
+        mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
+      } else {
+        console.log("Not allowed in this mode...", HP.mode);
+      }
+
+    },
     mqttCommand: '', // not allowed!
     mqttState: 'hp/hp4Way',
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
-      this.set("heating");
+      this.set(this.value, true);
       initialized.done(this.name);
     },
     repl: {
@@ -347,7 +353,7 @@ export const DO = {
     active: true,
     pin: 29,
     pinMode: Pin.OUTPUT, // OUTPUT
-    value: false,
+    value: "off",
     enum: ['on','off'],
     relayType: 'NO',
     set: function(value) {
@@ -363,7 +369,7 @@ export const DO = {
     output: null,
     initial: function() {
       this.output = new five.Relay(this.pin, this.relayType);
-      this.set("off");
+      this.set(this.value);
       initialized.done(this.name);
     },
     repl: {
@@ -383,11 +389,11 @@ export const DO = {
     defaultValue: 20,
     minValue: HP.minFan,
     maxValue: HP.maxFan,
-    set: function(value) {
+    set: function(value,skip=false) {
       if(!defaultForSet(this,value)) return;
 
       this.value = constrain(value, this.minValue, this.maxValue);
-      DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
+      DO.board.analogWrite(this.pin, skip ? value : mapPercentToPWM(this.value, this.minValue, this.maxValue));
 
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
 
@@ -400,6 +406,7 @@ export const DO = {
     mqttState: 'hp/fanOutput',
     repl: {
       hpFanOutput: value => DO.hpFanOutput.set(value),
+      hpFanOutputShutdown: () => DO.hpFanOutput.set(0,true),
     },
     output: null,
     initial: function() {
@@ -501,8 +508,9 @@ export const DO = {
       if(!defaultForSet(this,value)) return;
 
       this.value = value;
-      if(this.value === "on") this.output.on();
-      if(this.value === "off") this.output.off();
+//      if(this.value === "on") this.output.on();
+//      if(this.value === "off") this.output.off();
+      relayOnOff();
 
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
@@ -520,7 +528,7 @@ export const DO = {
       });
 
 //      DO.board.repl.inject({hpCGValveOn: function() {DO.hpCGValve.output.on() } });
-      this.set("off");
+      this.set(this.value);
       initialized.done(this.name);
 
     },
