@@ -71,7 +71,7 @@ export const PORTS = {
   analog: {
     A0: 0,
     A1: 'condenserPde',
-    A2: 0,
+    A2: 'filterGuard',
     A3: 0,
     A4: 0,
     A5: 0,
