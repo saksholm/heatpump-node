@@ -21,7 +21,7 @@
     "@babel/preset-env": "^7.10.2",
     "@babel/register": "^7.10.1",
     "date-fns": "^2.14.0",
-    "johnny-five": "^1.4.0",
+    "johnny-five": "^2.0.0",
     "minimist": "^1.2.5",
     "mqtt": "^4.1.0",
     "node-dev": "^4.0.0",
