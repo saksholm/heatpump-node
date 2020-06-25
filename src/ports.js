@@ -56,7 +56,7 @@ export const PORTS = {
     D40: 0, //'glygolIn',
     D41: 0, //'glygolOut',
     D42: 0, //'hotgas',
-    D43: 0, //'fluidline',
+    D43: 0, //'ahuSupply',
     D44: 0, //'hxIn',
     D45: 0, //'hxOut',
     D46: 0, //'boilerUpper',

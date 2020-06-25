@@ -193,7 +193,7 @@ export const TH = {
   },
   fluidline: {
     type: 'I2C_DS18B20',
-    name: 'Fluidline temperature',
+    name: 'AHU Circulation Supply temperature',
     active: true,
     objectName: 'th9',
     value: 0,
@@ -202,7 +202,7 @@ export const TH = {
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
-    mqttState: 'th/fluidline',
+    mqttState: 'th/ahuSupply',
     initial: function() {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
