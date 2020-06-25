@@ -17,9 +17,9 @@
   },
   "homepage": "https://github.com/saksholm/heatpump-node#readme",
   "dependencies": {
-    "@babel/core": "^7.10.2",
-    "@babel/preset-env": "^7.10.2",
-    "@babel/register": "^7.10.1",
+    "@babel/core": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "@babel/register": "^7.10.3",
     "date-fns": "^2.14.0",
     "johnny-five": "^2.0.0",
     "minimist": "^1.2.5",
@@ -29,7 +29,7 @@
     "serialport": "^9.0.0"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-optional-chaining": "^7.10.1",
+    "@babel/plugin-proposal-optional-chaining": "^7.10.3",
     "nodemon": "^2.0.4"
   }
 }
