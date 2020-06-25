@@ -41,7 +41,6 @@ export const HP = {
   minFan: 10, // 0-100 ... not use directly
   maxFan: 60, // 0-100 ... not use directly
   maxHotgas: 80, // 80c
-  maxFluidline: 30, // TODO: ask????
   hxInMaximum: 35,
   hxOutTarget: 40,
   hotgasWatchInterval: 15, // in seconds
