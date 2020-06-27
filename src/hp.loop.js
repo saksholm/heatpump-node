@@ -7,6 +7,9 @@ import {
 } from './func';
 
 import {hotgasWatch} from './hp.hotgasWatch';
+import {hpCoolingLoop} from './hp.cooling';
+import {hpHeatingLoop} from './hp.heating';
+import {hpWaterHeating} from './hp.waterHeating';
 
 const {
   deadZone,
@@ -35,10 +38,22 @@ export const hpLoop = () => {
     hotgasWatch();
 
     // some operator to handle if this should be active or not
-    // count variable is basically some measurement
     // input is pure output...
     if(GLOBALS.dryRun || (HP.heatToWater && DO.load2Way.value !== 0)) {
 
+      // TBD: this switch is just a mock.. depend on HP.mode what to do
+      switch(HP.mode) {
+        case "cooling":
+          // call cooling func
+          hpCoolingLoop();
+          break;
+        case "heating":
+          hpHeatingLoop();
+          break;
+        case "waterHeating":
+          hpWaterHeating();
+          break;
+      }
 
 
         if(![
