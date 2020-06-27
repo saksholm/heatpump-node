@@ -195,12 +195,12 @@ export const relayOnOff = instance => {
     case true:
     case "on":
       console.log("turn on");
-      instance.output.on();
+      instance.output.open(); // on
       break;
     case false:
     case "off":
       console.log("turn off");
-      instance.output.off();
+      instance.output.close(); // close
       break;
   }
 };
@@ -233,7 +233,7 @@ export const calculateThermistorValue = (raw, {beta, roomTemp, balanceResistor, 
 };
 
 export const defaultForSet = (instance,value) => {
-  console.log("defaultForSet in: ", value);
+//  console.log("defaultForSet in: ", value, instance.name);
   if(!instance.active) { console.warn(`name: ${instance.name}, type: ${instance.type} not active!`); return false; }
   if(instance.enum) {
     if(typeof value === 'undefined' || !instance.enum?.includes(value)) {
@@ -421,12 +421,14 @@ export const decreaseValue = (instance,step=1) => {
 };
 
 export const valueToOnOff = instance => {
+
+  console.log("whaat is this", instance.name, instance);
   // TODO: handle instance.enum
   if(instance.output !== null) {
-    if(instance.value === "on") instance.output?.on();
-    if(instance.value === "off") instance.output?.off();
-    if(instance.value === true) instance.output?.on();
-    if(instance.value === false) instance.output?.off();
+    if(instance.value === "on") instance.output?.open(); // on
+    if(instance.value === "off") instance.output?.close(); // off
+    if(instance.value === true) instance.output?.open(); // on
+    if(instance.value === false) instance.output?.close(); // off
     if(instance.value === "open") instance.output?.open();
     if(instance.value === "close") instance.output?.close();
   }
@@ -512,4 +514,20 @@ export const lcdNextScreenHelper = (instanceName, instance, nextScreen, nextRota
   LCD.screen.nextScreen = nextScreen || "basic";
   LCD.screen.currentInstance = instance;
   instance();
+};
+
+
+export const manuaCoolingModeActivate = () => {
+  DO.hp4Way.set('cooling');
+
+  DO.damperOutside.set('open');
+  DO.load2Way.set(30);
+  DO.waterpumpCharging.set('on');
+
+
+  DO.hpFan.set('on');
+  DO.hpFanOutput.set(20);
+
+  DO.ahuFan.set('on');
+  DO.ahuFanOutput.set(50);
 };
