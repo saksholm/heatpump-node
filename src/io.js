@@ -12,6 +12,7 @@ export const IO = {};
 
 import {
   setStatus,
+  manuaCoolingModeActivate,
 } from './func';
 
 import './cron';
@@ -45,6 +46,7 @@ IO.initial = board => {
         if(HP.emergencyShutdown) HP.emergencyShutdown = false;
       },
       resetLcd: () => LCD.screen.initial(),
+      manuaCoolingMode: () => manuaCoolingModeActivate(),
     });
 
 
