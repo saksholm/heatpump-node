@@ -1,7 +1,7 @@
 export const GLOBALS = {
   version: '0.2',
   status: 'starting',
-  debug: true,
+  debug: false,
   dryRun: true,
   printTH: false,
   starting: true,
