@@ -71,7 +71,7 @@ export const hpLoop = () => {
         // old enough to make new checks
         if(timestamp > (HP.outputWatchInterval + HP.nextLoopIntervalTimestamps.output) ) {
 
-          if(DO.load2Way.value >= 75 && DO.load2Way.value < 90) {
+          if(DO.load2Way.value >= 85 && DO.load2Way.value < 95) {
             // lower hp output by 10%... if not already minValue
             if(
               DO.hpOutput.value !== DO.hpOutput.minValue &&
@@ -80,11 +80,11 @@ export const hpLoop = () => {
                 'manual',
               ].includes(HP.mode)
             ) {
-              DO.hpOutput.decrease(10);
-              console.log(`HP.loop :: decreasing hpOutput (to ${DO.hpOutput.value}) by 10% because load2Way (${DO.load2Way.value}) is more than 75% open, HP.mode = ${HP.mode}`);
+              DO.hpOutput.decrease(5);
+              console.log(`HP.loop :: decreasing hpOutput (to ${DO.hpOutput.value}) by 5% because load2Way (${DO.load2Way.value}) is more than 85% open, HP.mode = ${HP.mode}`);
             }
 
-          } else if(DO.load2Way.value >= 90) {
+          } else if(DO.load2Way.value >= 95) {
             // if hpOutput is already on minimum value we can stop things now?
             if(DO.hpOutput.value === DO.hpOutput.minValue) {
 
