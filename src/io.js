@@ -12,8 +12,11 @@ export const IO = {};
 
 import {
   setStatus,
-  manuaCoolingModeActivate,
 } from './func';
+
+import {
+  manuaCoolingModeActivate,
+} from './hp.cooling';
 
 import './cron';
 

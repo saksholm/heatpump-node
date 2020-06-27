@@ -515,19 +515,3 @@ export const lcdNextScreenHelper = (instanceName, instance, nextScreen, nextRota
   LCD.screen.currentInstance = instance;
   instance();
 };
-
-
-export const manuaCoolingModeActivate = () => {
-  DO.hp4Way.set('cooling');
-
-  DO.damperOutside.set('open');
-  DO.load2Way.set(30);
-  DO.waterpumpCharging.set('on');
-
-
-  DO.hpFan.set('on');
-  DO.hpFanOutput.set(20);
-
-  DO.ahuFan.set('on');
-  DO.ahuFanOutput.set(50);
-};
