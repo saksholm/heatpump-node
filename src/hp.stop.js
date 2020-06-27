@@ -53,7 +53,7 @@ export const hpStop = function(emergency=false) {
     // wait 20s before shutting water pump, 2-way valve
     console.log("\nWaiting 20s before continuing\n");
     HP.timeoutHandlers.stopStep2 = setTimeout(() => {
-      DO.waterpumpCharging.output.off(); // waterpump charging relay to on
+      DO.waterpumpCharging.set('off'); // waterpump charging relay to on
       console.log("waterpump charging output off()");
       DO.load2Way.shutdown(); // let's open 2way valve 0%
       console.log("load 2-way to 0%");
@@ -69,13 +69,13 @@ export const hpStop = function(emergency=false) {
         DO.hpFanOutput.shutdown(); // hp fan output to 0%
         console.log("hp fan output to 0%");
 
-        DO.hpFan.output.off(); // Fan on
-        console.log("hp fan off()");
+        DO.hpFan.set('off'); //output.off(); // Fan on
+        console.log("hp fan off");
 
-        DO.damperConvection.output.on();
-        console.log("damper convection on()");
-        DO.damperOutside.output.off();
-        console.log("damper outside off()");
+        DO.damperConvection.set('open'); //output.on();
+        console.log("damper convection open");
+        DO.damperOutside.set('close'); //output.off();
+        console.log("damper outside close");
 
 
         if(HP.emergencyShutdown) {
