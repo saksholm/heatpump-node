@@ -86,7 +86,7 @@ export const DO = {
     pinMode: Pin.PWM, // PWM
     value: 0,
     minValue: 15,
-    maxValue: 60,
+    maxValue: 100,
     set: function(value) {
       if(!defaultForSet(this,value)) return;
       this.value = value;
@@ -323,8 +323,8 @@ export const DO = {
 
       if(!['starting','stopping','heating','cooling','run'].includes(HP.mode) || initial === true) {
         this.value = value;
-        if(this.value === "heating") this.output.on();
-        if(this.value === "cooling") this.output.off();
+        if(this.value === "heating") this.output.close();
+        if(this.value === "cooling") this.output.open();
 
         mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       } else {
