@@ -122,15 +122,25 @@ export const mqttSubscriptions = mqttClient => {
 
     if(key !== "board" && typeof instance !== null && instance ) {
       if(typeof instance.mqttCommand === "string" && instance.mqttCommand !== "") {
+
+        mqttSubscribe(mqttClient, instance.mqttCommand);
+/*
         mqttClient.subscribe(`cmnd/${GLOBALS.mqttBase}/${instance.mqttCommand}`, (err) => {
           if(err) console.warn(`error in mqttSubscriptions, (${instance.mqttCommand}).. ${err}`);
           console.log(`Subscribed topic: ${instance.mqttCommand} ...`);
         });
+*/
       }
     }
   });
 };
 
+export const mqttSubscribe = (mqttClient, mqttTopic) => {
+  mqttClient.subscribe(`cmnd/${GLOBALS.mqttBase}/${mqttTopic}`, (err) => {
+    if(err) console.warn(`error in mqttSubscriptions, (${mqttTopic}).. ${err}`);
+    console.log(`Subscribed topic: ${mqttTopic} ...`);
+  });
+};
 
 export const mqttPublish = (mqttClient,topic,value) => {
   const t = `state/${GLOBALS.mqttBase}/${topic}`;
@@ -171,6 +181,10 @@ export const mqttCommandTopics = () => {
     }
 
   });
+
+  
+
+
   return arr;
 };
 

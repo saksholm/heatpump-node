@@ -49,4 +49,7 @@ export const GLOBALS = {
 
   },
   mqttBase: 'iot/heatpump',
+  mqttSubscribes: [
+    'coolingDemand',
+  ],
 };

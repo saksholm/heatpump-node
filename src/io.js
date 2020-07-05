@@ -12,6 +12,7 @@ export const IO = {};
 
 import {
   setStatus,
+  mqttSubscribe,
 } from './func';
 
 import {
@@ -38,6 +39,12 @@ IO.initial = board => {
   AI.initial(board);
   TH.initial(board);
   HP.initial(board);
+
+
+  // subscribe global mqtt command topics
+  GLOBALS.mqttSubscribes.map(mqttTopic => {
+    mqttSubscribe(board.mqttClient, mqttTopic);
+  });
 
 
   board.wait(2000, () => {
