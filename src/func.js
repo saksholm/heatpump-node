@@ -182,7 +182,7 @@ export const mqttCommandTopics = () => {
 
   });
 
-  
+
 
 
   return arr;
@@ -436,7 +436,7 @@ export const decreaseValue = (instance,step=1) => {
 
 export const valueToOnOff = instance => {
 
-  console.log("whaat is this", instance.name, instance);
+//  console.log("whaat is this", instance.name, instance);
   // TODO: handle instance.enum
   if(instance.output !== null) {
     if(instance.value === "on") instance.output?.open(); // on
