@@ -36,6 +36,7 @@ export const HP = {
   restartDelay: 60*5, // 5mins
   restartTimestamp: 0,
   defrost: false,
+  coolingDemand: false,
   maxPower: 50, // 0-100 ... not use directly
   minPower: 10, // 0-100 ... not use directly
   minFan: 10, // 0-100 ... not use directly
@@ -101,6 +102,6 @@ export const HP = {
 };
 
 HP.start = () => hpStart();
-HP.stop = (emergency=false) => hpStop(emergency);
+HP.stop = (emergency=false,callback=false) => hpStop(emergency,callback);
 HP.loop = () => hpLoop();
 HP.initial = board => genericInitial(HP, 'HP', board);

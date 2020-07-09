@@ -7,7 +7,7 @@ import {
   unixtimestamp,
 } from './func';
 
-export const hpStop = function(emergency=false) {
+export const hpStop = function(emergency=false, callback=false) {
   if(['stop','stopping', 'alarmA'].includes(HP.mode)) return false;
 
   if(HP.alarmA && HP.mode !== 'alarmA') {
@@ -86,6 +86,9 @@ export const hpStop = function(emergency=false) {
         clearTimeout(HP.timeoutHandlers.stopStep1);
         clearTimeout(HP.timeoutHandlers.stopStep2);
         clearTimeout(HP.timeoutHandlers.stopStep3);
+
+        if(callback && typeof callback === 'function') callback();
+
       },10000);
 
     },20000);

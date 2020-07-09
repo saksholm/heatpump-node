@@ -183,6 +183,21 @@ export const mqttCommandTopics = () => {
   });
 
 
+  GLOBALS.mqttCommandSubscribes.map(obj => {
+    const topic = `cmnd/${GLOBALS.mqttBase}/${obj.topic}`;
+
+    switch (obj.type) {
+      case 'func':
+        arr.push({
+          topic: topic,
+          set: value => obj.func(value),
+        });
+        break;
+      default:
+        console.warn("mqttCommandTopics, type not defined", obj.type);
+    }
+  });
+
 
 
   return arr;

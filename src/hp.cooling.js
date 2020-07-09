@@ -3,10 +3,18 @@
 import { HP } from "./hp";
 import { DO } from './do';
 
-// TODO: move manualCoolinMode from func.js to here
+// TODO: move manualCoolingMode from func.js to here
 
+export const setCoolingDemand = value => {
+  if(value === 'on') {
+    HP.coolingDemand = true;
+  }
+  if(value === 'off') {
+    HP.coolingDemand = false;
+  }
+};
 
-export const manuaCoolingModeActivate = () => {
+export const manualCoolingModeActivate = () => {
   DO.hp4Way.set('cooling');
 
   DO.damperOutside.set('open');

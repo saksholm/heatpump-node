@@ -16,7 +16,7 @@ import {
 } from './func';
 
 import {
-  manuaCoolingModeActivate,
+  manualCoolingModeActivate,
 } from './hp.cooling';
 
 import './cron';
@@ -42,8 +42,8 @@ IO.initial = board => {
 
 
   // subscribe global mqtt command topics
-  GLOBALS.mqttSubscribes.map(mqttTopic => {
-    mqttSubscribe(board.mqttClient, mqttTopic);
+  GLOBALS.mqttCommandSubscribes.map(mqttTopic => {
+    mqttSubscribe(board.mqttClient, mqttTopic.topic);
   });
 
 
@@ -56,7 +56,7 @@ IO.initial = board => {
         if(HP.emergencyShutdown) HP.emergencyShutdown = false;
       },
       resetLcd: () => LCD.screen.initial(),
-      manuaCoolingMode: () => manuaCoolingModeActivate(),
+      manualCoolingMode: () => manualCoolingModeActivate(),
     });
 
 

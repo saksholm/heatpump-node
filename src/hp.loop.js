@@ -29,28 +29,31 @@ export const hpLoop = () => {
     logicAlarms();
     hotgasWatch();
 
-    // do we need this?! :o
+
+    // TBD: this switch is just a mock.. depend on HP.mode what to do
+    switch(HP.mode) {
+      case "cooling":
+        // call cooling func
+        hpCoolingLoop();
+        break;
+      case "heating":
+        hpHeatingLoop();
+        break;
+      case "waterHeating":
+        hpWaterHeating();
+        break;
+    }
+
+    logicHpOutputWatch(timestamp);
+    logicHpFanOutputWatch(timestamp);
+
+    // this logic is only for heat to water....
+    // boiler logic asking heat to water
     if(GLOBALS.dryRun || (HP.heatToWater && DO.load2Way.value !== 0)) {
-
-      // TBD: this switch is just a mock.. depend on HP.mode what to do
-      switch(HP.mode) {
-        case "cooling":
-          // call cooling func
-          hpCoolingLoop();
-          break;
-        case "heating":
-          hpHeatingLoop();
-          break;
-        case "waterHeating":
-          hpWaterHeating();
-          break;
-      }
-
 
       logicLoad2WayController();
       logicHxIn();
-      logicHpOutputWatch(timestamp);
-      logicHpFanOutputWatch(timestamp);
+
 
     }
 
