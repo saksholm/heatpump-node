@@ -72,7 +72,7 @@ export const DO = {
       initialized.done(this.name);
     },
     repl: {
-      ahuFan: value => DO.ahuFan.set(value),
+      ahuFhan: value => DO.ahuFan.set(value),
       ahuFanOn: () => DO.ahuFan.set('on'),
       ahuFanOff: () => DO.ahuFan.set('off'),
       relay1: value => DO.ahuFan.set(value),
@@ -387,8 +387,8 @@ export const DO = {
     pinMode: Pin.PWM, // PWM
     value: 0,
     defaultValue: 20,
-    minValue: HP.minFan,
-    maxValue: HP.maxFan,
+    minValue: HP.minFan || 10,
+    maxValue: HP.maxFan || 70,
     set: function(value,skip=false) {
       if(!defaultForSet(this,value)) return;
 
