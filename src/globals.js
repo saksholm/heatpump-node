@@ -1,4 +1,4 @@
-import {setCoolingDemand} from 'hp.cooling';
+import {setCoolingDemand} from './hp.cooling';
 
 export const GLOBALS = {
   version: '0.2',
