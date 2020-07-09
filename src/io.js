@@ -12,10 +12,11 @@ export const IO = {};
 
 import {
   setStatus,
+  mqttSubscribe,
 } from './func';
 
 import {
-  manuaCoolingModeActivate,
+  manualCoolingModeActivate,
 } from './hp.cooling';
 
 import './cron';
@@ -40,6 +41,12 @@ IO.initial = board => {
   HP.initial(board);
 
 
+  // subscribe global mqtt command topics
+  GLOBALS.mqttCommandSubscribes.map(mqttTopic => {
+    mqttSubscribe(board.mqttClient, mqttTopic.topic);
+  });
+
+
   board.wait(2000, () => {
 
     board.repl.inject({
@@ -49,7 +56,7 @@ IO.initial = board => {
         if(HP.emergencyShutdown) HP.emergencyShutdown = false;
       },
       resetLcd: () => LCD.screen.initial(),
-      manuaCoolingMode: () => manuaCoolingModeActivate(),
+      manualCoolingMode: () => manualCoolingModeActivate(),
     });
 
 

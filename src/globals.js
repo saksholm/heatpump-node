@@ -1,3 +1,5 @@
+import {setCoolingDemand} from 'hp.cooling';
+
 export const GLOBALS = {
   version: '0.2',
   status: 'starting',
@@ -19,6 +21,13 @@ export const GLOBALS = {
   groundWarmerThanAir: false,
   deadZone: 0.3,
   relayLow: false,
+  modesPriority: {
+    drying: 1,
+    cooling: 2,
+    heatingToAir: 3,
+    heatingToWater: 4,
+
+  },
   boiler: {
     upperHeatingResistorAllowed: true,
     lowerHeatingResistorAllowed: false,
@@ -49,4 +58,12 @@ export const GLOBALS = {
 
   },
   mqttBase: 'iot/heatpump',
+
+  mqttCommandSubscribes: [
+    {
+      type: 'func',
+      topic: 'coolingDemand',
+      func: value => setCoolingDemand(value),
+    },
+  ],
 };

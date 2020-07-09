@@ -1,5 +1,6 @@
 import five from 'johnny-five';
 import mqtt from 'mqtt';
+import http from 'http';
 import EventEmitter from 'events';
 EventEmitter.defaultMaxListeners = 200;
 
@@ -27,6 +28,17 @@ const {
   mqttUser,
   mqttPass,
 } = SECRETS;
+
+const requestLogs = [];
+const server = http.createServer((req, res) => {
+  requestLogs.push({ url: req.url, date: new Date() });
+  res.end(JSON.stringify(requestLogs));
+});
+
+server.listen(3000);
+console.log("Server listening to port 3000. Press Ctrl+C to stop it.");
+
+
 
 const mqttClient = mqtt.connect(mqttServer, {username: mqttUser, password: mqttPass});
 const board = new five.Board({

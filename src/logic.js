@@ -8,6 +8,7 @@ import {AI} from './ai';
 
 import {boilerLogic} from './logic.boiler';
 import {defrostLogic} from './logic.defrost';
+import {coolingLogic} from './logic.cooling';
 
 export const LOGIC = {
   board: null,
@@ -24,6 +25,10 @@ LOGIC.loop = () => {
       HP.allowedToRun = true;
       HP.start();
     }
+
+
+    coolingLogic();
+
 
     boilerLogic();
     defrostLogic();

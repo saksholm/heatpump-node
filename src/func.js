@@ -122,15 +122,25 @@ export const mqttSubscriptions = mqttClient => {
 
     if(key !== "board" && typeof instance !== null && instance ) {
       if(typeof instance.mqttCommand === "string" && instance.mqttCommand !== "") {
+
+        mqttSubscribe(mqttClient, instance.mqttCommand);
+/*
         mqttClient.subscribe(`cmnd/${GLOBALS.mqttBase}/${instance.mqttCommand}`, (err) => {
           if(err) console.warn(`error in mqttSubscriptions, (${instance.mqttCommand}).. ${err}`);
           console.log(`Subscribed topic: ${instance.mqttCommand} ...`);
         });
+*/
       }
     }
   });
 };
 
+export const mqttSubscribe = (mqttClient, mqttTopic) => {
+  mqttClient.subscribe(`cmnd/${GLOBALS.mqttBase}/${mqttTopic}`, (err) => {
+    if(err) console.warn(`error in mqttSubscriptions, (${mqttTopic}).. ${err}`);
+    console.log(`Subscribed topic: ${mqttTopic} ...`);
+  });
+};
 
 export const mqttPublish = (mqttClient,topic,value) => {
   const t = `state/${GLOBALS.mqttBase}/${topic}`;
@@ -171,6 +181,25 @@ export const mqttCommandTopics = () => {
     }
 
   });
+
+
+  GLOBALS.mqttCommandSubscribes.map(obj => {
+    const topic = `cmnd/${GLOBALS.mqttBase}/${obj.topic}`;
+
+    switch (obj.type) {
+      case 'func':
+        arr.push({
+          topic: topic,
+          set: value => obj.func(value),
+        });
+        break;
+      default:
+        console.warn("mqttCommandTopics, type not defined", obj.type);
+    }
+  });
+
+
+
   return arr;
 };
 
@@ -422,7 +451,7 @@ export const decreaseValue = (instance,step=1) => {
 
 export const valueToOnOff = instance => {
 
-  console.log("whaat is this", instance.name, instance);
+//  console.log("whaat is this", instance.name, instance);
   // TODO: handle instance.enum
   if(instance.output !== null) {
     if(instance.value === "on") instance.output?.open(); // on
