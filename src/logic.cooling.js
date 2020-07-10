@@ -11,7 +11,7 @@ export const coolingLogic = () => {
       'run',
       'heating',
       'drying',
-    ].includes(HP.mode)])
+    ].includes(HP.mode))
   {
     // have to check modes priority can we just stop and change mode
     if(GLOBALS.modesPriority[HP.mode] > GLOBALS.modesPriority['cooling']) {

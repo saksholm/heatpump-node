@@ -1,6 +1,6 @@
+import {GLOBALS} from './globals';
 import {TH} from './th';
 import {HP} from './hp';
-import {GLOBALS} from './globals';
 
 const {
   deadZone,

@@ -387,8 +387,8 @@ export const DO = {
     pinMode: Pin.PWM, // PWM
     value: 0,
     defaultValue: 20,
-    minValue: () => {console.log(HP);  return HP.minFan || 10},
-    maxValue: HP.maxFan || 70,
+    minValue: HP.minFan,
+    maxValue: HP.maxFan,
     set: function(value,skip=false) {
       if(!defaultForSet(this,value)) return;
 

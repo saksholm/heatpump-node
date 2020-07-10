@@ -1,6 +1,6 @@
-import {setCoolingDemand} from './hp.cooling';
+//import {setCoolingDemand} from './hp.cooling';
 
-export const GLOBALS = {
+const GLOBALS = {
   version: '0.2',
   status: 'starting',
   debug: false,
@@ -67,3 +67,6 @@ export const GLOBALS = {
     },
   ],
 };
+
+
+export {GLOBALS};
