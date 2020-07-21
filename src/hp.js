@@ -44,6 +44,12 @@ export const HP = {
   maxHotgas: 80, // 80c
   hxInMaximum: 35,
   hxOutTarget: 40,
+  cooling: {
+    minAhuTemp: 17,
+  },
+  heating: {
+
+  },
   hotgasWatchInterval: 15, // in seconds
   outputWatchInterval: 5, // in seconds
   fanWatchInterval: 10, // in seconds
