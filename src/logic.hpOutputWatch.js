@@ -1,10 +1,24 @@
 import {HP} from './hp';
 import {DO} from './do';
-
+import {TH} from './th';
 
 export const logicHpOutputWatch = timestamp => {
   // old enough to make new checks
   if(timestamp > (HP.outputWatchInterval + HP.nextLoopIntervalTimestamps.output) ) {
+
+    // COOLING!!!
+    if(HP.mode === 'cooling') {
+      if(isPidControllerActive(DO.hpOutput)) {
+        // calculate new output
+        const newValue = Math.round( DO.hpOutput.controller.update(TH.ahuCirculationSupply.value) );
+        // if new value is not the existing value.. we update
+        if(newValue !== DO.hpOutput.value) {
+          DO.hpOutput.set(newValue);
+        }
+      }
+    }
+
+
 
     if(DO.load2Way.value >= 85 && DO.load2Way.value < 95) {
       // lower hp output by 10%... if not already minValue
