@@ -8,6 +8,13 @@ import { DO } from './do';
 export const setCoolingDemand = value => {
   if(value === 'on') {
     HP.coolingDemand = true;
+
+    // this should be moved!!!
+    if(isPidControllerActive(DO.hpOutput)) {
+      DO.hpOutput.controller.setTarget(HP.cooling.minAhuTemp);
+    }
+
+
   }
   if(value === 'off') {
     HP.coolingDemand = false;
@@ -31,5 +38,9 @@ export const manualCoolingModeActivate = () => {
 
 
 export const hpCoolingLoop = () => {
+
+  if(HP.controller !== null) {
+    // we have some controller in use!
+  }
 
 };
