@@ -544,3 +544,19 @@ export const lcdNextScreenHelper = (instanceName, instance, nextScreen, nextRota
   LCD.screen.currentInstance = instance;
   instance();
 };
+
+export const initilizePidController = instance => {
+  if(!isPidControllerActive(instance)) {
+    const {
+      controller_p,
+      controller_i,
+      controller_d,
+      controller_time,
+    } = instance;
+    instance.controller = pidController(controller_p, controller_i, controller_d, controller_time);
+  }
+};
+
+export const isPidControllerActive = instance => {
+  return !!instance?.controller;
+};
