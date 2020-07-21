@@ -191,7 +191,7 @@ export const TH = {
       initialized.done(this.name);
     },
   },
-  fluidline: {
+  ahuCirculationSupply: {
     type: 'I2C_DS18B20',
     name: 'AHU Circulation Supply temperature',
     active: true,
