@@ -6,13 +6,13 @@ EventEmitter.defaultMaxListeners = 200;
 
 import {GLOBALS} from './globals';
 import {IO} from './io';
-import {SECRETS} from './secrets.js';
-import {DO} from './do';
-import {TH} from './th';
-import {DI} from './di';
-import {AO} from './ao';
-import {AI} from './ai';
-import {LCD} from './lcd';
+import {SECRETS} from './secrets';
+//import {DO} from './do';
+//import {TH} from './th';
+//import {DI} from './di';
+//import {AO} from './ao';
+//import {AI} from './ai';
+//import {LCD} from './lcd';
 import {LOGIC} from './logic';
 import {HP} from './hp';
 
@@ -126,7 +126,7 @@ try {
     });
   });
 } catch(e) {
-  console.log("ERROR, mqqtClient.on close catch",e);
+  console.log("ERROR, mqttClient.on close catch",e);
 }
 
 try {
@@ -141,7 +141,7 @@ try {
     mqttOnMessage(mqttClient,topic,message);
   });
 } catch(e) {
-  console.log("ERROR, mqttclient.on message catch",e);
+  console.log("ERROR, mqttClient.on message catch",e);
 }
 
 try {
