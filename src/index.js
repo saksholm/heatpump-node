@@ -2,6 +2,8 @@ import five from 'johnny-five';
 import mqtt from 'mqtt';
 import http from 'http';
 import EventEmitter from 'events';
+import memwatch from '@airbnb/node-memwatch';
+
 EventEmitter.defaultMaxListeners = 200;
 
 import {GLOBALS} from './globals';
@@ -151,3 +153,7 @@ try {
 } catch(e) {
   console.log("ERROR, mqttClient.on catch",e);
 }
+
+memwatch.on('stats', stats => {
+  console.log("memwatch stats: ", stats);
+});
