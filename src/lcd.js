@@ -34,7 +34,7 @@ const LCD = {
     nextScreen: "runningBoxes",
     stickyScreen: "basic",
     stickyScreenTime: 5*60*1000, // 5mins
-    active: true,
+    active: false,
     output: null,
     initial: function() {
       // I2C LCD, PCF8574
