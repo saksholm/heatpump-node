@@ -10,7 +10,7 @@ export const defrostLogic = () => {
 
   // DEFROST
   //TODO: prevent this to run every run...
-  if(HP.defrost === false && AI.condenserPde.value >= AI.condenserPde.defrostPa ) {
+  if(AI.condenserPde.active && HP.defrost === false && AI.condenserPde.value >= AI.condenserPde.defrostPa ) {
     // condenser Pa is over melting Pa limit
     HP.defrost = true;
     HP.mode = 'defrost';
@@ -27,7 +27,7 @@ export const defrostLogic = () => {
 
   }
 
-  if(HP.defrost === true && AI.condenserPde.value <= AI.condenserPde.cleanPa) {
+  if(AI.condenserPde.active && HP.defrost === true && AI.condenserPde.value <= AI.condenserPde.cleanPa) {
     HP.defrost = false;
     HP.mode = 'heating';
     HP.mqttStatus('modeChange');

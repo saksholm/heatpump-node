@@ -17,7 +17,7 @@ const {
 
 export const AI = {
   board: null,
-  active: true,
+  active: false,
   interval: 2*1000,
   threshold: 2,
   condenserPde: {
