@@ -17,7 +17,6 @@ import {
 } from './func';
 
 import {HP} from './hp';
-//import {GLOBALS} from './globals';
 
 const initialized = new Initialized('DO');
 
@@ -44,6 +43,11 @@ const {
 const {
   Pin,
 } = five;
+
+const {
+  minFan,
+  maxFan,
+} = HP;
 
 export const DO = {
   board: null,
@@ -388,8 +392,8 @@ export const DO = {
     pinMode: Pin.PWM, // PWM
     value: 0,
     defaultValue: 20,
-    minValue: HP.minFan,
-    maxValue: HP.maxFan,
+    minValue: minFan,
+    maxValue: maxFan,
     set: function(value,skip=false) {
       if(!defaultForSet(this,value)) return;
 
