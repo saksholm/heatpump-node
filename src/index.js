@@ -155,5 +155,5 @@ try {
 }
 
 memwatch.on('stats', stats => {
-  console.log("memwatch stats: ", stats);
+//  console.log("memwatch stats: ", stats);
 });
