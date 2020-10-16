@@ -10,6 +10,7 @@ import {
 import {GLOBALS} from "./globals";
 
 export const hpStart = function() {
+  console.log("hpStart... HP.mode is now", HP.mode);
   // if error... we don't want to start at all!!!
   if(HP.error) return false;
   if(HP.emergencyShutdown) return false;
