@@ -1,6 +1,6 @@
 import {HP} from './hp';
 import {DO} from './do';
-import {TH} from './th';
+//import {TH} from './th';
 
 import {
   calculateTimeout,
@@ -32,7 +32,7 @@ export const hpStop = function(emergency=false, callback=false) {
 
     HP.mqttStatus('emergency')
   }
-  const {wait} = HP.board;
+//  const {wait} = HP.board;
   // let's check if minimumRunningTime is enough... if not.. we run it to end.
   // on emergency case we want to stop immediately.
   const calculatedTimeoutMillis = calculateTimeout(HP.actualRunStartTimestamp, HP.minimumRunningTime, true);
