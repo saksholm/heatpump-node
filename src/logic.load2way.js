@@ -10,9 +10,8 @@ export const logicLoad2WayController = () => {
     // update temperature to controller and get new value out
     const controllerUpdate = DO.load2Way.controller.update(TH.hxOut.value);
     const controllerUpdateRounded = Math.round(controllerUpdate);
-    const inverted = 100-controllerUpdate;
-    const newValue = Math.round(inverted);
-    console.log(`logicLoad2WayController() pid controllerUpdate: ${controllerUpdate} (${controllerUpdateRounded}), inverted: ${inverted} (${newValue}), hxOut.value: ${TH.hxOut.value}`);
+    const newValue = controllerUpdateRounded;
+    console.log(`logicLoad2WayController() pid controllerUpdate: ${controllerUpdate} (${newValue}), hxOut.value: ${TH.hxOut.value}`);
 
     // if new value is not the existing value.. we update
     if(newValue !== DO.load2Way.value) {
