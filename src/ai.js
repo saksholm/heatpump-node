@@ -17,12 +17,12 @@ const {
 
 export const AI = {
   board: null,
-  active: false,
+  active: true,
   interval: 2*1000,
   threshold: 2,
   condenserPde: {
     type: 'pde',
-    active: true,
+    active: false,
     name: 'Condenser PDE',
     pin: 55, //A1
     pinMode: Pin.INPUT,
@@ -51,7 +51,7 @@ export const AI = {
     },
   },
   filterGuard: {
-    active: true,
+    active: false,
     type: 'pde',
     name: 'Filter Guard',
     pin: 56, // A2
