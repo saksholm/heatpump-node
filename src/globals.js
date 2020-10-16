@@ -1,4 +1,4 @@
-//import {setCoolingDemand} from './hp.cooling';
+import {setCoolingDemand} from './hp.cooling';
 
 const GLOBALS = {
   version: '0.2',
@@ -34,25 +34,25 @@ const GLOBALS = {
     preventHeatingResistors: false,
     forceHeat: false,
     deadZone: 0.3,
-    upper: {
+    upper: { // middle upper!!
       request: false,
-      softMinimum: 45.0,
-      softMaximum: 55.0,
-      hardMinimum: 40.0,
-      hardMaximum: 80.0,
+      softMinimum: 30.0,
+      softMaximum: 45.0,
+      hardMinimum: 25.0,
+      hardMaximum: 60.0,
     },
-    middle: {
+    middle: { // middle lower
       request: false,
       softMinimum: 25.0,
-      softMaximum: 35.0,
+      softMaximum: 40.0,
       hardMinimum: 20.0,
-      hardMaximum: 50.0,
+      hardMaximum: 60.0,
     },
-    lower: {
+    lower: { // bottom
       request: false,
-      softMinimum: 10.0,
-      softMaximum: 25.0,
-      hardMinimum: 5.0,
+      softMinimum: 20.0,
+      softMaximum: 35.0,
+      hardMinimum: 8.0,
       hardMaximum: 40.0,
     },
 
