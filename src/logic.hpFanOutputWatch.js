@@ -17,8 +17,10 @@ export const logicHpFanOutputWatch = () => {
       'stopping',
       'manual',
     ].includes(HP.mode)) {
-      DO.hpFanOutput.increase(1);
-      console.log(`HP.loop :: increasing hpFanOutput (to ${DO.hpFanOutput.value}) by 1%, HP.mode = ${HP.mode}`);
+      if(DO.hpFanOutput.value < DO.hpFanOutput.maxValue) {
+        DO.hpFanOutput.increase(1);
+        console.log(`HP.loop :: increasing hpFanOutput (to ${DO.hpFanOutput.value}) by 1%, HP.mode = ${HP.mode}`);
+      }
     }
 
 
