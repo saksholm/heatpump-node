@@ -16,7 +16,7 @@ import {
   initializePidController,
 } from './func';
 
-import {HP} from './hp';
+const HP = require('./hp');
 
 const initialized = new Initialized('DO');
 
