@@ -1,9 +1,12 @@
+/*
 import {
   Initialized,
 } from './initialized.class';
+*/
+
 //import {genericInitial} from './func';
 
-const initialized = new Initialized('AO');
+//const initialized = new Initialized('AO');
 
 const AO = {
 };
