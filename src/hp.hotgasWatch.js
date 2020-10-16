@@ -28,7 +28,7 @@ export const hotgasWatch = () => {
 
         DO.hpOutput.set(cutOutputToHalf);
 
-        console.log("... cut hp output demand to half (or atleast to minimum)");
+        console.log("... cut hp output demand to half (or at least to minimum)");
       }
 
       if(DO.load2Way.value < DO.load2Way.maxValue) {
@@ -37,7 +37,7 @@ export const hotgasWatch = () => {
         if(doubleOutput > DO.load2Way.maxValue) doubleOutput = DO.load2Way.maxValue;
 
         DO.load2Way.set(doubleOutput);
-        console.log("... and doubled load 2-way valve output (or atleast to maximum)");
+        console.log("... and doubled load 2-way valve output (or at least to maximum)");
       }
       // should put next legit check time?! so this have time to stabilize things
       // for 15s?
