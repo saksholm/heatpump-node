@@ -11,6 +11,7 @@ const GLOBALS = {
   timersTH: [],
   startupTime: 20*1000, // 20sec to not start hp
   logicLoopInterval: 1*1000,
+  logicLoopLoad2WayLoopInterval: 5*1000,
   startupTimestamp: 0,
   hvacCooling: false,
   hvacDrying: false, // means cooling & after heating

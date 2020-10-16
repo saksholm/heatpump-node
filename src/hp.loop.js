@@ -39,6 +39,11 @@ export const hpLoop = () => {
     logicHpOutputWatch();
     logicHpFanOutputWatch();
 
+
+
+  });
+
+  HP.board.loop(GLOBALS.logicLoopLoad2WayLoopInterval,() => {
     // this logic is only for heat to water....
     // boiler logic asking heat to water
     if(GLOBALS.dryRun || (GLOBALS.heatToWater && DO.load2Way.value !== 0)) {
@@ -48,6 +53,6 @@ export const hpLoop = () => {
 
 
     }
-
   });
+
 };

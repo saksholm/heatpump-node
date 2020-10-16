@@ -558,7 +558,8 @@ export const initializePidController = (instance,callback) => {
       controller_d,
       controller_time,
     } = instance;
-    instance.controller = pidController(controller_p, controller_i, controller_d, controller_time);
+//    instance.controller = pidController(controller_p, controller_i, controller_d, controller_time);
+    instance.controller = pidController(controller_p, controller_i, controller_d);
 
     if(isFunction(callback)) callback();
   }
