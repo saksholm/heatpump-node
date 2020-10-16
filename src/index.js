@@ -157,3 +157,5 @@ try {
 memwatch.on('stats', stats => {
 //  console.log("memwatch stats: ", stats);
 });
+
+module.exports = {GLOBALS, IO, SECRETS, DO, TH, DI, AO, AI, LCD, HP, LOGIC};

@@ -1,8 +1,6 @@
 import {HP} from './hp';
 import {DO} from './do';
-//import {TH} from './th';
 import {GLOBALS} from './globals';
-
 import {hotgasWatch} from './hp.hotgasWatch';
 import {hpCoolingLoop} from './hp.cooling';
 import {hpHeatingLoop} from './hp.heating';
@@ -13,10 +11,6 @@ import {logicLoad2WayController} from './logic.load2way';
 import {logicHxIn} from './logic.hxIn';
 import {logicHpOutputWatch} from './logic.hpOutputWatch';
 import {logicHpFanOutputWatch} from './logic.hpFanOutputWatch';
-
-const {
-//  deadZone,
-} = GLOBALS;
 
 
 export const hpLoop = () => {
