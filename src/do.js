@@ -399,7 +399,7 @@ export const DO = {
       if(!defaultForSet(this,value)) return;
 
       this.value = constrain(value, this.minValue, this.maxValue);
-      DO.board.analogWrite(this.pin, skip ? value : mapPercentToPWM(this.value, this.minValue, this.maxValue));
+      DO.board.analogWrite(this.pin, skip ? this.value : mapPercentToPWM(this.value, this.minValue, this.maxValue));
 
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
 
