@@ -1,17 +1,17 @@
 import five from 'johnny-five';
-import {GLOBALS} from './globals';
-import {DO} from './do';
-import {TH} from './th';
+//import {GLOBALS} from './globals';
+//import {DO} from './do';
+//import {TH} from './th';
 import {
-  unixtimestamp,
-  calculateTimeout,
-  mapPercentToPWM,
+//  unixtimestamp,
+//  calculateTimeout,
+//  mapPercentToPWM,
   genericInitial,
   mqttPublish,
 } from './func'
 
 const {
-  constrain,
+//  constrain,
 } = five.Fn;
 
 import {hpStop} from './hp.stop';
@@ -24,7 +24,8 @@ export const HP = {
   allowedToRun: false,
   manual: true,
   error: false,
-  mode: 'stop',
+  program: 'idle', // idle, stop, cooling, heating, heatToWater
+  mode: 'stop', // idle, stop, stopping, starting, running, alarmA, alarmB, defrost
   alarmA: false,
   alarmB: false,
   alarmAReason: null,
@@ -33,7 +34,7 @@ export const HP = {
   lastStopTime: 0,
   minimumRunningTime: 60*3, // 3min
   actualRunStartTimestamp: 0,
-  restartDelay: 60*5, // 5mins
+  restartDelay: 60*5, // 5 mins
   restartTimestamp: 0,
   defrost: false,
   coolingDemand: false,

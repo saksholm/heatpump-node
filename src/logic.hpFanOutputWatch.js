@@ -1,8 +1,13 @@
 import {HP} from './hp';
 import {DO} from './do';
 
+import {
+  unixtimestamp,
+} from './func';
 
-export const logicHpFanOutputWatch = timestamp => {
+
+export const logicHpFanOutputWatch = () => {
+  const timestamp = unixtimestamp();
   if(timestamp > (HP.fanWatchInterval + HP.nextLoopIntervalTimestamps.fan)) {
 
     // prevent hpFanOutput increasing when HP.mode = stop/starting/stopping

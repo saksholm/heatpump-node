@@ -3,6 +3,10 @@
 import { HP } from "./hp";
 import { DO } from './do';
 
+import {
+  isPidControllerActive,
+} from './func';
+
 // TODO: move manualCoolingMode from func.js to here
 
 export const setCoolingDemand = value => {

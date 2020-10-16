@@ -1,10 +1,10 @@
 import {GLOBALS} from './globals';
 import {HP} from './hp';
-import {DO} from './do';
+//import {DO} from './do';
 import {TH} from './th';
 import {DI} from './di';
-import {AO} from './ao';
-import {AI} from './ai';
+//import {AO} from './ao';
+//import {AI} from './ai';
 
 import {
   unixtimestamp,
@@ -13,45 +13,45 @@ import {
 export const boilerLogic = () => {
   // TODO: boiler checks if some is allowed or not... override rules with checks
 
+  // TODO: implement hard limits...!
+
+  const {
+    boiler,
+  } = GLOBALS;
+
+
   // boiler upper check minimum
-  if( (TH.boilerUpper.value + GLOBALS.boiler.deadZone) < GLOBALS.boiler.upper.softMinimum) {
-    GLOBALS.boiler.upper.request = true;
-    GLOBALS.upperHeatingResistorAllowed = true;
+  if( (TH.boilerUpper.value + boiler.deadZone) < boiler.upper.softMinimum) {
+    boiler.upper.request = true;
+//    GLOBALS.upperHeatingResistorAllowed = true;
   }
   // boiler upper check maximum
-  if( (TH.boilerUpper.value - GLOBALS.boiler.deadZone) > GLOBALS.boiler.upper.softMaximum) {
-    GLOBALS.boiler.upper.request = false;
-    GLOBALS.upperHeatingResistorAllowed = false;
+  if( (TH.boilerUpper.value - boiler.deadZone) > boiler.upper.softMaximum) {
+    boiler.upper.request = false;
+//    GLOBALS.upperHeatingResistorAllowed = false;
   }
 
   // boiler middle check minimum
-  if( (TH.boilerMiddle.value + GLOBALS.boiler.deadZone) < GLOBALS.boiler.middle.softMinimum) {
-    GLOBALS.boiler.middle.request = true;
-    GLOBALS.heatToWater = true; // allow
+  if( (TH.boilerMiddle.value + boiler.deadZone) < boiler.middle.softMinimum) {
+    boiler.middle.request = true;
   }
   // boiler middle softMaximum
-  if( (TH.boilerMiddle.value - GLOBALS.boiler.deadZone) > GLOBALS.boiler.middle.softMaximum) {
-    GLOBALS.boiler.middle.request = false;
-    GLOBALS.heatToWater = false;
+  if( (TH.boilerMiddle.value - boiler.deadZone) > boiler.middle.softMaximum) {
+    boiler.middle.request = false;
   }
 
   // boiler check lower minimum
-  if( ( TH.boilerLower.value + GLOBALS.boiler.deadZone) < GLOBALS.boiler.lower.softMinimum) {
-
-    // do we allow lower request if middle is above softMaximum?
-    if(GLOBALS.boiler.middle.request) {
-      GLOBALS.boiler.lower.request = true;
-      GLOBALS.heatToWater = true;
-    }
-
-
+  if( ( TH.boilerLower.value + boiler.deadZone) < boiler.lower.softMinimum) {
+    boiler.lower.request = true;
   }
 
   // boiler check lower maximum
-  if( (TH.boilerLower.value - GLOBALS.boiler.deadZone) > GLOBALS.boiler.lower.softMaximum) {
-    GLOBALS.boiler.lower.request = false;
-    GLOBALS.heatToWater = false;
+  if( (TH.boilerLower.value - boiler.deadZone) > boiler.lower.softMaximum) {
+    boiler.lower.request = false;
   }
+
+  // NOTE: this controls water heating request
+  GLOBALS.heatToWater = boiler.upper.request || boiler.middle.request || boiler.lower.request;
 
 
   if(![
@@ -62,13 +62,15 @@ export const boilerLogic = () => {
     'manual',
   ].includes(HP.mode)) {
 
-    if(GLOBALS.boiler.middle.request && GLOBALS.heatToWater) {
+    if(GLOBALS.heatToWater) {
 
       // if threePhaseMonitor value is ok then start
       if(DI.threePhaseMonitor.value === 0) {
 
         if(HP.restartTimestamp + HP.restartDelay <= unixtimestamp()) {
           console.log("LOGIC boiler :: Allowed to start after restartDelay... FINALLY!!!!!!!!!!!!!!!!! HP.mode = ", HP.mode);
+          // TODO: what if we running something else ?!
+          HP.program = 'heatToWater';
           HP.start();
         }
       }

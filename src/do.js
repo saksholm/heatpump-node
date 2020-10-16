@@ -8,15 +8,16 @@ import {
   mqttPublish,
   convertStringToBoolean,
   relayOnOff,
-  pidController,
+//  pidController,
   defaultForSet,
   increaseValue,
   decreaseValue,
   valueToOnOff,
+  initializePidController,
 } from './func';
 
 import {HP} from './hp';
-import {GLOBALS} from './globals';
+//import {GLOBALS} from './globals';
 
 const initialized = new Initialized('DO');
 
@@ -32,12 +33,12 @@ SERVO	  4	      Pin.SERVO
 
 const {
   constrain,
-  map,
-  inRange,
-  range,
-  sum,
-  toFixed,
-  uid,
+//  map,
+//  inRange,
+//  range,
+//  sum,
+//  toFixed,
+//  uid,
 } = five.Fn;
 
 const {
@@ -72,7 +73,7 @@ export const DO = {
       initialized.done(this.name);
     },
     repl: {
-      ahuFhan: value => DO.ahuFan.set(value),
+      ahuFan: value => DO.ahuFan.set(value),
       ahuFanOn: () => DO.ahuFan.set('on'),
       ahuFanOff: () => DO.ahuFan.set('off'),
       relay1: value => DO.ahuFan.set(value),
@@ -450,12 +451,21 @@ export const DO = {
       DO.board.pinMode(this.pin, this.pinMode);
       //this.output = five.PWM
       DO.board.analogWrite(this.pin, this.value);
-      this.controller = pidController(this.controller_p, this.controller_i, this.controller_d, this.controller_time);
+
+      this.initializeController();
+//      this.controller = pidController(this.controller_p, this.controller_i, this.controller_d, this.controller_time);
       initialized.done(this.name);
 
     },
+    initializeController: () => {
+      initializePidController(this, () => {
+        this.set(this.minValue); // pre value if somehow changed to something else
+        this.controller.setTarget(HP.hxOutTarget);
+      });
+    },
     repl: {
       load2Way: value => DO.load2Way.set(value),
+      load2WayPid: () => DO.load2Way.initializeController(),
     },
   },
   hpOutput: {
@@ -468,13 +478,13 @@ export const DO = {
     defaultValue: 20,
     minValue: HP.minPower,
     maxValue: HP.maxPower,
-    set: function(value) {
+    set: function(value, skip=false) {
       if(!defaultForSet(this,value)) return;
 
       // allow to set value only if allowedToRun is true
       if(HP.allowedToRun) {
         this.value = constrain(parseInt(value), this.minValue, this.maxValue);
-        DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
+        DO.board.analogWrite(this.pin, skip ? value : mapPercentToPWM(this.value, this.minValue, this.maxValue));
 
         mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       }
@@ -487,6 +497,7 @@ export const DO = {
     mqttState: 'hp/hpOutput',
     repl: {
       hpOutput: value => DO.hpOutput.set(value),
+      hpOutputShutdown: () => DO.hpOutput.set(0,true),
     },
     output: null,
     initial: function() {

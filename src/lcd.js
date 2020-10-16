@@ -5,8 +5,8 @@ import {
 
 import {GLOBALS} from './globals';
 import {TH} from './th';
-import {HP} from './hp';
-import {DO} from './do';
+//import {HP} from './hp';
+//import {DO} from './do';
 
 import {
   genericInitial,
