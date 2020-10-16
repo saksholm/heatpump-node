@@ -40,8 +40,6 @@ export const HP = {
   coolingDemand: false,
   maxPower: 50, // 0-100 ... not use directly
   minPower: 10, // 0-100 ... not use directly
-  minFan: 10, // 0-100 ... not use directly
-  maxFan: 70, // 0-100 ... not use directly
   maxHotgas: 80, // 80c
   hxInMaximum: 35,
   hxOutTarget: 40,

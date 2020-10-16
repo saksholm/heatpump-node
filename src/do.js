@@ -45,11 +45,6 @@ const {
   Pin,
 } = five;
 
-const {
-  minFan,
-  maxFan,
-} = HP;
-
 export const DO = {
   board: null,
   ahuFan: {
@@ -393,13 +388,13 @@ export const DO = {
     pinMode: Pin.PWM, // PWM
     value: 0,
     defaultValue: 20,
-    minValue: minFan,
-    maxValue: maxFan,
+    minValue: 10,
+    maxValue: 70,
     set: function(value,skip=false) {
       if(!defaultForSet(this,value)) return;
       this.value = constrain(value, this.minValue, this.maxValue);
 
-      console.log("DO.hpFanOutput.set raw: ",value,"constrain value:", this.value);
+      console.log("DO.hpFanOutput.set raw: ",value,"constrain value:", this.value, "minValue", this.minValue, "maxValue", this.maxValue);
 
       DO.board.analogWrite(this.pin, skip ? this.value : mapPercentToPWM(this.value, this.minValue, this.maxValue));
 
