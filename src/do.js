@@ -389,7 +389,7 @@ export const DO = {
     value: 0,
     defaultValue: 20,
     minValue: 10,
-    maxValue: 70,
+    maxValue: 60,
     set: function(value,skip=false) {
       if(!defaultForSet(this,value)) return;
       this.value = constrain(value, this.minValue, this.maxValue);
