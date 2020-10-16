@@ -32,7 +32,7 @@ export const HP = {
   alarmBReason: null,
   running: false,
   lastStopTime: 0,
-  minimumRunningTime: 60*3, // 3min
+  minimumRunningTime: 60*1, // 1min
   actualRunStartTimestamp: 0,
   restartDelay: 60*5, // 5 mins
   restartTimestamp: 0,
