@@ -16,7 +16,7 @@ import {
   initializePidController,
 } from './func';
 
-const HP = require('./hp');
+import {HP} from './hp';
 
 const initialized = new Initialized('DO');
 
@@ -461,7 +461,7 @@ export const DO = {
       initialized.done(this.name);
 
     },
-    initializeController: () => {
+    initializeController: function() {
       initializePidController(this, () => {
         this.set(this.minValue); // pre value if somehow changed to something else
         this.controller.setTarget(HP.hxOutTarget);
