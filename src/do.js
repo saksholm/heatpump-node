@@ -16,8 +16,8 @@ import {
   initializePidController,
 } from './func';
 
-//import {HP} from './hp';
-const HP = require('./hp');
+import {HP} from './hp';
+//const HP = require('./hp');
 
 const initialized = new Initialized('DO');
 
@@ -442,7 +442,7 @@ export const DO = {
     decrease: function(step=1){decreaseValue(this,step)},
     controller: null,
     controller_p: 0.25,
-    controller_i: 0.02,//0.01,
+    controller_i: 0.05,//0.01,
     controller_d: 0.01,
     controller_time: 2,
     startDelay: 10*1000, // delay 90s-90deg.. wait 30s
@@ -478,12 +478,13 @@ export const DO = {
     pinMode: Pin.PWM, // PWM
     value: 0,
     defaultValue: 20,
-    minValue: HP.minPower,
-    maxValue: HP.maxPower,
+    minValue: 10,
+    maxValue: 50,
     set: function(value, skip=false) {
       if(!defaultForSet(this,value)) return;
 
       // allow to set value only if allowedToRun is true
+      console.log(`DEBUG: DO.hpOutput.set().. HP.allowedToRun: ${HP.allowedToRun} `);
       if(HP.allowedToRun) {
         this.value = constrain(parseInt(value), this.minValue, this.maxValue);
         DO.board.analogWrite(this.pin, skip ? value : mapPercentToPWM(this.value, this.minValue, this.maxValue));
