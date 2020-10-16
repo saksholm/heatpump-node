@@ -1,7 +1,7 @@
 import five from 'johnny-five';
-//import {GLOBALS} from './globals';
-//import {DO} from './do';
-//import {TH} from './th';
+import {GLOBALS} from './globals';
+const {DO} = require('./do'); //import {DO} from './do';
+import {TH} from './th';
 import {
 //  unixtimestamp,
 //  calculateTimeout,
