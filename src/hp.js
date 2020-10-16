@@ -53,7 +53,7 @@ export const HP = {
   },
   hotgasWatchInterval: 15, // in seconds
   outputWatchInterval: 5, // in seconds
-  fanWatchInterval: 10, // in seconds
+  fanWatchInterval: 15, // in seconds
   nextLoopIntervalTimestamps: { // object to handle interval check skips
     hotgas: 0,
     output: 0,

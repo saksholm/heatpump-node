@@ -437,6 +437,7 @@ const readI2CDS18B20 = (instance, board) => {
 */
 export const increaseValue = (instance, step=1) => {
   let newValue = instance.value+step;
+  console.log(`increaseValue(), instance: ${instance.name}, newValue: ${newValue}`);
   if(newValue > instance.maxValue) newValue = instance.maxValue;
   if(newValue < instance.minValue) newValue = instance.minValue;
   instance.set(newValue);
