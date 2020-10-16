@@ -1,10 +1,7 @@
 import {HP} from './hp';
 import {DO} from './do';
-import {TH} from './th';
+//import {TH} from './th';
 import {GLOBALS} from './globals';
-import {
-  unixtimestamp,
-} from './func';
 
 import {hotgasWatch} from './hp.hotgasWatch';
 import {hpCoolingLoop} from './hp.cooling';
@@ -18,19 +15,20 @@ import {logicHpOutputWatch} from './logic.hpOutputWatch';
 import {logicHpFanOutputWatch} from './logic.hpFanOutputWatch';
 
 const {
-  deadZone,
+//  deadZone,
 } = GLOBALS;
 
 
 export const hpLoop = () => {
   HP.board.loop(GLOBALS.logicLoopInterval,() => {
-    const timestamp = unixtimestamp();
 
     logicAlarms();
     hotgasWatch();
 
 
     // TBD: this switch is just a mock.. depend on HP.mode what to do
+
+    // TODO: change to HP.program...!! different than mode
     switch(HP.mode) {
       case "cooling":
         // call cooling func
@@ -44,15 +42,15 @@ export const hpLoop = () => {
         break;
     }
 
-    logicHpOutputWatch(timestamp);
-    logicHpFanOutputWatch(timestamp);
+    logicHpOutputWatch();
+    logicHpFanOutputWatch();
 
     // this logic is only for heat to water....
     // boiler logic asking heat to water
-    if(GLOBALS.dryRun || (HP.heatToWater && DO.load2Way.value !== 0)) {
+    if(GLOBALS.dryRun || (GLOBALS.heatToWater && DO.load2Way.value !== 0)) {
 
       logicLoad2WayController();
-      logicHxIn();
+      logicHxIn(); // stops when minValue is exceeded
 
 
     }
