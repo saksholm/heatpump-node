@@ -22,7 +22,7 @@ import {hpLoop} from './hp.loop';
 export const HP = {
   board: null,
   allowedToRun: false,
-  manual: true,
+  manual: false,
   error: false,
   program: 'idle', // idle, stop, cooling, heating, heatToWater
   mode: 'stop', // idle, stop, stopping, starting, running, alarmA, alarmB, defrost
