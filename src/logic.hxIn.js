@@ -1,4 +1,4 @@
-import {GLOBALS} from './globals';
+const GLOBALS = require('./globals');
 import {TH} from './th';
 import {HP} from './hp';
 
