@@ -3,17 +3,17 @@ import getUnixTime from 'date-fns/getUnixTime';
 import Controller from 'node-pid-controller';
 import {GLOBALS} from './globals';
 import {DO} from './do';
-import {DI} from './di';
-import {AO} from './ao';
-import {AI} from './ai';
+//import {DI} from './di';
+//import {AO} from './ao';
+//import {AI} from './ai';
 import {TH} from './th';
-import {HP} from './hp';
+//import {HP} from './hp';
 import {LCD} from './lcd';
 
 const {
   map,
   constrain,
-  sum,
+//  sum,
 } = five.Fn;
 
 export const parseMQTTString = path => {
@@ -60,7 +60,7 @@ export const genericInitial = (module, name, board, callback=null) => {
 
     if(
       key !== "board" &&
-      typeof instance !== null &&
+      instance !== null &&
       instance &&
       instance.active
     ) {
@@ -120,7 +120,7 @@ export const mqttSubscriptions = mqttClient => {
   Object.keys(DO).map(key => {
     const instance = DO[key];
 
-    if(key !== "board" && typeof instance !== null && instance ) {
+    if(key !== "board" && instance !== null && instance ) {
       if(typeof instance.mqttCommand === "string" && instance.mqttCommand !== "") {
 
         mqttSubscribe(mqttClient, instance.mqttCommand);
@@ -155,7 +155,7 @@ export const mqttCommandTopics = () => {
 
   Object.keys(DO).map(key => {
     const instance = DO[key];
-    if(key !== "board" && typeof instance !== null && instance.mqttCommand) {
+    if(key !== "board" && instance !== null && instance.mqttCommand) {
       if(typeof instance.mqttCommand === "string" && !!instance.mqttCommand) {
 
         const topic = `cmnd/${GLOBALS.mqttBase}/${instance.mqttCommand}`;
@@ -313,7 +313,7 @@ export const setupI2C_DS18B20 = (instance=false, board=false) => {
     const {
       interval,
       name,
-      i2c,
+//      i2c,
       objectName,
     } = instance;
 
@@ -332,8 +332,8 @@ export const setupI2C_DS18B20 = (instance=false, board=false) => {
         const {
           value,
           i2cReadTimestamp,
-          valueChangedTimestamp,
-          valueChangedTimestampAgo,
+//          valueChangedTimestamp,
+//          valueChangedTimestampAgo,
         } = TH.thI2CReads[objectName];
 
         if(value !== null && instance.value !== value) {
@@ -514,10 +514,10 @@ export const createLCDDataScreen = displayElements => {
     const lcd = LCD.screen.output;
     lcd.clear();
 
-    let count = 1;
+//    let count = 1;
     displayElements.map((obj,idx) => {
       const {name,lcdName, value} = obj.element;
-      const displayName = lcdName || 'xxxx';
+      const displayName = lcdName || 'xxxx';
       if(lcdName === undefined) console.warn(`Missing lcdName instance in '${name}'`);
       lcd.cursor(idx,0).print(`${displayName.padEnd(15," ")} ${value.toFixed(1)}`);
     });
@@ -525,7 +525,11 @@ export const createLCDDataScreen = displayElements => {
 
     LCD.screen.activeInterval = setInterval(function() {
       displayElements.map((obj,idx) => {
-        const {name,lcdName,value} = obj.element;
+        const {
+//          name,
+//          lcdName,
+          value,
+        } = obj.element;
         lcd.cursor(idx,15).print(`${value.toFixed(1).padStart(5," ")}`);
       });
       lcd.cursor(0,49);
@@ -545,7 +549,7 @@ export const lcdNextScreenHelper = (instanceName, instance, nextScreen, nextRota
   instance();
 };
 
-export const initilizePidController = instance => {
+export const initializePidController = (instance,callback) => {
   if(!isPidControllerActive(instance)) {
     const {
       controller_p,
@@ -554,9 +558,15 @@ export const initilizePidController = instance => {
       controller_time,
     } = instance;
     instance.controller = pidController(controller_p, controller_i, controller_d, controller_time);
+
+    if(isFunction(callback)) callback();
   }
 };
 
 export const isPidControllerActive = instance => {
   return !!instance?.controller;
+};
+
+export const isFunction = instance => {
+  return typeof instance === 'function';
 };
