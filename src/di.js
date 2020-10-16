@@ -7,7 +7,7 @@ import {
   mqttPublish,
   unixtimestamp,
 } from './func';
-import {GLOBALS} from './globals';
+//import {GLOBALS} from './globals';
 import {HP} from './hp.js';
 
 const initialized = new Initialized('DI');
@@ -184,9 +184,6 @@ export const DI = {
       });
 */
     },
-    mqttCommand: '',
-    mqttState: 'hp/chargingWaterpumpFlow',
-
   },
   threePhaseMonitor: {
     active: false,
@@ -281,9 +278,9 @@ DI.onChanges = () => {
   console.log("Mapping DI onChanges");
   Object.keys(DI).map(key => {
     const instance = DI[key];
-    if(key !== "board" && typeof instance !== null && typeof instance === 'object' && instance.active) {
+    if(key !== "board" && instance !== null && typeof instance === 'object' && instance.active) {
 //      console.log("typeof output", typeof instance.output, key);
-      if(typeof instance.output !== 'undefined' && instance.output !== null) {
+      if(typeof instance.output !== 'undefined' && instance.output !== null) {
         switch(instance.type) {
           case "flow":
             instance.output.on("data", function() {

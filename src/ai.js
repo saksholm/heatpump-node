@@ -5,7 +5,7 @@ import {
 import {GLOBALS} from './globals';
 import {
   genericInitial,
-  mqttPublish,
+//  mqttPublish,
   defaultForSet,
 } from './func';
 
@@ -85,8 +85,8 @@ AI.onChanges = () => {
   console.log("Mapping AI onChanges");
   Object.keys(AI).map(key => {
     const instance = AI[key];
-    if(key !== "board" && typeof instance !== null && typeof instance === 'object') {
-      if(instance.output !== null) {
+    if(key !== "board" && instance !== null && typeof instance === 'object') {
+      if(instance.output !== null) {
         instance.output.on("change", function(value){
           instance.set(value);
           if(GLOBALS.debug) console.log(`${instance.name} value changed to ${value}`);
