@@ -9,12 +9,12 @@ EventEmitter.defaultMaxListeners = 200;
 import {GLOBALS} from './globals';
 import {IO} from './io';
 import {SECRETS} from './secrets';
-//import {DO} from './do';
-//import {TH} from './th';
-//import {DI} from './di';
-//import {AO} from './ao';
-//import {AI} from './ai';
-//import {LCD} from './lcd';
+import {DO} from './do';
+import {TH} from './th';
+import {DI} from './di';
+import {AO} from './ao';
+import {AI} from './ai';
+import {LCD} from './lcd';
 import {LOGIC} from './logic';
 import {HP} from './hp';
 
