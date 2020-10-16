@@ -441,7 +441,7 @@ export const DO = {
     increase: function(step=1){increaseValue(this,step)},
     decrease: function(step=1){decreaseValue(this,step)},
     controller: null,
-    controller_p: 0.25,
+    controller_p: 0.02,//0.25,
     controller_i: 0.05,//0.01,
     controller_d: 0.01,
     controller_time: 2,
