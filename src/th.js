@@ -7,25 +7,25 @@ import {
   genericInitial,
   mqttPublish,
   round2Decimals,
-  calculateThermistorValue,
+//  calculateThermistorValue,
   validateTemperatures,
-  setupDS18B20,
+//  setupDS18B20,
   setupI2C_DS18B20,
   handleI2C_TH_Data,
 } from './func';
 const {
-  constrain,
-  map,
-  inRange,
-  range,
-  sum,
-  toFixed,
-  uid,
+//  constrain,
+//  map,
+//  inRange,
+//  range,
+//  sum,
+//  toFixed,
+//  uid,
 
 } = five.Fn;
 
 const {
-  Pin,
+//  Pin,
 } = five;
 
 const initialized = new Initialized('TH');
@@ -305,8 +305,8 @@ TH.onChanges = () => {
   Object.keys(TH).map(key => {
     setTimeout(() => {
       const instance = TH[key];
-      if(key !== "board" && typeof instance !== null && instance && instance.active) {
-        if(instance.output !== null && instance.type === 'thermometer10k') {
+      if(key !== "board" && instance !== null && instance && instance.active) {
+        if(instance.output !== null && instance.type === 'thermometer10k') {
           instance.output.on("data", function(value){
 
             const {celsius} = value;
