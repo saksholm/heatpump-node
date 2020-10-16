@@ -394,8 +394,6 @@ export const DO = {
       if(!defaultForSet(this,value)) return;
       this.value = constrain(value, this.minValue, this.maxValue);
 
-      console.log("DO.hpFanOutput.set raw: ",value,"constrain value:", this.value, "minValue", this.minValue, "maxValue", this.maxValue);
-
       DO.board.analogWrite(this.pin, skip ? this.value : mapPercentToPWM(this.value, this.minValue, this.maxValue));
 
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
