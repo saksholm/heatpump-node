@@ -37,6 +37,7 @@ const GLOBALS = {
     deadZone: 0.3,
     upper: { // middle upper!!
       request: false,
+      demand: true,
       softMinimum: 30.0,
       softMaximum: 40.0,
       hardMinimum: 25.0,
@@ -44,6 +45,7 @@ const GLOBALS = {
     },
     middle: { // middle lower
       request: false,
+      demand: true,
       softMinimum: 25.0,
       softMaximum: 35.0,
       hardMinimum: 20.0,
@@ -51,6 +53,7 @@ const GLOBALS = {
     },
     lower: { // bottom
       request: false,
+      demand: false,
       softMinimum: 20.0,
       softMaximum: 30.0,
       hardMinimum: 8.0,

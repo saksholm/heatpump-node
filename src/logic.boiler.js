@@ -51,7 +51,9 @@ export const boilerLogic = () => {
   }
 
   // NOTE: this controls water heating request
-  GLOBALS.heatToWater = boiler.upper.request || boiler.middle.request || boiler.lower.request;
+  GLOBALS.heatToWater = (boiler.upper.demand && boiler.upper.request)
+    || (boiler.middle.demand && boiler.middle.request)
+    || (boiler.lower.demand && boiler.lower.request);
 
 
   if(![
