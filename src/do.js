@@ -466,6 +466,7 @@ export const DO = {
     repl: {
       load2Way: value => DO.load2Way.set(value),
       load2WayPid: () => DO.load2Way.initializeController(),
+      load2WayPidReset: () => DO.load2Way.controller.reset(),
     },
   },
   hpOutput: {
