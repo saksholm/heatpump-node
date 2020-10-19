@@ -440,7 +440,7 @@ export const DO = {
     decrease: function(step=1){decreaseValue(this,step)},
     controller: null,
     controller_p: 0.01,//0.25,
-    controller_i: 0.20,//0.01,
+    controller_i: 0.15,//0.01,
     controller_d: 0.01,
     controller_time: 2,
     startDelay: 10*1000, // delay 90s-90deg.. wait 30s
