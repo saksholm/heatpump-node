@@ -472,6 +472,7 @@ export const DO = {
     type: 'pwm',
     name: 'HP Output',
     active: true,
+    mode: 'auto', // auto/fixed
     pin: 5,
     pinMode: Pin.PWM, // PWM
     value: 0,
@@ -491,6 +492,7 @@ export const DO = {
       }
       // TODO: ramp?!? up/down
     },
+    setMode: function(value) {this.mode = value;},
     shutdown: function() {this.value = 0;},
     increase: function(step=1){increaseValue(this,step)},
     decrease: function(step=1){decreaseValue(this,step)},
@@ -499,6 +501,7 @@ export const DO = {
     repl: {
       hpOutput: value => DO.hpOutput.set(value),
       hpOutputShutdown: () => DO.hpOutput.set(0,true),
+      hpOutputSetMode: value => { DO.hpOutput.setMode(value)},
     },
     output: null,
     initial: function() {
