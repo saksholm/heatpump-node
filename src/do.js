@@ -470,7 +470,7 @@ export const DO = {
       load2Way: value => DO.load2Way.set(value),
       load2WayPid: () => DO.load2Way.initializeController(),
       load2WayPidReset: () => DO.load2Way.controller.reset(),
-      load2WaySetTarget: value => DO.load2Way.setTarget(value);
+      load2WaySetTarget: value => DO.load2Way.setTarget(value),
     },
   },
   hpOutput: {
