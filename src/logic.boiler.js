@@ -79,5 +79,20 @@ export const boilerLogic = () => {
     }
   }
 
+  if([
+    'run',
+    'starting',
+  ].includes(HP.mode)) {
+    if(!GLOBALS.heatToWater) {
+      // stop
+      if(HP.restartTimestamp + HP.minimumRunningTime <= unixtimestamp()) {
+        HP.program = 'stop'
+        HP.stop();
+      }
+
+}
+    }
+  }
+
 
 };
