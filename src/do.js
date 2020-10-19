@@ -425,6 +425,7 @@ export const DO = {
     value: 0,
     minValue: 5, //TODO: should check what is the real minimum to use
     maxValue: 100,
+    target: null,
     set: function(value) {
       if(!defaultForSet(this,value)) return;
 
@@ -438,6 +439,7 @@ export const DO = {
     shutdown: function() {this.value = 0;},
     increase: function(step=1){increaseValue(this,step)},
     decrease: function(step=1){decreaseValue(this,step)},
+    setTarget: function(value) {this.target = value},
     controller: null,
     controller_p: 0.01,//0.25,
     controller_i: 0.15,//0.01,
@@ -458,15 +460,17 @@ export const DO = {
 
     },
     initializeController: function() {
+      this.target = HP.hxOutTarget;
       initializePidController(this, () => {
         this.set(this.minValue); // pre value if somehow changed to something else
-        this.controller.setTarget(HP.hxOutTarget);
+        this.controller.setTarget(this.target);
       });
     },
     repl: {
       load2Way: value => DO.load2Way.set(value),
       load2WayPid: () => DO.load2Way.initializeController(),
       load2WayPidReset: () => DO.load2Way.controller.reset(),
+      load2WaySetTarget: value => DO.load2Way.setTarget(value);
     },
   },
   hpOutput: {
