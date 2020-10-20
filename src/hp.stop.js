@@ -53,29 +53,33 @@ export const hpStop = function(emergency=false, callback=false) {
     // wait 20s before shutting water pump, 2-way valve
     console.log("\nWaiting 20s before continuing\n");
     HP.timeoutHandlers.stopStep2 = setTimeout(() => {
-      DO.waterpumpCharging.set('off'); // waterpump charging relay to on
-      console.log("waterpump charging output off()");
-      DO.load2Way.shutdown(); // let's open 2way valve 0%
-      console.log("load 2-way to 0%");
 
-      // turn pid controller target to 0
-      DO.load2Way.controller.setTarget(0);
-      console.log("load 2-way pid controller to 0");
+      DO.damperConvection.set('open'); //output.on();
+      console.log("damper convection open");
+      DO.damperOutside.set('close'); //output.off();
+      console.log("damper outside close");
 
       // wait 10s more before closing hp fan and close outside damper
       // and open convection damper
-      console.log("\nWait 10s more...\n");
+      console.log("\nWait 30s more...\n");
       HP.timeoutHandlers.stopStep3 = setTimeout(() => {
+
         DO.hpFanOutput.shutdown(); // hp fan output to 0%
         console.log("hp fan output to 0%");
 
         DO.hpFan.set('off'); //output.off(); // Fan on
         console.log("hp fan off");
 
-        DO.damperConvection.set('open'); //output.on();
-        console.log("damper convection open");
-        DO.damperOutside.set('close'); //output.off();
-        console.log("damper outside close");
+        DO.waterpumpCharging.set('off'); // waterpump charging relay to on
+        console.log("waterpump charging output off()");
+        DO.load2Way.shutdown(); // let's open 2way valve 0%
+        console.log("load 2-way to 0%");
+
+        // turn pid controller target to 0
+        DO.load2Way.setTarget(0);
+        DO.load2Way.controller.setTarget(0);
+        console.log("load 2-way pid controller to 0");
+
 
 
         if(HP.emergencyShutdown) {
@@ -89,7 +93,7 @@ export const hpStop = function(emergency=false, callback=false) {
 
         if(callback && typeof callback === 'function') callback();
 
-      },10000);
+      },30000);
 
     },20000);
 
