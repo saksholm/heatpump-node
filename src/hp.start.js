@@ -48,6 +48,7 @@ export const hpStart = function() {
     HP.timeoutHandlers.stopStep1 && clearTimeout(HP.timeoutHandlers.stopStep1);
     HP.timeoutHandlers.stopStep2 && clearTimeout(HP.timeoutHandlers.stopStep2);
     HP.timeoutHandlers.stopStep3 && clearTimeout(HP.timeoutHandlers.stopStep3);
+    HP.timeoutHandlers.afterDry && clearTimeout(HP.timeoutHandlers.afterDry);
 
     HP.allowedToRun = true; // let's allow HP running (restartDelay is now over)
     console.log("HP allowed to run = true");
