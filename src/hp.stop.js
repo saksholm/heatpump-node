@@ -6,6 +6,15 @@ import {
   calculateTimeout,
   unixtimestamp,
 } from './func';
+import {GLOBALS} from "./globals";
+
+const stopHpFan = () => {
+  DO.hpFanOutput.shutdown(); // hp fan output to 0%
+  console.log("hp fan output to 0%");
+
+  DO.hpFan.set('off'); //output.off(); // Fan on
+  console.log("hp fan off");
+};
 
 export const hpStop = function(emergency=false, callback=false) {
   if(['stop','stopping', 'alarmA'].includes(HP.mode)) return false;
@@ -39,8 +48,13 @@ export const hpStop = function(emergency=false, callback=false) {
   console.log("STOPPING in...... calculatedTimeoutMillis", calculatedTimeoutMillis, "emergency: ", emergency);
 
   HP.timeoutHandlers.stopStep1 = setTimeout(() => {
+    const timestamp = unixtimestamp();
     if(!HP.alarmA) HP.mode = 'stop';
-    HP.restartTimestamp = unixtimestamp();
+
+    HP.lastRunTime = timestamp - HP.actualRunStartTimestamp;
+    // TODO: mqtt report lastRunTime
+
+    HP.restartTimestamp = timestamp;
 
     console.log("HP mode 'stop'");
 
@@ -59,16 +73,26 @@ export const hpStop = function(emergency=false, callback=false) {
       DO.damperOutside.set('close'); //output.off();
       console.log("damper outside close");
 
-      // wait 10s more before closing hp fan and close outside damper
-      // and open convection damper
-      console.log("\nWait 30s more...\n");
+      console.log("\nWait 60s more...\n");
       HP.timeoutHandlers.stopStep3 = setTimeout(() => {
 
-        DO.hpFanOutput.shutdown(); // hp fan output to 0%
-        console.log("hp fan output to 0%");
+        if(HP.lastRunTime < GLOBALS.afterDryLimit) {
+          console.log(`After dry activated, last run is too slow...  ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
+          DO.hpFan.set('on');
+          DO.hpFanOutput.set(50);
+          HP.timeoutHandlers.afterDry = setTimeout(() => {
+            stopHpFan();
+            HP.timeoutHandlers.afterDry = null;
+          }, GLOBALS.afterDryTime);
+        } else {
+          console.log(`After dry not activated, last run was ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
+          HP.timeoutHandlers.afterDry = setTimeout(() => {
+            stopHpFan();
+            HP.timeoutHandlers.afterDry = null;
+          }, GLOBALS.afterDryTimeShort);
+        }
 
-        DO.hpFan.set('off'); //output.off(); // Fan on
-        console.log("hp fan off");
+
 
         DO.waterpumpCharging.set('off'); // waterpump charging relay to on
         console.log("waterpump charging output off()");
@@ -93,7 +117,7 @@ export const hpStop = function(emergency=false, callback=false) {
 
         if(callback && typeof callback === 'function') callback();
 
-      },30000);
+      },60000);
 
     },20000);
 
