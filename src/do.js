@@ -490,18 +490,20 @@ export const DO = {
 
       // allow to set value only if allowedToRun is true
       console.log(`DEBUG: DO.hpOutput.set().. HP.allowedToRun: ${HP.allowedToRun} `);
-      if(HP.allowedToRun) {
+      if(HP.allowedToRun || skip) {
         this.value = manual
           ? constrain(parseInt(value), this.minValue, this.manualMax)
-          : constrain(parseInt(value), this.minValue, this.maxValue);
+          : skip
+            ? parseInt(value)
+            : constrain(parseInt(value), this.minValue, this.maxValue);
         DO.board.analogWrite(this.pin, skip ? value : mapPercentToPWM(this.value, this.minValue, this.maxValue));
 
         mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       }
-      // TODO: ramp?!? up/down
+
     },
     setMode: function(value) {this.mode = value;},
-    shutdown: function() {this.value = 0;},
+    shutdown: function() {this.set( 0, true)}, //TODO: change this to more relevant
     increase: function(step=1){increaseValue(this,step)},
     decrease: function(step=1){decreaseValue(this,step)},
     mqttCommand: '', // not allowed
