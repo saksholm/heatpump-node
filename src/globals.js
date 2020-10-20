@@ -9,7 +9,7 @@ const GLOBALS = {
   starting: true,
   activePins: [],
   timersTH: [],
-  startupTime: 20*1000, // 20sec to not start hp
+  startupTime: 30*1000, // 20sec to not start hp
   logicLoopInterval: 1*1000,
   logicLoopLoad2WayLoopInterval: 10*1000,
   startupTimestamp: 0,
