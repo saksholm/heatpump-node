@@ -62,7 +62,7 @@ export const boilerLogic = () => {
     'stopping',
     'alarmA',
     'manual',
-  ].includes(HP.mode)) {
+  ].includes(HP.mode) && !HP.emergencyShutdown) {
 
     if(GLOBALS.heatToWater) {
 
@@ -93,5 +93,5 @@ export const boilerLogic = () => {
     }
   }
 
-  
+
 };
