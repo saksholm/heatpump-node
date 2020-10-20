@@ -61,6 +61,7 @@ export const HP = {
     stopStep1: null,
     stopStep2: null,
     stopStep3: null,
+    afterDry: null,
   },
   emergencyShutdown: false,
   mqtt: {
