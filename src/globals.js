@@ -13,6 +13,10 @@ const GLOBALS = {
   logicLoopInterval: 1*1000,
   logicLoopLoad2WayLoopInterval: 10*1000,
   startupTimestamp: 0,
+  lastRunTime: 0, // seconds
+  afterDryLimit: 30*60,
+  afterDryTime: 30*60,
+  afterDryTimeShort: 5*60,
   hvacCooling: false,
   hvacDrying: false, // means cooling & after heating
   hvacHeating: false, // water or pump?!
