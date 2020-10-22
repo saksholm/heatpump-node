@@ -309,7 +309,6 @@ export const setupDS18B20 = instance => {
 };
 
 export const setupI2C_DS18B20 = (instance=false, board=false) => {
-  console.log(`setupI2C_DS18B20 debug.. instance name ${instance.name}`);
   if(instance && board) {
     const {
       interval,
@@ -329,8 +328,6 @@ export const setupI2C_DS18B20 = (instance=false, board=false) => {
       GLOBALS.timersTH[objectName] = {changeIntervalMaxTimes: 0};
 
       loop(interval || TH.interval, () => {
-        console.log("inside loop:: ", objectName, TH.thI2CReads[objectName]);
-
         const timestamp = unixtimestamp();
         const {
           value,
