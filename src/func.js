@@ -223,12 +223,10 @@ export const relayOnOff = instance => {
   switch (instance.value) {
     case true:
     case "on":
-      console.log("turn on");
       instance.output.open(); // on
       break;
     case false:
     case "off":
-      console.log("turn off");
       instance.output.close(); // close
       break;
   }
