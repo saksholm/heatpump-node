@@ -4,6 +4,7 @@ import {DO} from './do';
 
 import {
   calculateTimeout,
+  mqttPublish,
   unixtimestamp,
 } from './func';
 import {GLOBALS} from "./globals";
@@ -55,7 +56,8 @@ export const hpStop = function(emergency=false, callback=false) {
 
     GLOBALS.lastRunTime = timestamp - HP.actualRunStartTimestamp;
 
-    HP.mqttStatus('lastRunTime');
+    // publish lastRunTime
+    mqttPublish(HP.board.mqttClient, 'hp/lastRunTime', GLOBALS.lastRunTime);
 
 
     HP.restartTimestamp = timestamp;
