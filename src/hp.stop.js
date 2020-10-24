@@ -88,10 +88,13 @@ export const hpStop = function(emergency=false, callback=false) {
 
         HP.defrost = true;
         console.log("HP.defrost = true");
+
+        DO.hpFan.set('on');
+        DO.hpFanOutput.set(GLOBALS.afterDryHpFanOutput);
+
         if(GLOBALS.lastRunTime < GLOBALS.afterDryLimit) {
           console.log(`After dry activated, last run is too short (<${Math.floor(GLOBALS.afterDryLimit/60)})...  ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
-          DO.hpFan.set('on');
-          DO.hpFanOutput.set(50);
+
           HP.timeoutHandlers.afterDry = setTimeout(() => {
             console.log("stopping afterDry 1");
             stopHpFan();

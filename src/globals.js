@@ -15,8 +15,9 @@ const GLOBALS = {
   startupTimestamp: 0,
   lastRunTime: 0, // seconds
   afterDryLimit: 45*60,
-  afterDryTime: 30*60,
+  afterDryTime: 40*60,
   afterDryTimeShort: 5*60,
+  afterDryHpFanOutput: 60,
   hvacCooling: false,
   hvacDrying: false, // means cooling & after heating
   hvacHeating: false, // water or pump?!
