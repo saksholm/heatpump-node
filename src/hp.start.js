@@ -14,6 +14,7 @@ export const hpStart = function() {
   // if error... we don't want to start at all!!!
   if(HP.error) return false;
   if(HP.emergencyShutdown) return false;
+  if(HP.defrost) return false;
 
   if(HP.mode === 'manual') console.log("HP is now in 'manual' mode........ Choose your poison!!");
 
@@ -123,6 +124,7 @@ export const hpStart = function() {
          HP.actualRunStartTimestamp = unixtimestamp();
          DO.hpOutput.set(10); // set HP to 10% load
          console.log("hp output to 10%");
+         console.log("HP.actualRunStartTimestamp", HP.actualRunStartTimestamp);
 
          clearTimeout(HP.timeoutHandlers.startStep1);
          clearTimeout(HP.timeoutHandlers.startStep2);
