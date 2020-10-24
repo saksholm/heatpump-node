@@ -93,6 +93,12 @@ export const HP = {
         name: 'Defrosting'
       }
     },
+    lastRunTime: {
+      topic: 'hp/lastRunTime',
+      value: {
+        value: GLOBALS.lastRunTime,
+      },
+    },
   },
   mqttStatus: function(val) {
     if(val) {
