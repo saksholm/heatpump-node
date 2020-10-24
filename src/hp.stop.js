@@ -51,8 +51,12 @@ export const hpStop = function(emergency=false, callback=false) {
     const timestamp = unixtimestamp();
     if(!HP.alarmA) HP.mode = 'stop';
 
-    HP.lastRunTime = timestamp - HP.actualRunStartTimestamp;
-    // TODO: mqtt report lastRunTime
+    console.log("DEBUG: --------", "timestamp", timestamp, "HP.actualRunStartTimestamp", HP.actualRunStartTimestamp);
+
+    GLOBALS.lastRunTime = timestamp - HP.actualRunStartTimestamp;
+
+    HP.mqttStatus('lastRunTime');
+
 
     HP.restartTimestamp = timestamp;
 
@@ -76,18 +80,23 @@ export const hpStop = function(emergency=false, callback=false) {
       console.log("\nWait 60s more...\n");
       HP.timeoutHandlers.stopStep3 = setTimeout(() => {
 
-        if(HP.lastRunTime < GLOBALS.afterDryLimit) {
+        console.log("DEBUG ------------- GLOBALS.lastRunTime", GLOBALS.lastRunTime, "GLOBALS.afterDryLimit", GLOBALS.afterDryLimit );
+
+          HP.defrost = true;
+        if(GLOBALS.lastRunTime < GLOBALS.afterDryLimit) {
           console.log(`After dry activated, last run is too slow...  ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
           DO.hpFan.set('on');
           DO.hpFanOutput.set(50);
           HP.timeoutHandlers.afterDry = setTimeout(() => {
             stopHpFan();
+            HP.defrost = false;
             HP.timeoutHandlers.afterDry = null;
           }, GLOBALS.afterDryTime);
         } else {
           console.log(`After dry not activated, last run was ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
           HP.timeoutHandlers.afterDry = setTimeout(() => {
             stopHpFan();
+            HP.defrost = false;
             HP.timeoutHandlers.afterDry = null;
           }, GLOBALS.afterDryTimeShort);
         }
