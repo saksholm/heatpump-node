@@ -14,7 +14,7 @@ const GLOBALS = {
   logicLoopLoad2WayLoopInterval: 10*1000,
   startupTimestamp: 0,
   lastRunTime: 0, // seconds
-  afterDryLimit: 30*60,
+  afterDryLimit: 45*60,
   afterDryTime: 30*60,
   afterDryTimeShort: 5*60,
   hvacCooling: false,

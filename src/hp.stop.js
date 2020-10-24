@@ -26,6 +26,8 @@ export const hpStop = function(emergency=false, callback=false) {
     if(HP.timeoutHandlers.startStep2 !== null) clearTimeout(HP.timeoutHandlers.startStep2);
   }
 
+  // TODO: report stop reason... normal/emergency/hotgas/abnormal/defrost/.....
+
   console.log("CALLING hpSTOP!!!!!!");
   if(!HP.alarmA) HP.mode = 'stopping';
   HP.allowedToRun = false;
@@ -84,23 +86,28 @@ export const hpStop = function(emergency=false, callback=false) {
 
         console.log("DEBUG ------------- GLOBALS.lastRunTime", GLOBALS.lastRunTime, "GLOBALS.afterDryLimit", GLOBALS.afterDryLimit );
 
-          HP.defrost = true;
+        HP.defrost = true;
+        console.log("HP.defrost = true");
         if(GLOBALS.lastRunTime < GLOBALS.afterDryLimit) {
-          console.log(`After dry activated, last run is too slow...  ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
+          console.log(`After dry activated, last run is too short (<${Math.floor(GLOBALS.afterDryLimit/60)})...  ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
           DO.hpFan.set('on');
           DO.hpFanOutput.set(50);
           HP.timeoutHandlers.afterDry = setTimeout(() => {
+            console.log("stopping afterDry 1");
             stopHpFan();
             HP.defrost = false;
+            console.log("HP.defrost = false");
             HP.timeoutHandlers.afterDry = null;
-          }, GLOBALS.afterDryTime);
+          }, GLOBALS.afterDryTime * 1000);
         } else {
           console.log(`After dry not activated, last run was ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
           HP.timeoutHandlers.afterDry = setTimeout(() => {
+            console.log("stopping afterDry 2");
             stopHpFan();
             HP.defrost = false;
+            console.log("HP.defrost = false");
             HP.timeoutHandlers.afterDry = null;
-          }, GLOBALS.afterDryTimeShort);
+          }, GLOBALS.afterDryTimeShort * 1000);
         }
 
 
