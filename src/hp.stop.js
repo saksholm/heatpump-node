@@ -29,6 +29,8 @@ export const hpStop = function(reason, emergency=false, callback=false) {
   }
 
   // TODO: report stop reason... normal/emergency/hotgas/abnormal/defrost/.....
+  console.log(`STOP REASON :: ${reason}`);
+
 
   console.log("CALLING hpSTOP!!!!!!");
   if(!HP.alarmA) HP.mode = 'stopping';
