@@ -626,7 +626,8 @@ export const freezeFrame = () => {
 export const reportStopReason = (reason, freezeFrameObj) => {
   if(reason) {
     const obj = Object.assign({reason: reason}, freezeFrameObj ? freezeFrameObj : freezeFrame());
-    mqttPublish(GLOBALS.board.mqttClient, 'hp/stopReason', obj);
+    console.log("reposrtStopReason obj", obj);
+    mqttPublish(HP.board.mqttClient, 'hp/stopReason', obj);
 
   }
 };
