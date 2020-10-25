@@ -9,7 +9,7 @@ export const logicAlarms = () => {
     ].includes(HP.mode)) {
       // emergency stopping hp
       console.log(`HP Alarm A :: ...is active with reason: ${HP.alarmAReason}`);
-      HP.stop(true);
+      HP.stop(`AlarmA active, reason: ${HP.alarmAReason}`,true);
     }
 
     return false;

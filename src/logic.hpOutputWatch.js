@@ -49,7 +49,7 @@ export const logicHpOutputWatch = () => {
             'starting',
           ].includes(HP.mode)) {
             console.log(`HP.loop :: STOPPING HP, because load2Way (${DO.load2Way.value}) is more than 90% open and hpOutput is minimum, HP.mode = ${HP.mode}`);
-            HP.stop();
+            HP.stop(`HP.loop, load2Way is ${DO.load2Way.value} and hpOutput is minimum`);
           }
         } else { // if hpOutput is not minimum.. just decrease it by 10%
           DO.hpOutput.decrease(10);

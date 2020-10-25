@@ -51,12 +51,17 @@ IO.initial = board => {
 
     board.repl.inject({
       info: () => console.log("Hello, this is your info :D"),
-      stop: () => HP.stop(true),
+      stop: () => HP.stop(`REPL manual stop with emergency true`,true),
       emergencyReset: () => {
         if(HP.emergencyShutdown) HP.emergencyShutdown = false;
       },
       resetLcd: () => LCD.screen.initial(),
       manualCoolingMode: () => manualCoolingModeActivate(),
+      hpMode: value => {
+        if(HP.manual) {
+          HP.mode = value;
+        }
+      },
     });
 
 

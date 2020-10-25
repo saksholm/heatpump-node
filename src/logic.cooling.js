@@ -15,7 +15,7 @@ export const coolingLogic = () => {
   {
     // have to check modes priority can we just stop and change mode
     if(GLOBALS.modesPriority[HP.mode] > GLOBALS.modesPriority['cooling']) {
-      HP.stop(false, () => {
+      HP.stop(`Switching to cooling mode`,false, () => {
         HP.mode = 'cooling';
         HP.start();
       });
@@ -33,6 +33,6 @@ export const coolingLogic = () => {
       'alarmA'
     ].includes(HP.mode))
   {
-      HP.stop();
+      HP.stop(`Normal stop from cooling, no coolingDemand anymore`);
   }
 };

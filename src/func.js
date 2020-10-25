@@ -7,7 +7,7 @@ import {DO} from './do';
 //import {AO} from './ao';
 //import {AI} from './ai';
 import {TH} from './th';
-//import {HP} from './hp';
+import {HP} from './hp';
 import {LCD} from './lcd';
 
 const {
@@ -569,4 +569,64 @@ export const isPidControllerActive = instance => {
 
 export const isFunction = instance => {
   return typeof instance === 'function';
+};
+
+export const freezeFrame = () => {
+  const thArray = [
+    'outside',
+    'beforeCHG',
+    'betweenCHG_CX',
+    'betweenCX_FAN',
+    'exhaust',
+    'glygolIn',
+    'glygolOut',
+    'hotgas',
+    'ahuCirculationSupply',
+    'hxIn',
+    'hxOut',
+    'boilerUpper',
+    'boilerMiddle',
+    'boilerLower'
+  ];
+
+  const obj = {
+    temperatures: {},
+    globals: {
+      startupTimestamp: GLOBALS.startupTimestamp,
+      lastRunTime: GLOBALS.lastRunTime,
+      boilerUpperRequest: GLOBALS.boiler.upper.request,
+      boilerMiddleRequest: GLOBALS.boiler.middle.request,
+      boilerLowerRequest: GLOBALS.boiler.lower.request,
+    },
+    hp: {
+      error: HP.error,
+      program: HP.program,
+      mode: HP.mode,
+      alarmA: HP.alarmA,
+      alarmAReason: HP.alarmAReason,
+      alarmB: HP.alarmB,
+      alarmBReason: HP.alarmBReason,
+      lastStopTime: HP.lastStopTime,
+      actualRunStartTimestamp: HP.actualRunStartTimestamp,
+      restartTimestamp: HP.restartTimestamp,
+      defrost: HP.defrost,
+      coolingDemand: HP.coolingDemand,
+      emergencyShutdown: HP.emergencyShutdown,
+    },
+
+  };
+
+  thArray.map(thName => {
+    obj.temperatures[thName] = TH[thName].value;
+  });
+
+  return obj;
+};
+
+export const reportStopReason = (reason, freezeFrameObj) => {
+  if(reason) {
+    const obj = Object.assign({reason: reason}, freezeFrameObj ? freezeFrameObj : freezeFrame());
+    mqttPublish(GLOBALS.board.mqttClient, 'hp/stopReason', obj);
+
+  }
 };

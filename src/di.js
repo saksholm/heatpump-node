@@ -198,7 +198,7 @@ export const DI = {
       // TODO: if value is false -> trigger HP emergency stop
       if(this.value === 1) {
         console.log("\n\n\n3~ PHASE MONITOR is FAILING... \n\n\nstopping HP NOW...\n\n\n");
-        HP.stop(true);
+        HP.stop(`3~ monitor failing, emergency true`,true);
       }
 
     },

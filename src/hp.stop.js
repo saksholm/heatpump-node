@@ -5,6 +5,8 @@ import {DO} from './do';
 import {
   calculateTimeout,
   mqttPublish,
+  reportStopReason,
+  freezeFrame,
   unixtimestamp,
 } from './func';
 import {GLOBALS} from "./globals";
@@ -17,7 +19,7 @@ const stopHpFan = () => {
   console.log("hp fan off");
 };
 
-export const hpStop = function(emergency=false, callback=false) {
+export const hpStop = function(reason, emergency=false, callback=false) {
   if(['stop','stopping', 'alarmA'].includes(HP.mode)) return false;
 
   if(HP.alarmA && HP.mode !== 'alarmA') {
@@ -50,17 +52,17 @@ export const hpStop = function(emergency=false, callback=false) {
   const calculatedTimeoutMillis = calculateTimeout(HP.actualRunStartTimestamp, HP.minimumRunningTime, true);
   console.log("STOPPING in...... calculatedTimeoutMillis", calculatedTimeoutMillis, "emergency: ", emergency);
 
+  const timestamp = unixtimestamp();
+  GLOBALS.lastRunTime = timestamp - HP.actualRunStartTimestamp;
+
+  // publish lastRunTime
+  mqttPublish(HP.board.mqttClient, 'hp/lastRunTime', GLOBALS.lastRunTime);
+
+  const freezeFrameObj = freezeFrame();
+  reportStopReason(reason,  freezeFrameObj);
+
   HP.timeoutHandlers.stopStep1 = setTimeout(() => {
-    const timestamp = unixtimestamp();
     if(!HP.alarmA) HP.mode = 'stop';
-
-    console.log("DEBUG: --------", "timestamp", timestamp, "HP.actualRunStartTimestamp", HP.actualRunStartTimestamp);
-
-    GLOBALS.lastRunTime = timestamp - HP.actualRunStartTimestamp;
-
-    // publish lastRunTime
-    mqttPublish(HP.board.mqttClient, 'hp/lastRunTime', GLOBALS.lastRunTime);
-
 
     HP.restartTimestamp = timestamp;
 

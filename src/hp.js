@@ -106,6 +106,6 @@ export const HP = {
 };
 
 HP.start = () => hpStart();
-HP.stop = (emergency=false,callback=false) => hpStop(emergency,callback);
+HP.stop = (reason, emergency=false,callback=false) => hpStop(reason, emergency,callback);
 HP.loop = () => hpLoop();
 HP.initial = board => genericInitial(HP, 'HP', board);

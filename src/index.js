@@ -70,19 +70,6 @@ board.on("ready", function() {
     console.log("ERROR, in IO.initial catch",e);
   }
 
-  this.repl.inject({
-    info: () => console.log("Hello, this is your info :D"),
-    stop: () => HP.stop(true),
-    emergencyReset: () => {
-      if(HP.emergencyShutdown) HP.emergencyShutdown = false;
-    },
-    hpMode: value => {
-      if(HP.manual) {
-        HP.mode = value;
-      }
-    },
-  });
-
   // clear stuff
   this.on("exit", function() {
     // TODO: shutdown everything!!
