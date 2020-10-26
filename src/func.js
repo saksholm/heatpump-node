@@ -594,8 +594,12 @@ export const freezeFrame = () => {
     globals: {
       startupTimestamp: GLOBALS.startupTimestamp,
       lastRunTime: GLOBALS.lastRunTime,
+      lastRunTimeMinutes: Math.floor(GLOBALS.lastRunTime / 60),
+      boilerUpperDemand: GLOBALS.boiler.upper.demand,
       boilerUpperRequest: GLOBALS.boiler.upper.request,
+      boilerMiddleDemand: GLOBALS.boiler.upper.demand,
       boilerMiddleRequest: GLOBALS.boiler.middle.request,
+      boilerLowerDemand: GLOBALS.boiler.lower.demand,
       boilerLowerRequest: GLOBALS.boiler.lower.request,
     },
     hp: {
