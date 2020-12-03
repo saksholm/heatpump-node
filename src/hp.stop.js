@@ -104,7 +104,9 @@ export const hpStop = function(reason, emergency=false, callback=false) {
             stopHpFan();
             HP.defrost = false;
             console.log("HP.defrost = false");
+            clearTimeout(HP.timeoutHandlers.afterDry);
             HP.timeoutHandlers.afterDry = null;
+
           }, GLOBALS.afterDryTime * 1000);
         } else {
           console.log(`After dry not activated, last run was ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
@@ -113,6 +115,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
             stopHpFan();
             HP.defrost = false;
             console.log("HP.defrost = false");
+            clearTimeout(HP.timeoutHandlers.afterDry);
             HP.timeoutHandlers.afterDry = null;
           }, GLOBALS.afterDryTimeShort * 1000);
         }
