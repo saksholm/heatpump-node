@@ -635,3 +635,8 @@ export const reportStopReason = (reason, freezeFrameObj) => {
 
   }
 };
+
+
+export const boilerControlTHValid = () => {
+  return;
+};
