@@ -5,6 +5,8 @@ import {DO} from './do';
 //import {DI} from './di';
 //import {AO} from './ao';
 import {AI} from './ai';
+import {hpStop} from './hp.stop';
+import {GLOBALS} from "./globals";
 
 export const defrostLogic = () => {
 
@@ -37,5 +39,37 @@ export const defrostLogic = () => {
 
   }
 
+
+};
+
+
+export const stopDefrostContinue = () => {
+  const hp4wayMode = DO.hp4Way.value;
+
+  hpStop(`stop for defrosting`, false, () => {
+    console.log("STARTING DEFROSTING MODE!!!");
+
+    HP.mode = 'defrost';
+    DO.hp4Way.set(hp4wayMode === 'heating' ? 'cooling' : 'heating');
+
+    DO.damperOutside.set('close');
+
+    DO.hpFan.set('on');
+    DO.hpFanOutput.set(40);
+
+    DO.waterpumpCharging.set('on');
+    DO.load2Way.set(50);
+
+    setTimeout(function() {
+      console.log("STARTING PUMP!", 20);
+      HP.allowedToRun = true;
+      DO.hpOutput.set(20);
+    }, 5* 1000);
+
+    setTimeout(function () {
+      hpStop(`stopping defrosting`);
+    }, 30 * 1000);
+
+  });
 
 };
