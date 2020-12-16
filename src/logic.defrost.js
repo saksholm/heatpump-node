@@ -66,6 +66,7 @@ export const stopToDefrostAndContinue = () => {
     setTimeout(function() {
       console.log("STARTING PUMP!", 20);
       HP.allowedToRun = true;
+      DO.hpAllowed.set('on');
       DO.hpOutput.set(20);
 
 
