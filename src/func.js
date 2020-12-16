@@ -435,7 +435,7 @@ const readI2CDS18B20 = (instance, board) => {
 */
 export const increaseValue = (instance, step=1) => {
   let newValue = instance.value+step;
-  console.log(`increaseValue(), instance: ${instance.name}, newValue: ${newValue}`);
+  //console.log(`increaseValue(), instance: ${instance.name}, newValue: ${newValue}`);
   if(newValue > instance.maxValue) newValue = instance.maxValue;
   if(newValue < instance.minValue) newValue = instance.minValue;
   instance.set(newValue);
@@ -494,6 +494,8 @@ export const handleI2C_TH_Data = (bytes,thObj={},scale=100, ret=false) => {
           valueChangedTimestamp: timestamp,
           valueChangedTimestampAgo: 0,
         };
+
+        GLOBALS.debugLevels.th && printChangedTHValues(thObj[thKey], thKey);
       } else {
         thObj[thKey] = {
           ...thObj[thKey],
@@ -644,4 +646,12 @@ export const boilerControlTHValid = () => {
   if(TH.boilerLower.active && TH.boilerLower.value === 0) return false;
 
   return true;
+};
+
+
+export const printChangedTHValues = (thObj, thKey) => {
+  if(GLOBALS.debugLevels.th) {
+    const thName = Object.keys(TH).filter(objKey => TH[objKey].objectName === thKey)?.name || 'failed to get proper name';
+    console.log(`DEBUG: TH ${thName} changed to ${thObj.value}`);
+  }
 };
