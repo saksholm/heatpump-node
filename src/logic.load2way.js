@@ -1,6 +1,7 @@
 import {HP} from './hp';
 import {DO} from './do';
 import {TH} from './th';
+import {GLOBALS} from "./globals";
 
 export const logicLoad2WayController = () => {
   if(![
@@ -11,7 +12,7 @@ export const logicLoad2WayController = () => {
     const controllerUpdate = DO.load2Way.controller.update(TH.hxOut.value);
     const controllerUpdateRounded = Math.round(controllerUpdate);
     const newValue = controllerUpdateRounded;
-    console.log(`logicLoad2WayController() pid controllerUpdate: ${controllerUpdate} (${newValue}), hxOut.value: ${TH.hxOut.value}`);
+    GLOBALS.debugLevels.load2WayControllerPid && console.log(`logicLoad2WayController() pid controllerUpdate: ${controllerUpdate} (${newValue}), hxOut.value: ${TH.hxOut.value}`);
 
     // if new value is not the existing value.. we update
     if(newValue !== DO.load2Way.value) {

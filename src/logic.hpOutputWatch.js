@@ -6,6 +6,7 @@ import {
   isPidControllerActive,
   unixtimestamp,
 } from './func';
+import {GLOBALS} from "./globals";
 
 export const logicHpOutputWatch = () => {
   // old enough to make new checks
@@ -67,7 +68,7 @@ export const logicHpOutputWatch = () => {
         // if load2Way is <65 and hpOutput is not maxValue
         if(DO.load2Way.value < 50 && DO.hpOutput.value < DO.hpOutput.maxValue) {
           DO.hpOutput.increase(1);
-          console.log(`HP.loop :: increasing hpOutput (to ${DO.hpOutput.value}) by 1% because load2Way (${DO.load2Way.value}) is less than 50%, HP.mode = ${HP.mode}`);
+          GLOBALS.debugLevels.hpOutput && console.log(`HP.loop :: increasing hpOutput (to ${DO.hpOutput.value}) by 1% because load2Way (${DO.load2Way.value}) is less than 50%, HP.mode = ${HP.mode}`);
         }
       }
 

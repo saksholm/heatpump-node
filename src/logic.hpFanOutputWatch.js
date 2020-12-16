@@ -4,6 +4,7 @@ import {DO} from './do';
 import {
   unixtimestamp,
 } from './func';
+import {GLOBALS} from "./globals";
 
 
 export const logicHpFanOutputWatch = () => {
@@ -19,7 +20,7 @@ export const logicHpFanOutputWatch = () => {
     ].includes(HP.mode)) {
       if(DO.hpFanOutput.value < DO.hpFanOutput.maxValue) {
         DO.hpFanOutput.increase(1);
-        console.log(`HP.loop :: increasing hpFanOutput (to ${DO.hpFanOutput.value}) by 1%, HP.mode = ${HP.mode}`);
+        GLOBALS.debugLevels.hpFanOutput && console.log(`HP.loop :: increasing hpFanOutput (to ${DO.hpFanOutput.value}) by 1%, HP.mode = ${HP.mode}`);
       }
     }
 
