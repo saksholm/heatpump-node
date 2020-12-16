@@ -9,6 +9,11 @@ import {
   freezeFrame,
   unixtimestamp,
 } from './func';
+
+import {
+  stopToDefrostAndContinue,
+} from './logic.defrost';
+
 import {GLOBALS} from "./globals";
 
 const stopHpFan = () => {
@@ -99,6 +104,12 @@ export const hpStop = function(reason, emergency=false, callback=false) {
         if(GLOBALS.lastRunTime < GLOBALS.afterDryLimit) {
           console.log(`After dry activated, last run is too short (<${Math.floor(GLOBALS.afterDryLimit/60)})...  ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
 
+          stopToDefrostAndContinue();
+
+          /*
+          DISABLE THIS FOR A WHILE AND TEST ANOTHER DEFROST METHOD
+
+
           HP.timeoutHandlers.afterDry = setTimeout(() => {
             console.log("stopping afterDry 1");
             stopHpFan();
@@ -108,6 +119,8 @@ export const hpStop = function(reason, emergency=false, callback=false) {
             HP.timeoutHandlers.afterDry = null;
 
           }, GLOBALS.afterDryTime * 1000);
+
+           */
         } else {
           console.log(`After dry not activated, last run was ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
           HP.timeoutHandlers.afterDry = setTimeout(() => {
