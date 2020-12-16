@@ -75,6 +75,13 @@ const GLOBALS = {
       func: value => setCoolingDemand(value),
     },
   ],
+  debugLevels: {
+    load2WayControllerPid: false,
+    hpFanOutput: false,
+    hpOutput: false,
+    th: false,
+  },
+
 };
 
 
