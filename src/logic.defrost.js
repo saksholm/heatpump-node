@@ -73,12 +73,12 @@ export const stopToDefrostAndContinue = () => {
       const loopCheck = setInterval(function() {
         console.log("TH.betweenCX_FAN.value", TH.betweenCX_FAN.value);
         if(TH.betweenCX_FAN.value > 15) {
-          console.log("IN IF");
+          console.log("Triggered setTimeout for hpStop().. stopping loopCheck for temperature between CX and FAN");
           setTimeout(function () {
             console.log("STOPPING DEFROST in 20sec");
-            clearInterval(loopCheck);
             hpStop(`stopping defrosting`);
           }, 20 * 1000);
+          clearInterval(loopCheck);
         }
 
         // /loopCheck
