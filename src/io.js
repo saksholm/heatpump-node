@@ -67,6 +67,10 @@ IO.initial = board => {
         }
       },
       manualDefrost: () => stopToDefrostAndContinue(),
+      debugTH: () => GLOBALS.debugLevels.th = !GLOBALS.debugLevels.th,
+      debugPID: () => GLOBALS.debugLevels.load2WayControllerPid = !GLOBALS.debugLevels.load2WayControllerPid,
+      debugHPFan: () => GLOBALS.debugLevels.hpFanOutput = !GLOBALS.debugLevels.hpFanOutput,
+      debugHPOutput: () => GLOBALS.debugLevels.hpOutput = !GLOBALS.debugLevels.hpOutput,
     });
 
 
