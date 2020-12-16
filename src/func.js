@@ -638,5 +638,10 @@ export const reportStopReason = (reason, freezeFrameObj) => {
 
 
 export const boilerControlTHValid = () => {
-  return;
+//  const currentTimestamp = unixtimestamp();
+  if(TH.boilerUpper.active && TH.boilerUpper.value === 0) return false;
+  if(TH.boilerMiddle.active && TH.boilerMiddle.value === 0) return false;
+  if(TH.boilerLower.active && TH.boilerLower.value === 0) return false;
+
+  return true;
 };
