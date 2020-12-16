@@ -1,7 +1,7 @@
 //import {GLOBALS} from './globals';
 import {HP} from './hp';
 import {DO} from './do';
-//import {TH} from './th';
+import {TH} from './th';
 //import {DI} from './di';
 //import {AO} from './ao';
 import {AI} from './ai';
@@ -43,11 +43,14 @@ export const defrostLogic = () => {
 };
 
 
-export const stopDefrostContinue = () => {
+export const stopToDefrostAndContinue = () => {
+  // get mode before stopping
   const hp4wayMode = DO.hp4Way.value;
 
   hpStop(`stop for defrosting`, false, () => {
+    console.log("---------------------------");
     console.log("STARTING DEFROSTING MODE!!!");
+    console.log("---------------------------");
 
     HP.mode = 'defrost';
     DO.hp4Way.set(hp4wayMode === 'heating' ? 'cooling' : 'heating');
@@ -58,17 +61,30 @@ export const stopDefrostContinue = () => {
     DO.hpFanOutput.set(40);
 
     DO.waterpumpCharging.set('on');
-    DO.load2Way.set(50);
+    DO.load2Way.set(50); // % of close...
 
     setTimeout(function() {
       console.log("STARTING PUMP!", 20);
       HP.allowedToRun = true;
       DO.hpOutput.set(20);
-    }, 5* 1000);
 
-    setTimeout(function () {
-      hpStop(`stopping defrosting`);
-    }, 30 * 1000);
+
+      const loopCheck = setInterval(function() {
+        console.log("TH.betweenCX_FAN.value", TH.betweenCX_FAN.value);
+        if(TH.betweenCX_FAN.value > 15) {
+          console.log("IN IF");
+          setTimeout(function () {
+            console.log("STOPPING DEFROST in 20sec");
+            clearInterval(loopCheck);
+            hpStop(`stopping defrosting`);
+          }, 20 * 1000);
+        }
+
+        // /loopCheck
+      }, 5 * 1000);
+
+    // /setTimeout
+    }, 5* 1000);
 
   });
 

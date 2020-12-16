@@ -19,6 +19,10 @@ import {
   manualCoolingModeActivate,
 } from './hp.cooling';
 
+import {
+  stopToDefrostAndContinue,
+} from './logic.defrost';
+
 import './cron';
 
 IO.initial = board => {
@@ -62,6 +66,7 @@ IO.initial = board => {
           HP.mode = value;
         }
       },
+      manualDefrost: () => stopToDefrostAndContinue(),
     });
 
 
