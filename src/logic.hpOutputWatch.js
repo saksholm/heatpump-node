@@ -27,7 +27,7 @@ export const logicHpOutputWatch = () => {
         }
       }
 
-      console.log("DEBUG123: ", HP.actualRunStartTimestamp, HP.minimumRunningTime, (HP.actualRunStartTimestamp + HP.minimumRunningTime), unixtimestamp())
+      //console.log("DEBUG123: ", HP.actualRunStartTimestamp, HP.minimumRunningTime, (HP.actualRunStartTimestamp + HP.minimumRunningTime), unixtimestamp())
       if(HP.actualRunStartTimestamp !== 0 && (HP.actualRunStartTimestamp + HP.minimumRunningTime) < unixtimestamp() ) {
         //      if(DO.load2Way.value >= 80 && DO.load2Way.value < 90) {
         if(DO.load2Way.value <= 20 && DO.load2Way.value > 10) {
