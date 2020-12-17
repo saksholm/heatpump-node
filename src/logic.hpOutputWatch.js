@@ -39,7 +39,7 @@ export const logicHpOutputWatch = () => {
             ].includes(HP.mode)
           ) {
             DO.hpOutput.decrease(1);
-            console.log(`HP.loop :: decreasing hpOutput (to ${DO.hpOutput.value}) by 5% because load2Way (${DO.load2Way.value}) is more than 80% open, HP.mode = ${HP.mode}`);
+            console.log(`HP.loop :: decreasing hpOutput (to ${DO.hpOutput.value}) by 1% because load2Way (${DO.load2Way.value}) is less than 20% closed (reverse thinking), HP.mode = ${HP.mode}`);
           }
 
         } else if(DO.load2Way.value <= 10) {
