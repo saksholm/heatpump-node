@@ -27,7 +27,8 @@ export const logicHpOutputWatch = () => {
         }
       }
 
-      if(DO.load2Way.value >= 80 && DO.load2Way.value < 90) {
+      //      if(DO.load2Way.value >= 80 && DO.load2Way.value < 90) {
+      if(DO.load2Way.value <= 20 && DO.load2Way.value > 10) {
         if(
           DO.hpOutput.value !== DO.hpOutput.minValue &&
           ![
@@ -39,7 +40,8 @@ export const logicHpOutputWatch = () => {
           console.log(`HP.loop :: decreasing hpOutput (to ${DO.hpOutput.value}) by 5% because load2Way (${DO.load2Way.value}) is more than 80% open, HP.mode = ${HP.mode}`);
         }
 
-      } else if(DO.load2Way.value >= 90) {
+      } else if(DO.load2Way.value <= 10) {
+//      } else if(DO.load2Way.value >= 90) {
         // if hpOutput is already on minimum value we can stop things now?
         if(DO.hpOutput.value === DO.hpOutput.minValue) {
 
