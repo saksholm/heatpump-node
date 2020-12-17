@@ -17,7 +17,6 @@ import {
 } from './func';
 
 import {HP} from './hp';
-//const HP = require('./hp');
 
 const initialized = new Initialized('DO');
 
@@ -425,11 +424,12 @@ export const DO = {
     value: 0,
     minValue: 5, //TODO: should check what is the real minimum to use
     maxValue: 100,
+    maxValueOnRunning: 90,
     target: null,
     set: function(value) {
       if(!defaultForSet(this,value)) return;
 
-      this.value = constrain(value, this.minValue, this.maxValue);
+      this.value = constrain(value, this.minValue, HP.running ? this.maxValueOnRunning : this.maxValue);
       DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
 
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
