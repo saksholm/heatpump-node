@@ -7,6 +7,7 @@ export const logicLoad2WayController = () => {
   if(![
     'stop',
     'manual',
+    'emergencyStop',
   ].includes(HP.mode)) {
     // update temperature to controller and get new value out
     const controllerUpdate = DO.load2Way.controller.update(TH.hxOut.value);

@@ -70,6 +70,7 @@ export const logicHpOutputWatch = () => {
         'stopping',
         'starting',
         'manual',
+        'emergencyStop',
       ].includes(HP.mode)) {
         // if load2Way is <65 and hpOutput is not maxValue
         if(DO.load2Way.value > 40 && DO.hpOutput.value < DO.hpOutput.maxValue) {
