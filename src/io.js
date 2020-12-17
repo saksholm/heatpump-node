@@ -13,6 +13,7 @@ export const IO = {};
 import {
   setStatus,
   mqttSubscribe,
+  printTHTable,
 } from './func';
 
 import {
@@ -71,6 +72,7 @@ IO.initial = board => {
       debugPID: () => GLOBALS.debugLevels.load2WayControllerPid = !GLOBALS.debugLevels.load2WayControllerPid,
       debugHPFan: () => GLOBALS.debugLevels.hpFanOutput = !GLOBALS.debugLevels.hpFanOutput,
       debugHPOutput: () => GLOBALS.debugLevels.hpOutput = !GLOBALS.debugLevels.hpOutput,
+      thTable: () => printTHTable(),
     });
 
 

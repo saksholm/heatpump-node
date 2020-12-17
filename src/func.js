@@ -655,3 +655,14 @@ export const printChangedTHValues = (thObj, thKey) => {
     console.log(`DEBUG: TH ${thName} changed to ${thObj.value}`);
   }
 };
+
+export const printTHTable = () => {
+  const array = [];
+  Object.keys(TH.thI2CReads).map(thKey => {
+    const instance = TH.thI2CReads[thKey];
+    const thObject = Object.keys(TH).filter(thObjectKey => TH[thObjectKey].objectName === thKey);
+    array.push({name: thObject.name, temperature: thObject.value});
+  });
+
+  return array;
+};
