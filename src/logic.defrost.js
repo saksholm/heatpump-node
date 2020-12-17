@@ -47,46 +47,52 @@ export const stopToDefrostAndContinue = () => {
   // get mode before stopping
   const hp4wayMode = DO.hp4Way.value;
 
-  hpStop(`stop for defrosting`, false, () => {
-    console.log("---------------------------");
-    console.log("STARTING DEFROSTING MODE!!!");
-    console.log("---------------------------");
+  hpStop(`stop for defrosting`, false, () => runDefrostCycle(hp4wayMode));
 
-    HP.mode = 'defrost';
-    DO.hp4Way.set(hp4wayMode === 'heating' ? 'cooling' : 'heating');
+};
 
-    DO.damperOutside.set('close');
+export const runDefrostCycle = (hp4wayMode='heating') => {
+  // if emergencyShutdown... prevent defrost
+  if(HP.emergencyShutdown) return false;
 
-    DO.hpFan.set('on');
-    DO.hpFanOutput.set(40);
+  console.log("---------------------------");
+  console.log("STARTING DEFROSTING MODE!!!");
+  console.log("---------------------------");
 
-    DO.waterpumpCharging.set('on');
-    DO.load2Way.set(50); // % of close...
+  HP.mode = 'defrost';
+  DO.hp4Way.set(hp4wayMode === 'heating' ? 'cooling' : 'heating');
 
-    setTimeout(function() {
-      console.log("STARTING PUMP!", 20);
-      HP.allowedToRun = true;
-      DO.hpAllowed.set('on');
-      DO.hpOutput.set(20);
+  DO.damperOutside.set('close');
+
+  DO.hpFan.set('on');
+  DO.hpFanOutput.set(40);
+
+  DO.waterpumpCharging.set('on');
+  DO.load2Way.set(50); // % of close...
+
+  setTimeout(function() {
+    console.log("STARTING PUMP!", 20);
+    HP.allowedToRun = true;
+    DO.hpAllowed.set('on');
+    DO.hpOutput.set(20);
 
 
-      const loopCheck = setInterval(function() {
-        console.log("TH.betweenCX_FAN.value", TH.betweenCX_FAN.value);
-        if(TH.betweenCX_FAN.value > 15) {
-          console.log("Triggered setTimeout for hpStop().. stopping loopCheck for temperature between CX and FAN");
-          setTimeout(function () {
-            console.log("STOPPING DEFROST in 20sec");
-            hpStop(`stopping defrosting`);
-          }, 20 * 1000);
-          clearInterval(loopCheck);
-        }
+    const loopCheck = setInterval(function() {
+      console.log("TH.betweenCX_FAN.value", TH.betweenCX_FAN.value);
+      if(TH.betweenCX_FAN.value > 15) {
+        console.log("Triggered setTimeout for hpStop().. stopping loopCheck for temperature between CX and FAN");
+        setTimeout(function () {
+          console.log("STOPPING DEFROST in 20sec");
+          HP.defrost = false;
+          hpStop(`STOPPING_DEFROST`);
+        }, 20 * 1000);
+        clearInterval(loopCheck);
+      }
 
-        // /loopCheck
-      }, 5 * 1000);
+      // /loopCheck
+    }, 5 * 1000);
 
     // /setTimeout
-    }, 5* 1000);
-
-  });
+  }, 5* 1000);
 
 };

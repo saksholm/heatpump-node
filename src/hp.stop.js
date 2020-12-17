@@ -12,6 +12,7 @@ import {
 
 import {
   stopToDefrostAndContinue,
+  runDefrostCycle,
 } from './logic.defrost';
 
 import {GLOBALS} from "./globals";
@@ -101,49 +102,54 @@ export const hpStop = function(reason, emergency=false, callback=false) {
         DO.hpFan.set('on');
         DO.hpFanOutput.set(GLOBALS.afterDryHpFanOutput);
 
-        if(GLOBALS.lastRunTime < GLOBALS.afterDryLimit) {
-          console.log(`After dry activated, last run is too short (<${Math.floor(GLOBALS.afterDryLimit/60)})...  ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
+        if(reason !== 'STOPPING_DEFROST') {
+          if(GLOBALS.lastRunTime < GLOBALS.afterDryLimit) {
+            console.log(`After dry activated, last run is too short (<${Math.floor(GLOBALS.afterDryLimit/60)})...  ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
 
-          stopToDefrostAndContinue();
+            HP.defrost = true; // prevent things to start too early
 
-          /*
-          DISABLE THIS FOR A WHILE AND TEST ANOTHER DEFROST METHOD
+            /*
+            DISABLE THIS FOR A WHILE AND TEST ANOTHER DEFROST METHOD
 
 
-          HP.timeoutHandlers.afterDry = setTimeout(() => {
-            console.log("stopping afterDry 1");
-            stopHpFan();
-            HP.defrost = false;
-            console.log("HP.defrost = false");
-            clearTimeout(HP.timeoutHandlers.afterDry);
-            HP.timeoutHandlers.afterDry = null;
+            HP.timeoutHandlers.afterDry = setTimeout(() => {
+              console.log("stopping afterDry 1");
+              stopHpFan();
+              HP.defrost = false;
+              console.log("HP.defrost = false");
+              clearTimeout(HP.timeoutHandlers.afterDry);
+              HP.timeoutHandlers.afterDry = null;
 
-          }, GLOBALS.afterDryTime * 1000);
+            }, GLOBALS.afterDryTime * 1000);
 
-           */
-        } else {
-          console.log(`After dry not activated, last run was ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
-          HP.timeoutHandlers.afterDry = setTimeout(() => {
-            console.log("stopping afterDry 2");
-            stopHpFan();
-            HP.defrost = false;
-            console.log("HP.defrost = false");
-            clearTimeout(HP.timeoutHandlers.afterDry);
-            HP.timeoutHandlers.afterDry = null;
-          }, GLOBALS.afterDryTimeShort * 1000);
+             */
+          } else {
+            console.log(`After dry not activated, last run was ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
+            HP.timeoutHandlers.afterDry = setTimeout(() => {
+              console.log("stopping afterDry 2");
+              stopHpFan();
+              HP.defrost = false;
+              console.log("HP.defrost = false");
+              clearTimeout(HP.timeoutHandlers.afterDry);
+              HP.timeoutHandlers.afterDry = null;
+            }, GLOBALS.afterDryTimeShort * 1000);
+          }
         }
 
 
+        if(HP.defrost) {
+          runDefrostCycle();
+        } else {
+          DO.waterpumpCharging.set('off'); // waterpump charging relay to on
+          console.log("waterpump charging output off()");
+          DO.load2Way.shutdown(); // let's open 2way valve 0%
+          console.log("load 2-way to 0%");
 
-        DO.waterpumpCharging.set('off'); // waterpump charging relay to on
-        console.log("waterpump charging output off()");
-        DO.load2Way.shutdown(); // let's open 2way valve 0%
-        console.log("load 2-way to 0%");
-
-        // turn pid controller target to 0
-        DO.load2Way.setTarget(0);
-        DO.load2Way.controller.setTarget(0);
-        console.log("load 2-way pid controller to 0");
+          // turn pid controller target to 0
+          DO.load2Way.setTarget(0);
+          DO.load2Way.controller.setTarget(0);
+          console.log("load 2-way pid controller to 0");
+        }
 
 
 
