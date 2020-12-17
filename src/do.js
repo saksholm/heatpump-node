@@ -489,7 +489,7 @@ export const DO = {
       if(!defaultForSet(this,value)) return;
 
       // allow to set value only if allowedToRun is true
-      console.log(`DEBUG: DO.hpOutput.set().. HP.allowedToRun: ${HP.allowedToRun} `);
+//      console.log(`DEBUG: DO.hpOutput.set().. HP.allowedToRun: ${HP.allowedToRun} `);
       if(HP.allowedToRun || skip) {
         this.value = manual
           ? constrain(parseInt(value), this.minValue, this.manualMax)
