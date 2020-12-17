@@ -27,37 +27,41 @@ export const logicHpOutputWatch = () => {
         }
       }
 
-      //      if(DO.load2Way.value >= 80 && DO.load2Way.value < 90) {
-      if(DO.load2Way.value <= 20 && DO.load2Way.value > 10) {
-        if(
-          DO.hpOutput.value !== DO.hpOutput.minValue &&
-          ![
-            'stop',
-            'manual',
-          ].includes(HP.mode)
-        ) {
-          DO.hpOutput.decrease(1);
-          console.log(`HP.loop :: decreasing hpOutput (to ${DO.hpOutput.value}) by 5% because load2Way (${DO.load2Way.value}) is more than 80% open, HP.mode = ${HP.mode}`);
-        }
-
-      } else if(DO.load2Way.value <= 10) {
-//      } else if(DO.load2Way.value >= 90) {
-        // if hpOutput is already on minimum value we can stop things now?
-        if(DO.hpOutput.value === DO.hpOutput.minValue) {
-
-          // call only if not stop/stopping/starting
-          if(![
-            'stop',
-            'stopping',
-            'starting',
-          ].includes(HP.mode)) {
-            console.log(`HP.loop :: STOPPING HP, because load2Way (${DO.load2Way.value}) is more than 90% open and hpOutput is minimum, HP.mode = ${HP.mode}`);
-            HP.stop(`HP.loop, load2Way is ${DO.load2Way.value} and hpOutput is minimum`);
+      console.log("DEBUG123: ", HP.actualRunStartTimestamp, HP.minimumRunningTime, (HP.actualRunStartTimestamp + HP.minimumRunningTime), unixtimestamp())
+      if( (HP.actualRunStartTimestamp + HP.minimumRunningTime) < unixtimestamp() ) {
+        //      if(DO.load2Way.value >= 80 && DO.load2Way.value < 90) {
+        if(DO.load2Way.value <= 20 && DO.load2Way.value > 10) {
+          if(
+            DO.hpOutput.value !== DO.hpOutput.minValue &&
+            ![
+              'stop',
+              'manual',
+            ].includes(HP.mode)
+          ) {
+            DO.hpOutput.decrease(1);
+            console.log(`HP.loop :: decreasing hpOutput (to ${DO.hpOutput.value}) by 5% because load2Way (${DO.load2Way.value}) is more than 80% open, HP.mode = ${HP.mode}`);
           }
-        } else { // if hpOutput is not minimum.. just decrease it by 10%
-          DO.hpOutput.decrease(10);
+
+        } else if(DO.load2Way.value <= 10) {
+  //      } else if(DO.load2Way.value >= 90) {
+          // if hpOutput is already on minimum value we can stop things now?
+          if(DO.hpOutput.value === DO.hpOutput.minValue) {
+
+            // call only if not stop/stopping/starting
+            if(![
+              'stop',
+              'stopping',
+              'starting',
+            ].includes(HP.mode)) {
+              console.log(`HP.loop :: STOPPING HP, because load2Way (${DO.load2Way.value}) is more than 90% open and hpOutput is minimum, HP.mode = ${HP.mode}`);
+              HP.stop(`HP.loop, load2Way is ${DO.load2Way.value} and hpOutput is minimum`);
+            }
+          } else { // if hpOutput is not minimum.. just decrease it by 10%
+            DO.hpOutput.decrease(10);
+          }
         }
       }
+
 
 
       // do not allow
