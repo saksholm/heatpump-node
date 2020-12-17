@@ -424,7 +424,7 @@ export const DO = {
     value: 0,
     minValue: 5, //TODO: should check what is the real minimum to use
     maxValue: 100,
-    maxValueOnRunning: 90,
+    maxValueOnRunning: 85,
     target: null,
     set: function(value) {
       if(!defaultForSet(this,value)) return;
