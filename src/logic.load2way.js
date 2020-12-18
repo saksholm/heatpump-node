@@ -18,6 +18,9 @@ export const logicLoad2WayController = () => {
     // if new value is not the existing value.. we update
 
     if(newValue !== DO.load2Way.value) {
+      if(HP.mode === 'run' && newValue > DO.load2Way.maxValueOnRunning) return false;
+      if(HP.defrost && newValue > DO.load2Way.maxValueOnDefrost) return false;
+
       DO.load2Way.set(newValue);
     }
   }

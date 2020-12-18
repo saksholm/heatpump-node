@@ -102,7 +102,11 @@ export const hpStop = function(reason, emergency=false, callback=false) {
         DO.hpFan.set('on');
         DO.hpFanOutput.set(GLOBALS.afterDryHpFanOutput);
 
-        if(!['STOPPING_DEFROST', 'MANUAL_DEFROST'].includes(reason)) {
+        if(![
+          'STOPPING_DEFROST',
+          'MANUAL_DEFROST',
+          'HOTGAS_DEFROST'
+        ].includes(reason)) {
           if(GLOBALS.lastRunTime < GLOBALS.afterDryLimit) {
             console.log(`After dry activated, last run is too short (<${Math.floor(GLOBALS.afterDryLimit/60)})...  ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
 
