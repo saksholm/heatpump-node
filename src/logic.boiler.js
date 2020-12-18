@@ -62,6 +62,7 @@ export const boilerLogic = () => {
     'stopping',
     'alarmA',
     'manual',
+    'defrost',
   ].includes(HP.mode) && !HP.emergencyShutdown && !HP.defrost) {
 
     if(GLOBALS.heatToWater) {
