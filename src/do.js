@@ -430,6 +430,8 @@ export const DO = {
       if(!defaultForSet(this,value)) return;
 
       this.value = constrain(value, this.minValue, HP.running ? this.maxValueOnRunning : this.maxValue);
+      if(HP.running) console.log("HP.running::load2way limitter", this.value);
+      if(HP.defrost) console.log("HP.defrost::does load2way value limitter work?", this.maxValueOnRunning, this.value);
       DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
 
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
