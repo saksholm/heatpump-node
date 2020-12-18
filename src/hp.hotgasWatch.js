@@ -6,6 +6,9 @@ import {GLOBALS} from './globals';
 import {
   unixtimestamp,
 } from './func';
+import {
+  stopToDefrostAndContinue,
+} from "./logic.defrost";
 
 
 export const hotgasWatch = () => {
@@ -18,6 +21,10 @@ export const hotgasWatch = () => {
     // watch hotgas temp etc... safety things especially
     if(TH.hotgas.value > (HP.maxHotgas + deadZone)) {
       console.log("HP hotgas is maybe little bit too hot...");
+
+
+      stopToDefrostAndContinue('HOTGAS_DEFROST');
+/*
 
       // too hot hotgas! drop output demand by half
       if(DO.hpOutput.value > DO.hpOutput.minValue) {
@@ -42,6 +49,9 @@ export const hotgasWatch = () => {
       // should put next legit check time?! so this have time to stabilize things
       // for 15s?
       HP.nextLoopIntervalTimestamps.hotgas = timestamp + HP.hotgasWatchInterval;
+
+
+      */
     }
   }
 };
