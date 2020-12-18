@@ -16,7 +16,10 @@ export const logicLoad2WayController = () => {
     GLOBALS.debugLevels.load2WayControllerPid && console.log(`logicLoad2WayController() pid controllerUpdate: ${controllerUpdate} (${newValue}), hxOut.value: ${TH.hxOut.value}`);
 
     // if new value is not the existing value.. we update
-    if(newValue !== DO.load2Way.value) {
+
+    console.log("DEBUG logic.load2way: ", HP.running, DO.load2Way.maxValueOnRunning, DO.load2Way.value);
+
+    if(newValue !== DO.load2Way.value && newValue <= DO.load2Way.maxValueOnRunning) {
       DO.load2Way.set(newValue);
     }
   }
