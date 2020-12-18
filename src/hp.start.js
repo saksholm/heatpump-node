@@ -122,8 +122,8 @@ export const hpStart = function() {
 
          console.log("HP.mode = 'run'");
          HP.actualRunStartTimestamp = unixtimestamp();
-         DO.hpOutput.set(10); // set HP to 10% load
-         console.log("hp output to 10%");
+         DO.hpOutput.set(25); // set HP to 15% load
+         console.log("hp output to 25%");
          console.log("HP.actualRunStartTimestamp", HP.actualRunStartTimestamp);
 
          clearTimeout(HP.timeoutHandlers.startStep1);
