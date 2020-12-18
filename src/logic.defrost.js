@@ -46,8 +46,8 @@ export const defrostLogic = () => {
 export const stopToDefrostAndContinue = () => {
   // get mode before stopping
   const hp4wayMode = DO.hp4Way.value;
-
-  hpStop(`stop for defrosting`, false, () => runDefrostCycle(hp4wayMode));
+  HP.defrost = true;
+  hpStop(`MANUAL_DEFROST`, false, () => runDefrostCycle(hp4wayMode));
 
 };
 

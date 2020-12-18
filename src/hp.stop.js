@@ -102,7 +102,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
         DO.hpFan.set('on');
         DO.hpFanOutput.set(GLOBALS.afterDryHpFanOutput);
 
-        if(reason !== 'STOPPING_DEFROST') {
+        if(!['STOPPING_DEFROST', 'MANUAL_DEFROST'].includes(reason)) {
           if(GLOBALS.lastRunTime < GLOBALS.afterDryLimit) {
             console.log(`After dry activated, last run is too short (<${Math.floor(GLOBALS.afterDryLimit/60)})...  ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
 
@@ -137,7 +137,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
         }
 
 
-        if(HP.defrost) {
+        if(HP.defrost && reason !== 'MANUAL_DEFROST') {
           runDefrostCycle();
         } else {
           DO.waterpumpCharging.set('off'); // waterpump charging relay to on
