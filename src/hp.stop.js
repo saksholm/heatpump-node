@@ -140,6 +140,10 @@ export const hpStop = function(reason, emergency=false, callback=false) {
           }
         }
 
+        if(['STOPPING_DEFROST'].includes(reason)) {
+          HP.defrost = false;
+        }
+
 
         if(HP.defrost && reason !== 'MANUAL_DEFROST') {
           runDefrostCycle();

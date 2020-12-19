@@ -39,6 +39,7 @@ export const HP = {
   defrost: false,
   coolingDemand: false,
   maxHotgas: 80, // 80c
+  maxHotgasEmergency: 90,
   hxInMaximum: 35,
   hxOutTarget: 40,
   cooling: {

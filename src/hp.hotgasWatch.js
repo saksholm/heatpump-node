@@ -9,6 +9,7 @@ import {
 import {
   stopToDefrostAndContinue,
 } from "./logic.defrost";
+import {hpStop} from "./hp.stop";
 
 
 export const hotgasWatch = () => {
@@ -19,6 +20,10 @@ export const hotgasWatch = () => {
   // check if we need to bypass this part for a while?
   if(HP.nextLoopIntervalTimestamps.hotgas <= timestamp) {
     // watch hotgas temp etc... safety things especially
+    if(TH.hotgas.value > HP.maxHotgasEmergency) {
+      hpStop('emergency hotgas stop',true);
+    }
+
     if(TH.hotgas.value > (HP.maxHotgas + deadZone)) {
       console.log("HP hotgas is maybe little bit too hot...");
 
