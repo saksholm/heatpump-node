@@ -73,6 +73,9 @@ IO.initial = board => {
       debugHPFan: () => GLOBALS.debugLevels.hpFanOutput = !GLOBALS.debugLevels.hpFanOutput,
       debugHPOutput: () => GLOBALS.debugLevels.hpOutput = !GLOBALS.debugLevels.hpOutput,
       thTable: () => printTHTable(),
+      printTHObject: () => {console.log("TH Object", TH)},
+      printGLOBALSObject: () => {console.log("GLOBALS Objects", GLOBALS)},
+      printHPObject: () => {console.log("HP Object", HP)},
     });
 
 
