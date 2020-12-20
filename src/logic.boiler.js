@@ -10,6 +10,10 @@ import {
   unixtimestamp,
 } from './func';
 
+import {
+  hpStop,
+} from "./hp.stop";
+
 export const boilerLogic = () => {
   // TODO: boiler checks if some is allowed or not... override rules with checks
 
@@ -88,7 +92,7 @@ export const boilerLogic = () => {
       // stop
       if(HP.restartTimestamp + HP.minimumRunningTime <= unixtimestamp()) {
         HP.program = 'stop'
-        HP.stop(`boiler logic, no heatToWater demand`);
+        hpStop(`boiler logic, no heatToWater demand`);
       }
 
     }
