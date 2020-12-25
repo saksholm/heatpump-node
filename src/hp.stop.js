@@ -175,8 +175,8 @@ export const hpStop = function(reason, emergency=false, callback=false) {
         clearTimeout(HP.timeoutHandlers.stopStep2);
         clearTimeout(HP.timeoutHandlers.stopStep3);
 
-        console.log("DEBUG::HP Object", HP);
-        console.log("DEBUG::GLOBALS", GLOBALS);
+//        console.log("DEBUG::HP Object", HP);
+//        console.log("DEBUG::GLOBALS", GLOBALS);
 
 
         if(callback && typeof callback === 'function') callback();
