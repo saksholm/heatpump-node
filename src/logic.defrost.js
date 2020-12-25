@@ -47,11 +47,13 @@ export const stopToDefrostAndContinue = (reason='MANUAL_DEFROST') => {
   // get mode before stopping
   const hp4wayMode = DO.hp4Way.value;
   HP.defrost = true;
-  hpStop(reason, false, () => runDefrostCycle(hp4wayMode));
+  // #debug2
+  hpStop(reason, false, () => runDefrostCycle(hp4wayMode, "stopToDefrostAndContinue() in #debug2"));
 
 };
 
-export const runDefrostCycle = (hp4wayMode='heating') => {
+export const runDefrostCycle = (hp4wayMode='heating', where='') => {
+  console.log("runDefrostCycle() is triggered from: ", where);
   // if emergencyShutdown... prevent defrost
   if(HP.emergencyShutdown) return false;
 

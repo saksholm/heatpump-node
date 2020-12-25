@@ -28,6 +28,8 @@ const stopHpFan = () => {
 export const hpStop = function(reason, emergency=false, callback=false) {
   if(['stop','stopping', 'alarmA'].includes(HP.mode)) return false;
 
+  const hp4WayMode = DO.hp4Way.value;
+
   if(HP.alarmA && HP.mode !== 'alarmA') {
     HP.mode = 'alarmA';
     if(HP.timeoutHandlers.startStep1 !== null) clearTimeout(HP.timeoutHandlers.startStep1);
@@ -141,12 +143,15 @@ export const hpStop = function(reason, emergency=false, callback=false) {
         }
 
         if(['STOPPING_DEFROST'].includes(reason)) {
+          console.log("#debug3");
           HP.defrost = false;
         }
 
 
         if(HP.defrost) {
-          if(reason !== 'MANUAL_DEFROST') runDefrostCycle();
+          // #debug1
+          console.log("#debug1 reason:", reason)
+          if(reason !== 'MANUAL_DEFROST') runDefrostCycle(hp4WayMode, 'hp.stop() in #debug1');
         } else {
           DO.waterpumpCharging.set('off'); // waterpump charging relay to on
           console.log("waterpump charging output off()");
