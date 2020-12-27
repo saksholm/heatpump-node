@@ -659,12 +659,12 @@ export const printChangedTHValues = (thObj, thKey) => {
 export const printTHTable = () => {
   const array = [];
   Object.keys(TH.thI2CReads).map(thKey => {
-    console.log("thKey", thKey);
+//    console.log("thKey", thKey);
     const instance = TH.thI2CReads[thKey];
-    console.log("instance", instance);
-    const thObject = Object.keys(TH).filter(thObjectKey => TH[thObjectKey].objectName === thKey);
-    console.log("thObject", thObject);
-    array.push({name: thObject.name, temperature: instance.value});
+//    console.log("instance", instance);
+    const thObject = TH[Object.keys(TH).filter(thObjectKey => TH[thObjectKey].objectName === thKey)[0]];
+//    console.log("thObject", thObject);
+    array.push([{name: thObject.name, temperature: instance.value}]);
   });
 
   return array;
