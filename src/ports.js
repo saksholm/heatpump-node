@@ -18,7 +18,7 @@ export const PORTS = {
       D3: 0, // INT.1
       D4: 'hpFanOutput',
       D5: 'hpOutput',
-      D6: 'ahuFanOutput',,
+      D6: 'ahuFanOutput',
       D7: 'load2Way',
       D8: 0,
       D9: 0,
