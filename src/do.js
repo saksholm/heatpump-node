@@ -97,8 +97,8 @@ export const DO = {
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       // TODO: ramp?!? up/down
     },
-    increase: (step=1) => increaseValue(this,step),
-    decrease: (step=1) => decreaseValue(this,step),
+    increase: (step=1) => increaseValue(DO.ahuFanOutput,step),
+    decrease: (step=1) => decreaseValue(DO.ahuFanOutput,step),
     shutdown: () => DO.ahuFanOutput.set(0, true),
     mqttCommand: 'ahu/ahuFanOutput',
     mqttState: 'ahu/ahuFanOutput',
