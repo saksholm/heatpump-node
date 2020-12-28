@@ -664,10 +664,10 @@ export const printTHTable = () => {
 //    console.log("instance", instance);
     const thObject = TH[Object.keys(TH).filter(thObjectKey => TH[thObjectKey].objectName === thKey)[0]];
 //    console.log("thObject", thObject);
-    array.push([{name: thObject.name, temperature: instance.value}]);
+    array.push({name: thObject.name, temperature: instance.value});
   });
 
-  return array;
+  console.table(array);
 };
 
 export const printHPObject = () => {
