@@ -78,8 +78,16 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
     DO.hpAllowed.set('on');
     DO.hpOutput.set(20);
 
+    // turn ahuFan also on
+    DO.ahuFan.set('on');
+    DO.ahuFanOutput.set(10);
 
     const loopCheck = setInterval(function() {
+
+      // increase ahuFan up to defrostMax %
+      if(DO.ahuFanOutput.value < DO.ahuFanOutput.defrostMax) DO.ahuFanOutput.increase(2);
+
+
       console.log("TH.betweenCX_FAN.value", TH.betweenCX_FAN.value);
       if(TH.betweenCX_FAN.value > 15) {
         console.log("Triggered setTimeout for hpStop().. stopping loopCheck for temperature between CX and FAN");
