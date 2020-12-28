@@ -9,6 +9,7 @@ import {DO} from './do';
 import {TH} from './th';
 import {HP} from './hp';
 import {LCD} from './lcd';
+import {AI} from "./ai";
 
 const {
   map,
@@ -672,5 +673,15 @@ export const printTHTable = () => {
 
 export const printHPObject = () => {
   const {board, mqttClient, mqtt, mqttStatus, start, stop, loop, initial, ...rest} = HP;
+  return rest;
+};
+
+export const printDOObject = () => {
+  const {board, initial, ...rest} = DO;
+  return rest;
+};
+
+export const printAIObject = () => {
+  const {board, initial, onChanges, ...rest} = AI;
   return rest;
 };

@@ -15,6 +15,8 @@ import {
   mqttSubscribe,
   printTHTable,
   printHPObject,
+  printDOObject,
+  printAIObject,
 } from './func';
 
 import {
@@ -77,6 +79,8 @@ IO.initial = board => {
       printTHObject: () => {console.log("TH Object", TH)},
       printGLOBALSObject: () => {console.log("GLOBALS Objects", GLOBALS)},
       printHPObject: () => {console.log("HP Object", printHPObject())},
+      printDOObject: () => {console.log("DO Object", printDOObject())},
+      printAIObject: () => {console.log("AI Object", printAIObject())}
     });
 
 
