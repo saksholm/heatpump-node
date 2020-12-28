@@ -14,6 +14,7 @@ import {
   setStatus,
   mqttSubscribe,
   printTHTable,
+  printHPObject,
 } from './func';
 
 import {
@@ -75,7 +76,7 @@ IO.initial = board => {
       thTable: () => printTHTable(),
       printTHObject: () => {console.log("TH Object", TH)},
       printGLOBALSObject: () => {console.log("GLOBALS Objects", GLOBALS)},
-      printHPObject: () => {console.log("HP Object", HP)},
+      printHPObject: () => {console.log("HP Object", printHPObject())},
     });
 
 
