@@ -669,3 +669,8 @@ export const printTHTable = () => {
 
   return array;
 };
+
+export const printHPObject = () => {
+  const {board, mqttClient, mqtt, mqttStatus, start, stop, loop, initial, ...rest} = HP;
+  return rest;
+};
