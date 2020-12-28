@@ -87,16 +87,17 @@ export const DO = {
     value: 0,
     minValue: 15,
     maxValue: 100,
-    set: function(value) {
-      if(!defaultForSet(this,value)) return;
+    set: function(value, skip=false) {
+      if(!skip && !defaultForSet(this,value)) return;
       this.value = value;
 
-      DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
+      DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, skip ? 0 : this.minValue, this.maxValue));
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       // TODO: ramp?!? up/down
     },
     increase: (step=1) => increaseValue(this,step),
     decrease: (step=1) => decreaseValue(this,step),
+    shutdown: () => DO.ahuFanOutput.set(0, true),
     mqttCommand: 'ahu/ahuFanOutput',
     mqttState: 'ahu/ahuFanOutput',
     repl: {
