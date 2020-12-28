@@ -54,7 +54,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
     console.log("**                                          **");
     console.log("**********************************************\n");
 
-    HP.mqttStatus('emergency')
+    HP.mqttStatus('emergency');
   }
 //  const {wait} = HP.board;
   // let's check if minimumRunningTime is enough... if not.. we run it to end.
@@ -149,7 +149,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
         }
 
 
-        if(HP.defrost && !['alarmA'].includes(HP.mode)) {
+        if(HP.defrost) { // && !['alarmA'].includes(HP.mode) ?!?!? not sure with this
           // #debug1
           console.log("#debug1 reason:", reason)
           if(reason !== 'MANUAL_DEFROST') runDefrostCycle(hp4WayMode, 'hp.stop() in #debug1');
@@ -163,6 +163,14 @@ export const hpStop = function(reason, emergency=false, callback=false) {
           DO.load2Way.setTarget(0);
           DO.load2Way.controller.setTarget(0);
           console.log("load 2-way pid controller to 0");
+
+          if(['STOPPING_DEFROST'].includes(reason)) {
+            DO.hp4Way.set('heating');
+            DO.ahuFan.set('off');
+            DO.ahuFanOutput.shutdown();
+
+          }
+
         }
 
 
