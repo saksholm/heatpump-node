@@ -4,7 +4,7 @@ const GLOBALS = {
   version: '0.2',
   status: 'starting',
   debug: false,
-  dryRun: true,
+  dryRun: false,
   printTH: false,
   starting: true,
   activePins: [],
