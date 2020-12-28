@@ -169,7 +169,16 @@ export const hpStop = function(reason, emergency=false, callback=false) {
             DO.ahuFan.set('off');
             DO.ahuFanOutput.shutdown();
 
+            // no demands.. no need to run hpFan longer
+            if(!GLOBALS.heatToWater || !GLOBALS.heatToGround || !GLOBALS.heatToAir) {
+              setTimeout(function() {
+                DO.hpFan.set('off');
+                DO.hpFanOutput.shutdown();
+              },10_000);
+            }
           }
+
+
 
         }
 
