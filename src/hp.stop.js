@@ -143,12 +143,13 @@ export const hpStop = function(reason, emergency=false, callback=false) {
         }
 
         if(['STOPPING_DEFROST'].includes(reason)) {
+          console.log("#debug3 is pump down?" , HP.allowedToRun , DO.hpAllowed.value);
           console.log("#debug3");
           HP.defrost = false;
         }
 
 
-        if(HP.defrost) {
+        if(HP.defrost && !['alarmA'].includes(HP.mode)) {
           // #debug1
           console.log("#debug1 reason:", reason)
           if(reason !== 'MANUAL_DEFROST') runDefrostCycle(hp4WayMode, 'hp.stop() in #debug1');
