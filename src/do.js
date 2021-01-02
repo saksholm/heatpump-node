@@ -392,11 +392,12 @@ export const DO = {
     defaultValue: 20,
     minValue: 10,
     maxValue: 60,
-    set: function(value,skip=false) {
+    manualMax: 80,
+    set: function(value,skip=false, manual=true) {
       if(!defaultForSet(this,value)) return;
-      this.value = constrain(value, this.minValue, this.maxValue);
+      this.value = constrain(value, this.minValue, manual ? this.manualMax : this.maxValue);
 
-      DO.board.analogWrite(this.pin, skip ? this.value : mapPercentToPWM(this.value, this.minValue, this.maxValue));
+      DO.board.analogWrite(this.pin, skip ? this.value : mapPercentToPWM(this.value, this.minValue, manual ? this.manualMax : this.maxValue));
 
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
 
@@ -408,7 +409,7 @@ export const DO = {
     mqttCommand: 'hp/fanOutput',
     mqttState: 'hp/fanOutput',
     repl: {
-      hpFanOutput: value => DO.hpFanOutput.set(value),
+      hpFanOutput: value => DO.hpFanOutput.set(value, false, true),
       hpFanOutputShutdown: () => DO.hpFanOutput.set(0,true),
     },
     output: null,
