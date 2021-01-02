@@ -17,6 +17,7 @@ import {
   printHPObject,
   printDOObject,
   printAIObject,
+  resetAlarms,
 } from './func';
 
 import {
@@ -80,7 +81,8 @@ IO.initial = board => {
       printGLOBALSObject: () => {console.log("GLOBALS Objects", GLOBALS)},
       printHPObject: () => {console.log("HP Object", printHPObject())},
       printDOObject: () => {console.log("DO Object", printDOObject())},
-      printAIObject: () => {console.log("AI Object", printAIObject())}
+      printAIObject: () => {console.log("AI Object", printAIObject())},
+      resetAlarm: () => resetAlarms(),
     });
 
 

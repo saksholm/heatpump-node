@@ -685,3 +685,13 @@ export const printAIObject = () => {
   const {board, initial, onChanges, ...rest} = AI;
   return rest;
 };
+
+export const resetAlarms = () => {
+  HP.alarmA = false;
+  HP.alarmAReason = null;
+  HP.alarmB = false;
+  HP.alarmBReason = null;
+
+  HP.mode = 'stop';
+
+};
