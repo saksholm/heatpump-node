@@ -143,10 +143,10 @@ export const mqttSubscribe = (mqttClient, mqttTopic) => {
   });
 };
 
-export const mqttPublish = (mqttClient,topic,value) => {
+export const mqttPublish = (mqttClient,topic,value, options={}) => {
   const t = `state/${GLOBALS.mqttBase}/${topic}`;
   const v = typeof value !== "string" ? value.toString() : value;
-  mqttClient.publish(t,v, (err) => {
+  mqttClient.publish(t,v,options, (err) => {
     if(err) console.log(`mqttPublish (${t}) error: ${err}`);
   });
 };
@@ -634,7 +634,7 @@ export const reportStopReason = (reason, freezeFrameObj) => {
   if(reason) {
     const obj = Object.assign({reason: reason}, freezeFrameObj ? freezeFrameObj : freezeFrame());
     console.log("reportStopReason obj", obj);
-    mqttPublish(HP.board.mqttClient, 'hp/stopReason', obj.toString());
+    mqttPublish(HP.board.mqttClient, 'hp/stopReason', obj.toString(), {retain: true});
 
   }
 };
