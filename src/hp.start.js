@@ -29,6 +29,7 @@ export const hpStart = function() {
     'drying',
     'alarmA',
     'manual',
+    'defrost',
   ].includes(HP.mode) || HP.allowedToRun === true) return false;
 
   console.log("\nStarting HP..... let's settle things up first\n");
