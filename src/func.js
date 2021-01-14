@@ -573,6 +573,7 @@ export const isPidControllerActive = instance => {
 export const resetPidController = (instance, callback) => {
   if(isPidControllerActive(instance)) {
     instance.controller.reset();
+    console.log("reset instance: ", instance.name,"PID controller");
   }
 
   if(isFunction(callback)) callback();
