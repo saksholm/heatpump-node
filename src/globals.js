@@ -74,18 +74,25 @@ const GLOBALS = {
     {
       type: 'func',
       topic: 'coolingDemand',
-      func: value => setCoolingDemand(value),
+      func: value => {
+        setCoolingDemand(value);
+        console.log("MQTT COMMAND :: setCoolingDemand", value);
+      },
     },
     {
       type: 'func',
       topic: 'resetAlarms',
-      func: () => resetAlarms(),
+      func: () => {
+        resetAlarms();
+        console.log("MQTT COMMAND :: resetAlarms");
+      },
     },
     {
       type: 'func',
       topic: 'emergencyReset',
       func: () => {
         if(HP.emergencyShutdown) HP.emergencyShutdown = false;
+        console.log("MQTT COMMAND :: emergencyReset");
       },
     },
 
