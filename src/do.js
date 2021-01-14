@@ -441,7 +441,7 @@ export const DO = {
 
       // TODO: ramp?!? up/down
     },
-    shutdown: function() {this.value = 0;},
+    shutdown: function() {this.value = 0; this.controller.reset(); },
     increase: function(step=1){increaseValue(this,step)},
     decrease: function(step=1){decreaseValue(this,step)},
     setTarget: function(value) {this.target = value},

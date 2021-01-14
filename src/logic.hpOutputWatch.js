@@ -43,7 +43,9 @@ export const logicHpOutputWatch = () => {
           }
 
         } else if(DO.load2Way.value <= 10) {
-  //      } else if(DO.load2Way.value >= 90) {
+
+//          if(unixtimestamp())
+
           // if hpOutput is already on minimum value we can stop things now?
           if(DO.hpOutput.value === DO.hpOutput.minValue) {
 
@@ -53,7 +55,7 @@ export const logicHpOutputWatch = () => {
               'stopping',
               'starting',
             ].includes(HP.mode)) {
-              console.log(`HP.loop :: STOPPING HP, because load2Way (${DO.load2Way.value}) is more than 90% open and hpOutput is minimum, HP.mode = ${HP.mode}`);
+              console.log(`HP.loop :: STOPPING HP, because load2Way (${DO.load2Way.value}) is less than 10% closed and hpOutput is minimum, HP.mode = ${HP.mode}`);
               HP.stop(`HP.loop, load2Way is ${DO.load2Way.value} and hpOutput is minimum`);
             }
           } else { // if hpOutput is not minimum.. just decrease it by 10%

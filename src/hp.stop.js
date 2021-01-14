@@ -160,6 +160,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
           console.log("load 2-way to 0%");
 
           // turn pid controller target to 0
+
           DO.load2Way.setTarget(0);
           DO.load2Way.controller.setTarget(0);
           console.log("load 2-way pid controller to 0");
@@ -192,6 +193,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
         clearTimeout(HP.timeoutHandlers.stopStep1);
         clearTimeout(HP.timeoutHandlers.stopStep2);
         clearTimeout(HP.timeoutHandlers.stopStep3);
+        clearTimeout(HP.timeoutHandlers.afterDry);
 
 //        console.log("DEBUG::HP Object", HP);
 //        console.log("DEBUG::GLOBALS", GLOBALS);
