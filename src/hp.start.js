@@ -80,13 +80,15 @@ export const hpStart = function() {
     }
 
     // initialize if controller is null
-    if(DO.load2Way.controller === null) DO.load2Way.initializeController();
+    //if(DO.load2Way.controller === null) DO.load2Way.initializeController();
 
     // reset only resets sumError, lastError, lastTime internal parameters (not P,I,D params)
-    resetPidController(DO.load2Way);
+    resetPidController(DO.load2Way, () => {
+      DO.load2Way.controller.setTarget(HP.hxOutTarget);
+      console.log(`load 2-way controller set to ${HP.hxOutTarget}c target out temp` )
+    });
 
-    DO.load2Way.controller.setTarget(HP.hxOutTarget);
-    console.log(`load 2-way controller set to ${HP.hxOutTarget}c target out temp` )
+
 
 
 //    DO.load2Way.controller.reset();
@@ -95,6 +97,7 @@ export const hpStart = function() {
 
 // TODO: is this needed for manual mode?! have to check
 // this is not affected because PID controller handles this
+
 //    DO.load2Way.set(20); // let's open 2way valve 20% manually
 //    console.log("load 2-way to 20%");
 
