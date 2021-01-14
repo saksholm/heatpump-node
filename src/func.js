@@ -570,6 +570,15 @@ export const isPidControllerActive = instance => {
   return !!instance?.controller;
 };
 
+export const resetPidController = (instance, callback) => {
+  if(isPidControllerActive(instance)) {
+    instance.controller.reset();
+  }
+
+  if(isFunction(callback)) callback();
+};
+
+
 export const isFunction = instance => {
   return typeof instance === 'function';
 };

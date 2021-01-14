@@ -6,6 +6,7 @@ import {
   calculateTimeout,
   unixtimestamp,
   setStatus,
+  resetPidController,
 } from './func';
 import {GLOBALS} from "./globals";
 
@@ -52,13 +53,13 @@ export const hpStart = function() {
     HP.timeoutHandlers.afterDry && clearTimeout(HP.timeoutHandlers.afterDry);
 
     HP.allowedToRun = true; // let's allow HP running (restartDelay is now over)
-    console.log("HP allowed to run = true");
+    console.log("HP.allowedToRun = true");
 
     DO.hpAllowed.set("on") // hp allowed relay to on
-    console.log("hp allowed true");
+    console.log("DO.hpAllowed set to true");
 
     DO.waterpumpCharging.set("on"); // waterpump charging relay to on
-    console.log("waterpump charging true");
+    console.log("waterpump charging set to",true);
 
     DO.hpFan.set("on"); // Fan on
     // console.log("hp fan on");
@@ -78,15 +79,24 @@ export const hpStart = function() {
      }
     }
 
+    // initialize if controller is null
     if(DO.load2Way.controller === null) DO.load2Way.initializeController();
 
-    DO.load2Way.controller.reset();
-    console.log(`load 2-way pid controller reset!`);
+    // reset only resets sumError, lastError, lastTime internal parameters (not P,I,D params)
+    resetPidController(DO.load2Way);
+
     DO.load2Way.controller.setTarget(HP.hxOutTarget);
     console.log(`load 2-way controller set to ${HP.hxOutTarget}c target out temp` )
 
-    DO.load2Way.set(20); // let's open 2way valve 20% manually
-    console.log("load 2-way to 20%");
+
+//    DO.load2Way.controller.reset();
+//    console.log(`load 2-way pid controller reset!`);
+
+
+// TODO: is this needed for manual mode?! have to check
+// this is not affected because PID controller handles this
+//    DO.load2Way.set(20); // let's open 2way valve 20% manually
+//    console.log("load 2-way to 20%");
 
 
      // TODO: create additional watcher for outside/chgIn temps to change if needed!!!
