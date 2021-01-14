@@ -1,4 +1,6 @@
 import {setCoolingDemand} from './hp.cooling';
+import {resetAlarms} from "./func";
+import {HP} from "./hp";
 
 const GLOBALS = {
   version: '0.2',
@@ -74,6 +76,19 @@ const GLOBALS = {
       topic: 'coolingDemand',
       func: value => setCoolingDemand(value),
     },
+    {
+      type: 'func',
+      topic: 'resetAlarms',
+      func: () => resetAlarms(),
+    },
+    {
+      type: 'func',
+      topic: 'emergencyReset',
+      func: () => {
+        if(HP.emergencyShutdown) HP.emergencyShutdown = false;
+      },
+    },
+
   ],
   debugLevels: {
     load2WayControllerPid: false,
