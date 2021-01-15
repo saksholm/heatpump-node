@@ -105,12 +105,12 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
         }
 
         // /loopCheck
-      }, 5 * 1000);
+      }, 5_000);
 
       // / defrost4 timeout
     }, 15_000);
 
     // /setTimeout 1
-  }, 15_1000);
+  }, 15_000);
 
 };

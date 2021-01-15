@@ -151,7 +151,7 @@ export const hpStart = function() {
          clearTimeout(HP.timeoutHandlers.startStep1);
          clearTimeout(HP.timeoutHandlers.startStep2);
        }
-     },30_1000);
+     },30_000);
 
   }, timeoutMillis);
 
