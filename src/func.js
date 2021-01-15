@@ -707,3 +707,23 @@ export const resetAlarms = () => {
   HP.mode = 'stop';
 
 };
+
+
+export const clearDefrostIntervalHandlers = () => {
+  if(!!HP.timeoutHandlers.defrost1) {
+    clearTimeout(HP.timeoutHandlers.defrost1);
+    HP.timeoutHandlers.defrost1 = null;
+  }
+  if(!!HP.timeoutHandlers.defrost2) {
+    clearInterval(HP.timeoutHandlers.defrost2); // yes, it's interval! not typo
+    HP.timeoutHandlers.defrost2 = null;
+  }
+  if(!!HP.timeoutHandlers.defrost3) {
+    clearTimeout(HP.timeoutHandlers.defrost3);
+    HP.timeoutHandlers.defrost3 = null;
+  }
+  if(!!HP.timeoutHandlers.defrost4) {
+    clearTimeout(HP.timeoutHandlers.defrost4);
+    HP.timeoutHandlers.defrost4 = null;
+  }
+};

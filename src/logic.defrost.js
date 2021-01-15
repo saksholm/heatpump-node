@@ -101,7 +101,7 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
             HP.defrost = false;
             hpStop(`STOPPING_DEFROST`);
           }, 20 * 1000);
-          clearInterval(HP.timeoutHandlers.defrost2);
+//          clearInterval(HP.timeoutHandlers.defrost2);
         }
 
         // /loopCheck

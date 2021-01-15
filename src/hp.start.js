@@ -7,6 +7,7 @@ import {
   unixtimestamp,
   setStatus,
   resetPidController,
+  clearDefrostIntervalHandlers,
 } from './func';
 import {GLOBALS} from "./globals";
 
@@ -54,12 +55,7 @@ export const hpStart = function() {
     HP.timeoutHandlers.stopStep4 && clearTimeout(HP.timeoutHandlers.stopStep4);
     HP.timeoutHandlers.afterDry && clearTimeout(HP.timeoutHandlers.afterDry);
 
-    // clear defrost timeout/intervals
-    if(!!HP.timeoutHandlers.defrost1) clearTimeout(HP.timeoutHandlers.defrost1);
-    if(!!HP.timeoutHandlers.defrost2) clearInterval(HP.timeoutHandlers.defrost2); // yes, it's interval! not typo
-    if(!!HP.timeoutHandlers.defrost3) clearTimeout(HP.timeoutHandlers.defrost3);
-    if(!!HP.timeoutHandlers.defrost4) clearTimeout(HP.timeoutHandlers.defrost4);
-
+    clearDefrostIntervalHandlers();
 
     HP.allowedToRun = true; // let's allow HP running (restartDelay is now over)
     console.log("HP.allowedToRun = true");
