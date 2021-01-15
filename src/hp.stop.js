@@ -36,6 +36,11 @@ export const hpStop = function(reason, emergency=false, callback=false) {
     if(HP.timeoutHandlers.startStep2 !== null) clearTimeout(HP.timeoutHandlers.startStep2);
   }
 
+  // clear defrost timeout/intervals
+  if(!!HP.timeoutHandlers.defrost1) clearTimeout(HP.timeoutHandlers.defrost1);
+  if(!!HP.timeoutHandlers.defrost2) clearInterval(HP.timeoutHandlers.defrost2); // yes, it's interval! not typo
+  if(!!HP.timeoutHandlers.defrost3) clearTimeout(HP.timeoutHandlers.defrost3);
+
   // TODO: report stop reason... normal/emergency/hotgas/abnormal/defrost/.....
   console.log(`STOP REASON :: ${reason}`);
 
@@ -172,7 +177,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
 
             // no demands.. no need to run hpFan longer
             if(!GLOBALS.heatToWater || !GLOBALS.heatToGround || !GLOBALS.heatToAir) {
-              setTimeout(function() {
+              HP.timeoutHandlers.stopStep4 = setTimeout(function() {
                 DO.hpFan.set('off');
                 DO.hpFanOutput.shutdown();
               },10_000);
@@ -193,6 +198,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
         clearTimeout(HP.timeoutHandlers.stopStep1);
         clearTimeout(HP.timeoutHandlers.stopStep2);
         clearTimeout(HP.timeoutHandlers.stopStep3);
+        clearTimeout(HP.timeoutHandlers.stopStep4);
         clearTimeout(HP.timeoutHandlers.afterDry);
 
 //        console.log("DEBUG::HP Object", HP);
@@ -201,9 +207,9 @@ export const hpStop = function(reason, emergency=false, callback=false) {
 
         if(callback && typeof callback === 'function') callback();
 
-      },60000);
+      },60_000);
 
-    },20000);
+    },20_000);
 
   }, emergency ? 0 : calculatedTimeoutMillis);
 
