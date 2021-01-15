@@ -233,8 +233,15 @@ export const relayOnOff = instance => {
   }
 };
 
-export const pidController = (p=0.25,i=0.01,d=0.01,time=1) => {
-  return new Controller(p,i,d,time);
+export const pidController = (p=0.25,i=0.01,d=0.01,time=1, i_max=100) => {
+  return new Controller({
+    k_p: p,
+    k_i: i,
+    k_d: d,
+    dt: time,
+    i_max: i_max,
+  });
+//  return new Controller(p,i,d,time);
 };
 
 export const round2Decimals = value => {
@@ -560,7 +567,7 @@ export const initializePidController = (instance,callback) => {
       controller_time,
     } = instance;
 //    instance.controller = pidController(controller_p, controller_i, controller_d, controller_time);
-    instance.controller = pidController(controller_p, controller_i, controller_d);
+    instance.controller = pidController(controller_p, controller_i, controller_d,false,DO.load2Way.maxValueOnRunning);
 
     if(isFunction(callback)) callback();
   }
