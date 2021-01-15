@@ -95,6 +95,13 @@ const GLOBALS = {
         console.log("MQTT COMMAND :: emergencyReset");
       },
     },
+    {
+      type: 'func',
+      topic: 'commandTest',
+      func: () => {
+        console.log("MQTT COMMAND :: commandTest");
+      },
+    },
 
   ],
   debugLevels: {
