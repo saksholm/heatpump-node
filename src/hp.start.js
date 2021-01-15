@@ -134,8 +134,8 @@ export const hpStart = function() {
 */
 
 
-     // waiting extra 10s. to start pump.
-     console.log("\nWaiting 10s more...\n");
+     // waiting extra 30s. to start pump.
+     console.log("\nWaiting 30s more...\n");
      HP.timeoutHandlers.startStep2 = setTimeout(() => {
        // check if we are allowed to continue.. for example emergency stop before this happen
        if(HP.allowedToRun) {
@@ -151,7 +151,7 @@ export const hpStart = function() {
          clearTimeout(HP.timeoutHandlers.startStep1);
          clearTimeout(HP.timeoutHandlers.startStep2);
        }
-     },10*1000);
+     },30_1000);
 
   }, timeoutMillis);
 
