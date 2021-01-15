@@ -100,6 +100,7 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
             console.log("STOPPING DEFROST in 20sec");
             HP.defrost = false;
             hpStop(`STOPPING_DEFROST`);
+            clearTimeout(HP.timeoutHandlers.defrost3);
           }, 20 * 1000);
           clearInterval(HP.timeoutHandlers.defrost2);
         }

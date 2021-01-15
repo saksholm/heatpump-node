@@ -54,6 +54,7 @@ export const logicHpOutputWatch = () => {
               'stop',
               'stopping',
               'starting',
+              'defrost',
             ].includes(HP.mode)) {
               console.log(`HP.loop :: STOPPING HP, because load2Way (${DO.load2Way.value}) is less than 10% closed and hpOutput is minimum, HP.mode = ${HP.mode}`);
               HP.stop(`HP.loop, load2Way is ${DO.load2Way.value} and hpOutput is minimum`);
