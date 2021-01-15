@@ -67,6 +67,7 @@ export const HP = {
     defrost1: null,
     defrost2: null,
     defrost3: null,
+    defrost4: null,
   },
   emergencyShutdown: false,
   mqtt: {

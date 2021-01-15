@@ -40,6 +40,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
   if(!!HP.timeoutHandlers.defrost1) clearTimeout(HP.timeoutHandlers.defrost1);
   if(!!HP.timeoutHandlers.defrost2) clearInterval(HP.timeoutHandlers.defrost2); // yes, it's interval! not typo
   if(!!HP.timeoutHandlers.defrost3) clearTimeout(HP.timeoutHandlers.defrost3);
+  if(!!HP.timeoutHandlers.defrost4) clearTimeout(HP.timeoutHandlers.defrost4);
 
   // TODO: report stop reason... normal/emergency/hotgas/abnormal/defrost/.....
   console.log(`STOP REASON :: ${reason}`);

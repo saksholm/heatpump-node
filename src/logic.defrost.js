@@ -76,33 +76,41 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
     console.log("STARTING PUMP!", 20);
     HP.allowedToRun = true;
     DO.hpAllowed.set('on');
-    DO.hpOutput.set(20);
+    DO.hpOutput.set(0,true,true);
 
-    // turn ahuFan also on
-    DO.ahuFan.set('on');
-    DO.ahuFanOutput.set(10);
+    // allow pump idling a while before starting increase output
+    HP.timeoutHandlers.defrost4 = setTimeout(function() {
 
-    HP.timeoutHandlers.defrost2 = setInterval(function() {
+      DO.hpOutput.set(20);
 
-      // increase ahuFan up to defrostMax %
-      if(DO.ahuFanOutput.value < DO.ahuFanOutput.defrostMax) DO.ahuFanOutput.increase(2);
+      // turn ahuFan also on
+      DO.ahuFan.set('on');
+      DO.ahuFanOutput.set(10);
+
+      HP.timeoutHandlers.defrost2 = setInterval(function() {
+
+        // increase ahuFan up to defrostMax %
+        if(DO.ahuFanOutput.value < DO.ahuFanOutput.defrostMax) DO.ahuFanOutput.increase(2);
 
 
-      console.log("TH.betweenCX_FAN.value", TH.betweenCX_FAN.value);
-      if(TH.betweenCX_FAN.value > 15) {
-        console.log("Triggered setTimeout for hpStop().. stopping loopCheck for temperature between CX and FAN");
-        HP.timeoutHandlers.defrost3 = setTimeout(function () {
-          console.log("STOPPING DEFROST in 20sec");
-          HP.defrost = false;
-          hpStop(`STOPPING_DEFROST`);
-        }, 20 * 1000);
-        clearInterval(HP.timeoutHandlers.defrost2);
-      }
+        console.log("TH.betweenCX_FAN.value", TH.betweenCX_FAN.value);
+        if(TH.betweenCX_FAN.value > 15) {
+          console.log("Triggered setTimeout for hpStop().. stopping loopCheck for temperature between CX and FAN");
+          HP.timeoutHandlers.defrost3 = setTimeout(function () {
+            console.log("STOPPING DEFROST in 20sec");
+            HP.defrost = false;
+            hpStop(`STOPPING_DEFROST`);
+          }, 20 * 1000);
+          clearInterval(HP.timeoutHandlers.defrost2);
+        }
 
-      // /loopCheck
-    }, 5 * 1000);
+        // /loopCheck
+      }, 5 * 1000);
 
-    // /setTimeout
-  }, 5* 1000);
+      // / defrost4 timeout
+    }, 15_000);
+
+    // /setTimeout 1
+  }, 15_1000);
 
 };

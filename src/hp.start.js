@@ -58,6 +58,7 @@ export const hpStart = function() {
     if(!!HP.timeoutHandlers.defrost1) clearTimeout(HP.timeoutHandlers.defrost1);
     if(!!HP.timeoutHandlers.defrost2) clearInterval(HP.timeoutHandlers.defrost2); // yes, it's interval! not typo
     if(!!HP.timeoutHandlers.defrost3) clearTimeout(HP.timeoutHandlers.defrost3);
+    if(!!HP.timeoutHandlers.defrost4) clearTimeout(HP.timeoutHandlers.defrost4);
 
 
     HP.allowedToRun = true; // let's allow HP running (restartDelay is now over)
