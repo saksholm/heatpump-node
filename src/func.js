@@ -239,7 +239,7 @@ export const pidController = (p=0.25,i=0.01,d=0.01,time=1, i_max=100) => {
     k_i: i,
     k_d: d,
     dt: time,
-    i_max: i_max,
+//    i_max: i_max,
   });
 //  return new Controller(p,i,d,time);
 };
