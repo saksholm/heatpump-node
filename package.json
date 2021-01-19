@@ -18,9 +18,9 @@
   "homepage": "https://github.com/saksholm/heatpump-node#readme",
   "dependencies": {
     "@airbnb/node-memwatch": "^2.0.0",
-    "@babel/core": "^7.12.9",
-    "@babel/preset-env": "^7.12.7",
-    "@babel/register": "^7.12.1",
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/register": "^7.12.10",
     "date-fns": "^2.16.1",
     "johnny-five": "^2.0.0",
     "minimist": "^1.2.5",
