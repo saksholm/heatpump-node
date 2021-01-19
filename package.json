@@ -26,7 +26,7 @@
     "minimist": "^1.2.5",
     "mqtt": "^4.2.6",
     "node-pid-controller": "^1.0.1",
-    "serialport": "^9.0.2"
+    "serialport": "^9.0.4"
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.12.7",
