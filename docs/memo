@@ -1,0 +1,35 @@
+ideas for proper way to handle start/stop/defrost (and any other modes)
+
+HP.mode's:
+- stop
+- stopping
+- emergencyStop
+- start
+- starting
+- run
+- cooling
+- heating
+- defrost
+- afterDry (drying coil with hpFan)
+- error
+
+
+HP.program's:
+- idle
+- heatToWater (w/o ahu)
+- coolingAir (w/ ahu)
+- heatingAir (w/ ahu)
+- heatingCHG (TBD, with hp or only hpFan)
+
+4-way:
+- heating
+- cooling
+
+
+
+-----
+problem is now how we handle defrost.. never heal to normal process
+
+core problems:
+- defrost is triggered more than once
+- STOPPING_DEFROST not stops defrost loop properly, HP.timeoutHandlers.defrost2 interval continues
