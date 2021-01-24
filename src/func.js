@@ -710,20 +710,59 @@ export const resetAlarms = () => {
 
 
 export const clearDefrostIntervalHandlers = () => {
-  if(!!HP.timeoutHandlers.defrost1) {
-    clearTimeout(HP.timeoutHandlers.defrost1);
-    HP.timeoutHandlers.defrost1 = null;
+  if(!!HP.timeoutHandlers.defrost1.length) {
+    clearHandlers(clearTimeout, HP.timeoutHandlers.defrost1);
+//    clearTimeout(HP.timeoutHandlers.defrost1);
+//    HP.timeoutHandlers.defrost1 = null;
   }
-  if(!!HP.timeoutHandlers.defrost2) {
-    clearInterval(HP.timeoutHandlers.defrost2); // yes, it's interval! not typo
-    HP.timeoutHandlers.defrost2 = null;
+  if(!!HP.timeoutHandlers.defrost2.length) {
+    clearHandlers(clearInterval, HP.timeoutHandlers.defrost2);
+//    clearInterval(HP.timeoutHandlers.defrost2); // yes, it's interval! not typo
+//    HP.timeoutHandlers.defrost2 = null;
   }
-  if(!!HP.timeoutHandlers.defrost3) {
-    clearTimeout(HP.timeoutHandlers.defrost3);
-    HP.timeoutHandlers.defrost3 = null;
+  if(!!HP.timeoutHandlers.defrost3.length) {
+    clearHandlers(clearTimeout, HP.timeoutHandlers.defrost3);
+//    clearTimeout(HP.timeoutHandlers.defrost3);
+//    HP.timeoutHandlers.defrost3 = null;
   }
-  if(!!HP.timeoutHandlers.defrost4) {
-    clearTimeout(HP.timeoutHandlers.defrost4);
-    HP.timeoutHandlers.defrost4 = null;
+  if(!!HP.timeoutHandlers.defrost4.length) {
+    clearHandlers(clearTimeout, HP.timeoutHandlers.defrost4);
+//    clearTimeout(HP.timeoutHandlers.defrost4);
+//    HP.timeoutHandlers.defrost4 = null;
   }
+};
+
+export const clearHandlers = (func, instance) => {
+  if(instance.length) {
+    instance.map(x => func(x));
+  }
+  instance = [];
+};
+
+export const manuallyShutdownEverything = () => {
+  HP.mode = 'stopping';
+
+  HP.allowedToRun = false;
+
+  DO.hpAllowed.set('off');
+  DO.hpOutput.set(0);
+
+  DO.hpFanOutput.shutdown();
+  DO.hpFan.set('off');
+
+  DO.damperOutside.close();
+
+  DO.ahuFanOutput.shutdown();
+  DO.ahuFan.set('off');
+
+  // 15% open!!!
+  DO.load2Way.set(85);
+
+  DO.waterpumpCharging.set('off');
+
+  HP.mode = 'stop';
+  HP.defrost = false;
+
+  clearDefrostIntervalHandlers();
+
 };

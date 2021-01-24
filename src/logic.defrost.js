@@ -7,6 +7,7 @@ import {TH} from './th';
 import {AI} from './ai';
 import {hpStop} from './hp.stop';
 import {GLOBALS} from "./globals";
+import {clearHandlers, manuallyShutdownEverything, resetPidController} from "./func";
 
 export const defrostLogic = () => {
 
@@ -57,12 +58,20 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
   // if emergencyShutdown... prevent defrost
   if(HP.emergencyShutdown) return false;
 
+  if(HP.defrost) {
+    console.log("ALREADY DEFROSTING!!!!", where);
+    return false;
+  }
+
+
+
   console.log("---------------------------");
   console.log("STARTING DEFROSTING MODE!!!");
   console.log("---------------------------");
 
+  HP.defrost = true;
   HP.mode = 'defrost';
-  DO.hp4Way.set(hp4wayMode === 'heating' ? 'cooling' : 'heating');
+  DO.hp4Way.set('cooling');
 
   DO.damperOutside.set('close');
 
@@ -70,16 +79,27 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
   DO.hpFanOutput.set(40);
 
   DO.waterpumpCharging.set('on');
+
+  // reset load2way controller
+  DO.load2Way.controller.reset();
+  // set target to 0
+  DO.load2Way.controller.target(0);
+  // set to 50%
   DO.load2Way.set(50); // % of close...
 
-  HP.timeoutHandlers.defrost1 = setTimeout(function() {
+
+  console.log("....waiting.....", 20, 'seconds');
+
+  HP.timeoutHandlers.defrost1.push(setTimeout(function() {
+    resetPidController(DO.load2Way);
+
     console.log("STARTING PUMP!", 20);
     HP.allowedToRun = true;
     DO.hpAllowed.set('on');
     DO.hpOutput.set(0,true,true);
 
     // allow pump idling a while before starting increase output
-    HP.timeoutHandlers.defrost4 = setTimeout(function() {
+    HP.timeoutHandlers.defrost4.push(setTimeout(function() {
 
       DO.hpOutput.set(20);
 
@@ -87,7 +107,7 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
       DO.ahuFan.set('on');
       DO.ahuFanOutput.set(10);
 
-      HP.timeoutHandlers.defrost2 = setInterval(function() {
+      HP.timeoutHandlers.defrost2.push(setInterval(function() {
 
         // increase ahuFan up to defrostMax %
         if(DO.ahuFanOutput.value < DO.ahuFanOutput.defrostMax) DO.ahuFanOutput.increase(2);
@@ -96,22 +116,26 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
         console.log("TH.betweenCX_FAN.value", TH.betweenCX_FAN.value);
         if(TH.betweenCX_FAN.value > 15) {
           console.log("Triggered setTimeout for hpStop().. stopping loopCheck for temperature between CX and FAN");
-          HP.timeoutHandlers.defrost3 = setTimeout(function () {
+          HP.timeoutHandlers.defrost3.push(setTimeout(function () {
             console.log("STOPPING DEFROST in 20sec");
-            HP.defrost = false;
-            hpStop(`STOPPING_DEFROST`);
-            clearTimeout(HP.timeoutHandlers.defrost3);
-          }, 20 * 1000);
-          clearInterval(HP.timeoutHandlers.defrost2);
+
+            // replace this manually
+//            hpStop(`STOPPING_DEFROST`);
+
+            manuallyShutdownEverything();
+
+//            clearHandlers(clearTimeout, HP.timeoutHandlers.defrost3);
+          }, 20 * 1000));
+          clearHandlers(clearInterval, HP.timeoutHandlers.defrost2);
         }
 
         // /loopCheck
-      }, 5_000);
+      }, 5_000));
 
       // / defrost4 timeout
-    }, 15_000);
+    }, 15_000));
 
     // /setTimeout 1
-  }, 15_000);
+  }, 20_000));
 
 };
