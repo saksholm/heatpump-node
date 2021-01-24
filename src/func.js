@@ -710,6 +710,7 @@ export const resetAlarms = () => {
 
 
 export const clearDefrostIntervalHandlers = () => {
+  console.log("DEBUG :: clearDefrostIntervalHandlers() ", HP.timeoutHandlers);
   if(!!HP.timeoutHandlers.defrost1.length) {
     clearHandlers(clearTimeout, HP.timeoutHandlers.defrost1);
 //    clearTimeout(HP.timeoutHandlers.defrost1);
