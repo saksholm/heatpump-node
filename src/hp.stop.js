@@ -155,7 +155,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
 
         if(HP.defrost) { // && !['alarmA'].includes(HP.mode) ?!?!? not sure with this
           // #debug1
-          console.log("#debug1 reason:", reason)
+          console.log("#debug1 reason:", reason);
           if(reason !== 'MANUAL_DEFROST') runDefrostCycle(hp4WayMode, 'hp.stop() in #debug1');
         } else {
           DO.waterpumpCharging.set('off'); // waterpump charging relay to on
