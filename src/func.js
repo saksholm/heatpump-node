@@ -761,9 +761,16 @@ export const manuallyShutdownEverything = () => {
 
   DO.waterpumpCharging.set('off');
 
-  HP.mode = 'stop';
-  HP.defrost = false;
+
 
   clearDefrostIntervalHandlers();
 
+
+  setTimeout(() => {
+    DO.hp4Way.set('heating');
+
+    HP.mode = 'stop';
+    HP.defrost = false;
+
+  }, 20_000);
 };
