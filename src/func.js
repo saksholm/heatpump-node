@@ -751,7 +751,7 @@ export const manuallyShutdownEverything = () => {
   DO.hpFanOutput.shutdown();
   DO.hpFan.set('off');
 
-  DO.damperOutside.close();
+  DO.damperOutside.set('close');
 
   DO.ahuFanOutput.shutdown();
   DO.ahuFan.set('off');
