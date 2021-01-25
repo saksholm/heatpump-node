@@ -29,7 +29,10 @@ export const hotgasWatch = () => {
 
       // start defrosting only when heating mode and hotgas triggered
       if(DO.hp4Way.value === 'heating') {
-        stopToDefrostAndContinue('HOTGAS_DEFROST');
+        // allow only if HP.mode is not 'defrost' and HP.defrost is false
+        if(HP.mode !== 'defrost' && !HP.defrost) {
+          stopToDefrostAndContinue('HOTGAS_DEFROST');
+        }
       } else {
 
         // too hot hotgas! drop output demand by half
