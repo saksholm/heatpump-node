@@ -84,7 +84,7 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
   // reset load2way controller
   DO.load2Way.controller.reset();
   // set target to 0
-  DO.load2Way.controller.target(0);
+//  DO.load2Way.controller.target(0);
   // set to 50%
   DO.load2Way.set(50); // % of close...
 
