@@ -59,7 +59,7 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
   // if emergencyShutdown... prevent defrost
   if(HP.emergencyShutdown) return false;
 
-  if(HP.defrost) {
+  if(HP.mode === 'defrost') {
     console.log("ALREADY DEFROSTING!!!!", where);
     return false;
   }
