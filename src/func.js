@@ -698,6 +698,10 @@ export const printAIObject = () => {
   return rest;
 };
 
+export const printTimeoutHandlers = () => {
+  console.log("HP.timeoutHandlers", HP.timeoutHandlers);
+};
+
 export const resetAlarms = () => {
   HP.alarmA = false;
   HP.alarmAReason = null;

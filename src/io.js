@@ -17,6 +17,7 @@ import {
   printHPObject,
   printDOObject,
   printAIObject,
+  printTimeoutHandlers,
   resetAlarms,
 } from './func';
 
@@ -82,6 +83,7 @@ IO.initial = board => {
       printHPObject: () => {console.log("HP Object", printHPObject())},
       printDOObject: () => {console.log("DO Object", printDOObject())},
       printAIObject: () => {console.log("AI Object", printAIObject())},
+      printTimeoutHandlers: () => printTimeoutHandlers(),
       resetAlarm: () => resetAlarms(),
     });
 
