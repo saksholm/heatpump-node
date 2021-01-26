@@ -768,11 +768,12 @@ export const manuallyShutdownEverything = () => {
   clearDefrostIntervalHandlers();
 
 
+  console.log("....waiting for....");
   setTimeout(() => {
-    DO.hp4Way.set('heating');
-
+    console.log("...finalising manuallyShutdownEverything()....");
     HP.mode = 'stop';
     HP.defrost = false;
+    DO.hp4Way.set('heating');
 
   }, 20_000);
 };
