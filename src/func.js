@@ -741,6 +741,8 @@ export const clearHandlers = (func, instance) => {
 };
 
 export const manuallyShutdownEverything = () => {
+  console.log("manuallyShutdownEverything() triggered... shutting down");
+
   HP.mode = 'stopping';
 
   HP.allowedToRun = false;

@@ -431,6 +431,7 @@ export const DO = {
     maxValueOnRunning: 85,
     maxValueOnDefrost: 80,
     target: null,
+    manualMode: false,
     set: function(value) {
       if(!defaultForSet(this,value)) return;
 

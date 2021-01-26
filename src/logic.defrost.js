@@ -82,18 +82,20 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
   DO.waterpumpCharging.set('on');
 
   // reset load2way controller
-  DO.load2Way.controller.reset();
+//  DO.load2Way.controller.reset();
   // set target to 0
 //  DO.load2Way.controller.target(0);
   // set to 50%
+  DO.load2Way.manualMode = true;
   DO.load2Way.set(50); // % of close...
 
 
   console.log("....waiting.....", 20, 'seconds');
 
   HP.timeoutHandlers.defrost1.push(setTimeout(function() {
-    resetPidController(DO.load2Way);
+//    resetPidController(DO.load2Way);
 
+    DO.load2Way.manualMode = false;
     console.log("STARTING PUMP!", 20);
     HP.allowedToRun = true;
     DO.hpAllowed.set('on');
