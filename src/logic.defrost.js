@@ -117,10 +117,10 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
 
 
         console.log("TH.betweenCX_FAN.value", TH.betweenCX_FAN.value);
-        if(TH.betweenCX_FAN.value > 15) {
+        if(TH.betweenCX_FAN.value > 12) {
           console.log("Triggered setTimeout for hpStop().. stopping loopCheck for temperature between CX and FAN");
           HP.timeoutHandlers.defrost3.push(setTimeout(function () {
-            console.log("STOPPING DEFROST in 20sec");
+            console.log("STOPPING DEFROST in 5sec");
 
             // replace this manually
 //            hpStop(`STOPPING_DEFROST`);
@@ -128,7 +128,7 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
             manuallyShutdownEverything();
 
 //            clearHandlers(clearTimeout, HP.timeoutHandlers.defrost3);
-          }, 20 * 1000));
+          }, 5 * 1000));
           clearHandlers(clearInterval, HP.timeoutHandlers.defrost2);
         }
 
