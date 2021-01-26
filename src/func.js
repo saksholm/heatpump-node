@@ -773,11 +773,13 @@ export const manuallyShutdownEverything = () => {
 
 
   console.log("....waiting for....");
+
+
+
   setTimeout(() => {
     console.log("...finalising manuallyShutdownEverything()....");
     HP.mode = 'stop';
     HP.defrost = false;
     DO.hp4Way.set('heating');
-
-  }, 20_000);
+  }, 10_000);
 };

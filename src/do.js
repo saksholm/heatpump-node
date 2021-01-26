@@ -321,14 +321,14 @@ export const DO = {
     relayType: 'NO',
     set: function(value, initial=false) {
       if(!defaultForSet(this,value)) return;
-
+      console.log("HP4WAY DEBUG!!!", value);
       //TODO: check if stuff is running... cant change if running!!!
 
       if(!['starting','stopping','heating','cooling','run'].includes(HP.mode) || initial === true) {
         this.value = value;
         if(this.value === "heating") this.output.close();
         if(this.value === "cooling") this.output.open();
-
+        console.log("switched 4-way!", this.value);
         mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       } else {
         console.log("Not allowed in this mode...", HP.mode);
