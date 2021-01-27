@@ -491,6 +491,7 @@ export const DO = {
     defaultValue: 20,
     minValue: 10,
     maxValue: 50,
+    manualMin: 0,
     manualMax: 70,
     set: function(value, skip=false,manual=false) {
       if(!defaultForSet(this,value)) return;
@@ -499,7 +500,7 @@ export const DO = {
 //      console.log(`DEBUG: DO.hpOutput.set().. HP.allowedToRun: ${HP.allowedToRun} `);
       if(HP.allowedToRun || skip) {
         this.value = manual
-          ? constrain(parseInt(value), this.minValue, this.manualMax)
+          ? constrain(parseInt(value), this.manualMin, this.manualMax)
           : skip
             ? parseInt(value)
             : constrain(parseInt(value), this.minValue, this.maxValue);
