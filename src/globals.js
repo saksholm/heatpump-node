@@ -45,7 +45,7 @@ const GLOBALS = {
     upper: { // middle upper!!
       request: false,
       demand: true,
-      softMinimum: 30.0,
+      softMinimum: 32.0,
       softMaximum: 40.0,
       hardMinimum: 25.0,
       hardMaximum: 60.0,
