@@ -404,7 +404,7 @@ export const DO = {
 
       // TODO: ramp?!? up/down
     },
-    shutdown: function() {this.set(0, false, true)},
+    shutdown: function() {DO.hpFanOutput.set(0, false, true)},
     increase: function(step=1){increaseValue(this,step)},
     decrease: function(step=1){decreaseValue(this,step)},
     mqttCommand: 'hp/fanOutput',
