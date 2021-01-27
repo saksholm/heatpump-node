@@ -204,6 +204,8 @@ export const hpStop = function(reason, emergency=false, callback=false) {
 //        console.log("DEBUG::GLOBALS", GLOBALS);
 
 
+        HP.restartTimestamp = unixtimestamp();
+
         if(callback && typeof callback === 'function') callback();
 
       },60_000);

@@ -754,6 +754,9 @@ export const manuallyShutdownEverything = () => {
   DO.hpAllowed.set('off');
   DO.hpOutput.set(0);
 
+  HP.lastStopTime = unixtimestamp();
+
+
   DO.hpFanOutput.shutdown();
   DO.hpFan.set('off');
 
