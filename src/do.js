@@ -392,18 +392,19 @@ export const DO = {
     defaultValue: 20,
     minValue: 10,
     maxValue: 60,
+    manualMin: 0,
     manualMax: 80,
     set: function(value,skip=false, manual=true) {
       if(!defaultForSet(this,value)) return;
-      this.value = constrain(value, this.minValue, manual ? this.manualMax : this.maxValue);
+      this.value = constrain(value, manual ? this.manualMin : this.minValue, manual ? this.manualMax : this.maxValue);
 
-      DO.board.analogWrite(this.pin, skip ? this.value : mapPercentToPWM(this.value, this.minValue, manual ? this.manualMax : this.maxValue));
+      DO.board.analogWrite(this.pin, skip ? this.value : mapPercentToPWM(this.value, manual ? this.manualMin : this.minValue, manual ? this.manualMax : this.maxValue));
 
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
 
       // TODO: ramp?!? up/down
     },
-    shutdown: function() {this.value = 0;},
+    shutdown: function() {this.set(0, false, true)},
     increase: function(step=1){increaseValue(this,step)},
     decrease: function(step=1){decreaseValue(this,step)},
     mqttCommand: 'hp/fanOutput',
