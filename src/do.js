@@ -331,7 +331,7 @@ export const DO = {
         console.log("switched 4-way!", this.value);
         mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       } else {
-        console.log("Not allowed in this mode...", HP.mode);
+        console.log("DO.hp4Way :: Not allowed in this mode...", HP.mode);
       }
 
     },
