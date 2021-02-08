@@ -429,7 +429,7 @@ export const DO = {
     value: 0,
     minValue: 5, //TODO: should check what is the real minimum to use
     maxValue: 100,
-    maxValueOnRunning: 85,
+    maxValueOnRunning: 83,
     maxValueOnDefrost: 80,
     target: null,
     manualMode: false,
