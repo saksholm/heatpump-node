@@ -781,6 +781,7 @@ export const manuallyShutdownEverything = () => {
 
   setTimeout(() => {
     console.log("...finalising manuallyShutdownEverything()....");
+    HP.restartTimestamp = unixtimestamp();
     HP.mode = 'stop';
     HP.defrost = false;
     DO.hp4Way.set('heating');
