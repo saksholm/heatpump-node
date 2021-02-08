@@ -7,7 +7,7 @@ import {TH} from './th';
 import {AI} from './ai';
 import {hpStop} from './hp.stop';
 import {GLOBALS} from "./globals";
-import {clearHandlers, manuallyShutdownEverything, resetPidController} from "./func";
+import {clearHandlers, manuallyShutdownEverything, resetPidController, unixtimestamp} from "./func";
 
 export const defrostLogic = () => {
 
@@ -98,6 +98,8 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
     DO.load2Way.manualMode = false;
     console.log("STARTING PUMP!", 20);
     HP.allowedToRun = true;
+    HP.actualRunStartTimestamp = unixtimestamp();
+
     DO.hpAllowed.set('on');
     DO.hpOutput.set(0,true,true);
 
@@ -117,7 +119,7 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
 
 
         console.log("TH.betweenCX_FAN.value", TH.betweenCX_FAN.value);
-        if(TH.betweenCX_FAN.value > 12) {
+        if(TH.betweenCX_FAN.value > 10) {
           console.log("Triggered setTimeout for hpStop().. stopping loopCheck for temperature between CX and FAN");
           HP.timeoutHandlers.defrost3.push(setTimeout(function () {
             console.log("STOPPING DEFROST in 5sec");
@@ -136,7 +138,7 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
       }, 5_000));
 
       // / defrost4 timeout
-    }, 15_000));
+    }, 30_000));
 
     // /setTimeout 1
   }, 20_000));
