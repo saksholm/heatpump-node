@@ -102,8 +102,10 @@ export const hpStop = function(reason, emergency=false, callback=false) {
 
         console.log("DEBUG ------------- GLOBALS.lastRunTime", GLOBALS.lastRunTime, "GLOBALS.afterDryLimit", GLOBALS.afterDryLimit );
 
-        HP.defrost = true;
-        console.log("HP.defrost = true");
+
+// TODO: try to get these away...
+//        HP.defrost = true;
+//        console.log("HP.defrost = true");
 
         DO.hpFan.set('on');
         DO.hpFanOutput.set(GLOBALS.afterDryHpFanOutput);
@@ -116,30 +118,30 @@ export const hpStop = function(reason, emergency=false, callback=false) {
           if(GLOBALS.lastRunTime < GLOBALS.afterDryLimit) {
             console.log(`After dry activated, last run is too short (<${Math.floor(GLOBALS.afterDryLimit/60)})...  ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
 
-            HP.defrost = true; // prevent things to start too early
-
-            /*
-            DISABLE THIS FOR A WHILE AND TEST ANOTHER DEFROST METHOD
+            HP.afterDry = true; // prevent things to start too early
 
 
             HP.timeoutHandlers.afterDry = setTimeout(() => {
               console.log("stopping afterDry 1");
               stopHpFan();
-              HP.defrost = false;
-              console.log("HP.defrost = false");
+              HP.afterDry = false;
+              console.log("HP.afterDry = false");
               clearTimeout(HP.timeoutHandlers.afterDry);
               HP.timeoutHandlers.afterDry = null;
 
             }, GLOBALS.afterDryTime * 1000);
 
-             */
+
           } else {
             console.log(`After dry not activated, last run was ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
+
+            HP.afterDry = true;
+
             HP.timeoutHandlers.afterDry = setTimeout(() => {
               console.log("stopping afterDry 2");
               stopHpFan();
-              HP.defrost = false;
-              console.log("HP.defrost = false");
+              HP.afterDry = false;
+              console.log("HP.afterDry = false");
               clearTimeout(HP.timeoutHandlers.afterDry);
               HP.timeoutHandlers.afterDry = null;
             }, GLOBALS.afterDryTimeShort * 1000);
