@@ -62,7 +62,7 @@ export const logicHpOutputWatch = () => {
           } else { // if hpOutput is not minimum.. just decrease it by 10%
             DO.hpOutput.decrease(10);
           }
-        }
+        } // <= 10
       }
 
 
