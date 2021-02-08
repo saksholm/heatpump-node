@@ -92,6 +92,7 @@ export const boilerLogic = () => {
       // stop
       if(HP.restartTimestamp + HP.minimumRunningTime <= unixtimestamp()) {
         HP.program = 'stop'
+        console.log("no heatToWater demand, stopping");
         hpStop(`boiler logic, no heatToWater demand`);
       }
 
