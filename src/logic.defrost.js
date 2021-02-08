@@ -96,6 +96,8 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
 //    resetPidController(DO.load2Way);
 
     DO.load2Way.manualMode = false;
+    DO.load2Way.controller?.setTarget(40);
+
     console.log("STARTING PUMP!", 20);
     HP.allowedToRun = true;
     HP.actualRunStartTimestamp = unixtimestamp();
