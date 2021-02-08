@@ -32,10 +32,11 @@ export const HP = {
   alarmBReason: null,
   running: false,
   lastStopTime: 0,
-  minimumRunningTime: 60*2, // 1min
+  minimumRunningTime: 60*3, // 3min
   actualRunStartTimestamp: 0,
   restartDelay: 60*5, // 5 mins
   restartTimestamp: 0,
+  afterDry: false,
   defrost: false,
   coolingDemand: false,
   maxHotgas: 80, // 80c
