@@ -110,7 +110,7 @@ try {
     mqttClient.subscribe('state/iot/heatpump/hp/status', (err) => {
       if(!err) {
         // reply with publish
-        mqttClient.publish('state/iot/heatpump/hp/status', 'initialising');
+//        mqttClient.publish('state/iot/heatpump/hp/status', 'initialising');
       }
     });
   });
