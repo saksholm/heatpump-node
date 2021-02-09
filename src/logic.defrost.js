@@ -49,6 +49,7 @@ export const stopToDefrostAndContinue = (reason='MANUAL_DEFROST') => {
   const hp4wayMode = DO.hp4Way.value;
 //  HP.defrost = true;
   // #debug2
+  HP.continueRunAfterDefrost = true;
   console.log("DEBUG :: stopToDefrostAndContinue() reason", reason);
   hpStop(reason, false, () => runDefrostCycle(hp4wayMode, "stopToDefrostAndContinue() in #debug2"));
 

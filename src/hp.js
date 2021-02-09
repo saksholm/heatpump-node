@@ -38,6 +38,7 @@ export const HP = {
   restartTimestamp: 0,
   afterDry: false,
   defrost: false,
+  continueRunAfterDefrost: false,
   coolingDemand: false,
   maxHotgas: 80, // 80c
   maxHotgasEmergency: 90,

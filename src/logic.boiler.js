@@ -57,7 +57,8 @@ export const boilerLogic = () => {
   // NOTE: this controls water heating request
   GLOBALS.heatToWater = (boiler.upper.demand && boiler.upper.request)
     || (boiler.middle.demand && boiler.middle.request)
-    || (boiler.lower.demand && boiler.lower.request);
+    || (boiler.lower.demand && boiler.lower.request)
+    || HP.continueRunAfterDefrost;
 
 
   if(![
@@ -78,6 +79,7 @@ export const boilerLogic = () => {
           console.log("LOGIC boiler :: Allowed to start after restartDelay... FINALLY!!!!!!!!!!!!!!!!! HP.mode = ", HP.mode);
           // TODO: what if we running something else ?!
           HP.program = 'heatToWater';
+          if(HP.continueRunAfterDefrost) HP.continueRunAfterDefrost = false;
           HP.start();
         }
       }
