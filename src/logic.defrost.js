@@ -93,6 +93,8 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
 
   console.log("....waiting.....", 20, 'seconds');
 
+  DO.hpOutput.set(0,true,true);
+
   HP.timeoutHandlers.defrost1.push(setTimeout(function() {
 //    resetPidController(DO.load2Way);
 
@@ -104,7 +106,6 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
     HP.actualRunStartTimestamp = unixtimestamp();
 
     DO.hpAllowed.set('on');
-    DO.hpOutput.set(0,true,true);
 
     // allow pump idling a while before starting increase output
     HP.timeoutHandlers.defrost4.push(setTimeout(function() {
@@ -141,7 +142,7 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
       }, 5_000));
 
       // / defrost4 timeout
-    }, 30_000));
+    }, 45_000));
 
     // /setTimeout 1
   }, 20_000));
