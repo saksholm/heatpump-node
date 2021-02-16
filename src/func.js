@@ -551,7 +551,9 @@ export const lcdNextScreenHelper = (instanceName, instance, nextScreen, nextRota
 };
 
 export const initializePidController = (instance,callback) => {
+  console.log("initializePidController() called...");
   if(!isPidControllerActive(instance)) {
+    console.log("pid controller is not active.. activating");
     const {
       controller_p,
       controller_i,
@@ -561,7 +563,10 @@ export const initializePidController = (instance,callback) => {
 //    instance.controller = pidController(controller_p, controller_i, controller_d, controller_time);
     instance.controller = pidController(controller_p, controller_i, controller_d);
 
-    if(isFunction(callback)) callback();
+    if(isFunction(callback)) {
+      console.log("initializePidController() callback is function.. calling");
+      callback();
+    }
   }
 };
 
@@ -570,10 +575,13 @@ export const isPidControllerActive = instance => {
 };
 
 export const resetPidController = (instance, callback) => {
+  console.log("resetPidController() called...");
   if(isPidControllerActive(instance)) {
+    console.log("pid instance is active...");
     instance.controller.reset();
     instance.controller = null;
     console.log("reset instance: ", instance.name,"PID controller");
+    console.log("calling initializePidController()");
     initializePidController(instance, callback);
   }
 

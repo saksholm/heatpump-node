@@ -88,6 +88,7 @@ export const hpStart = function() {
     //if(DO.load2Way.controller === null) DO.load2Way.initializeController();
 
     // reset only resets sumError, lastError, lastTime internal parameters (not P,I,D params)
+    console.log("CALLING resetPidController()");
     resetPidController(DO.load2Way, () => {
       DO.load2Way.controller.setTarget(HP.hxOutTarget);
       console.log(`load 2-way controller set to ${HP.hxOutTarget}c target out temp` )
