@@ -35,14 +35,25 @@ export const boilerLogic = () => {
 //    GLOBALS.upperHeatingResistorAllowed = false;
   }
 
-  // boiler middle check minimum
-  if( (TH.boilerMiddle.value + boiler.deadZone) < boiler.middle.softMinimum) {
-    boiler.middle.request = true;
-  }
   // boiler middle softMaximum
   if( (TH.boilerMiddle.value - boiler.deadZone) > boiler.middle.softMaximum) {
     boiler.middle.request = false;
   }
+
+  // boiler middle check minimum
+  if( (TH.boilerMiddle.value + boiler.deadZone) < boiler.middle.softMinimum) {
+    boiler.middle.request = true;
+  }
+
+
+  // if th.boilermiddle is > minimum && th.boilermiddle < maximum === true
+  if(
+    ((TH.boilerMiddle.value - boiler.deadZone) > boiler.middle.softMinimum) &&
+    ((TH.boilerMiddle.value + boiler.deadZone) < boiler.middle.softMaximum)
+  ) {
+    boiler.middle.request = true;
+  }
+
 
   // boiler check lower minimum
   if( ( TH.boilerLower.value + boiler.deadZone) < boiler.lower.softMinimum) {
