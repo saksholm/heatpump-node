@@ -115,7 +115,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
           'MANUAL_DEFROST',
           'HOTGAS_DEFROST'
         ].includes(reason)) {
-          if(GLOBALS.lastRunTime < GLOBALS.afterDryLimit) {
+          if(GLOBALS.lastRunTime > 10*60 && GLOBALS.lastRunTime < GLOBALS.afterDryLimit) {
             console.log(`After dry activated, last run is too short (<${Math.floor(GLOBALS.afterDryLimit/60)})...  ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
 
             HP.afterDry = true; // prevent things to start too early
@@ -146,6 +146,9 @@ export const hpStop = function(reason, emergency=false, callback=false) {
               HP.timeoutHandlers.afterDry = null;
             }, GLOBALS.afterDryTimeShort * 1000);
           }
+
+
+
         }
 
         if(['STOPPING_DEFROST'].includes(reason)) {
