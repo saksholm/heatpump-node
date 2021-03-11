@@ -623,10 +623,18 @@ export const freezeFrame = () => {
       boilerMiddleRequest: GLOBALS.boiler.middle.request,
       boilerLowerDemand: GLOBALS.boiler.lower.demand,
       boilerLowerRequest: GLOBALS.boiler.lower.request,
+      hvacCooling: GLOBALS.hvacCooling,
+      hvacDrying: GLOBALS.hvacDrying,
+      hvacHeating: GLOBALS.hvacHeating,
+      heatToWater: GLOBALS.heatToWater,
+      heatToGround: GLOBALS.heatToGround,
+      heatToAir: GLOBALS.heatToAir,
+      groundWarmerThanAir: GLOBALS.groundWarmerThanAir,
     },
     hp: {
       error: HP.error,
       program: HP.program,
+      manual: HP.manual,
       mode: HP.mode,
       alarmA: HP.alarmA,
       alarmAReason: HP.alarmAReason,
@@ -638,7 +646,21 @@ export const freezeFrame = () => {
       defrost: HP.defrost,
       coolingDemand: HP.coolingDemand,
       emergencyShutdown: HP.emergencyShutdown,
+      afterDry: HP.afterDry,
+      continueRunAfterDefrost: HP.continueRunAfterDefrost,
     },
+    boiler: {
+      forceHeat: GLOBALS.boiler.forceHeat,
+      upper: {
+        request: GLOBALS.boiler.upper.request,
+      },
+      middle: {
+        request: GLOBALS.boiler.middle.request,
+      },
+      lower: {
+        request: GLOBALS.boiler.lower.request,
+      },
+    }
 
   };
 
@@ -721,7 +743,7 @@ export const resetAlarms = () => {
 
 
 export const clearDefrostIntervalHandlers = () => {
-  console.log("DEBUG :: clearDefrostIntervalHandlers() ", HP.timeoutHandlers);
+//  console.log("DEBUG :: clearDefrostIntervalHandlers() ", HP.timeoutHandlers);
   if(!!HP.timeoutHandlers.defrost1.length) {
     clearHandlers(clearTimeout, HP.timeoutHandlers.defrost1);
 //    clearTimeout(HP.timeoutHandlers.defrost1);
