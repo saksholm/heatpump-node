@@ -17,6 +17,7 @@ export const hpStart = function() {
   if(HP.error) return false;
   if(HP.emergencyShutdown) return false;
   if(HP.defrost) return false;
+  if(HP.afterDry) return false;
 
   if(HP.mode === 'manual') console.log("HP is now in 'manual' mode........ Choose your poison!!");
 
@@ -147,6 +148,8 @@ export const hpStart = function() {
 
          clearTimeout(HP.timeoutHandlers.startStep1);
          clearTimeout(HP.timeoutHandlers.startStep2);
+
+         console.log("-----------------------------------------------------");
        }
      },30_000);
 
