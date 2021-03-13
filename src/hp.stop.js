@@ -203,7 +203,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
         clearTimeout(HP.timeoutHandlers.stopStep2);
         clearTimeout(HP.timeoutHandlers.stopStep3);
         clearTimeout(HP.timeoutHandlers.stopStep4);
-        clearTimeout(HP.timeoutHandlers.afterDry);
+//        clearTimeout(HP.timeoutHandlers.afterDry); // this prevents to run loop?!
 
 //        console.log("DEBUG::HP Object", HP);
 //        console.log("DEBUG::GLOBALS", GLOBALS);
