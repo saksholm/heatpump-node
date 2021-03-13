@@ -104,6 +104,7 @@ export const hpStart = function() {
     console.log("CALLING resetPidController()");
     resetPidController(DO.load2Way, () => {
       DO.load2Way.controller.setTarget(HP.hxOutTarget);
+      console.log("DEBUG :: inside resetPidController callback", DO.load2Way.controller?.target && DO.load2Way.controller?.target);
       console.log(`load 2-way controller set to ${HP.hxOutTarget}c target out temp` )
     });
 
@@ -117,8 +118,8 @@ export const hpStart = function() {
 // TODO: is this needed for manual mode?! have to check
 // this is not affected because PID controller handles this
 
-//    DO.load2Way.set(20); // let's open 2way valve 20% manually
-//    console.log("load 2-way to 20%");
+    DO.load2Way.set(20); // let's open 2way valve 20% manually
+    console.log("load 2-way to 20%");
 
 
      // TODO: create additional watcher for outside/chgIn temps to change if needed!!!
