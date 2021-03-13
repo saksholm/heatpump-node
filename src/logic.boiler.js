@@ -36,6 +36,8 @@ export const boilerLogic = () => {
   }
 
 
+
+  // TODO: this loop only when running?!
   // if th.boilermiddle is > minimum && th.boilermiddle < maximum === true
   if(
     ((TH.boilerUpper.value - boiler.deadZone) > boiler.upper.softMinimum) &&
@@ -59,6 +61,7 @@ export const boilerLogic = () => {
   }
 
 
+  // TODO: this loop only when running?
   // if th.boilermiddle is > minimum && th.boilermiddle < maximum === true
   if(
     ((TH.boilerMiddle.value - boiler.deadZone) > boiler.middle.softMinimum) &&
