@@ -12,12 +12,24 @@ import {
 import {GLOBALS} from "./globals";
 
 export const hpStart = function() {
-  console.log("hpStart... HP.mode is now", HP.mode);
+//  console.log("hpStart... HP.mode is now", HP.mode);
   // if error... we don't want to start at all!!!
-  if(HP.error) return false;
-  if(HP.emergencyShutdown) return false;
-  if(HP.defrost) return false;
-  if(HP.afterDry) return false;
+  if(HP.error) {
+    console.log("hpstart :: HP.error = true");
+    return false
+  }
+  if(HP.emergencyShutdown) {
+    console.log("hpstart :: HP.emergencyShutdown = true");
+    return false;
+  }
+  if(HP.defrost) {
+    console.log("hpstart :: HP.defrost = true");
+    return false;
+  }
+  if(HP.afterDry) {
+    console.log("hpstart :: HP.afterDry = true");
+    return false;
+  }
 
   if(HP.mode === 'manual') console.log("HP is now in 'manual' mode........ Choose your poison!!");
 
