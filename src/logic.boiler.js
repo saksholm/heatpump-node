@@ -36,14 +36,15 @@ export const boilerLogic = () => {
   }
 
 
+  if(HP.mode === 'run') {
+    // if th.boilermiddle is > minimum && th.boilermiddle < maximum === true
+    if(
+      ((TH.boilerUpper.value - boiler.deadZone) > boiler.upper.softMinimum) &&
+      ((TH.boilerUpper.value + boiler.deadZone) < boiler.upper.softMaximum)
+    ) {
+      boiler.upper.request = true;
+    }
 
-  // TODO: this loop only when running?!
-  // if th.boilermiddle is > minimum && th.boilermiddle < maximum === true
-  if(
-    ((TH.boilerUpper.value - boiler.deadZone) > boiler.upper.softMinimum) &&
-    ((TH.boilerUpper.value + boiler.deadZone) < boiler.upper.softMaximum)
-  ) {
-    boiler.upper.request = true;
   }
 
 
@@ -61,13 +62,16 @@ export const boilerLogic = () => {
   }
 
 
-  // TODO: this loop only when running?
-  // if th.boilermiddle is > minimum && th.boilermiddle < maximum === true
-  if(
-    ((TH.boilerMiddle.value - boiler.deadZone) > boiler.middle.softMinimum) &&
-    ((TH.boilerMiddle.value + boiler.deadZone) < boiler.middle.softMaximum)
-  ) {
-    boiler.middle.request = true;
+
+  if(HP.mode === 'run') {
+    // if th.boilermiddle is > minimum && th.boilermiddle < maximum === true
+    if(
+      ((TH.boilerMiddle.value - boiler.deadZone) > boiler.middle.softMinimum) &&
+      ((TH.boilerMiddle.value + boiler.deadZone) < boiler.middle.softMaximum)
+    ) {
+      boiler.middle.request = true;
+    }
+
   }
 
 
