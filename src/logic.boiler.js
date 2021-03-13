@@ -100,7 +100,7 @@ export const boilerLogic = () => {
       if(DI.threePhaseMonitor.value === 0) {
 
         if(HP.restartTimestamp + HP.restartDelay <= unixtimestamp()) {
-          console.log("LOGIC boiler :: Allowed to start after restartDelay... FINALLY!!!!!!!!!!!!!!!!! HP.mode = ", HP.mode);
+//          console.log("LOGIC boiler :: Allowed to start after restartDelay... FINALLY!!!!!!!!!!!!!!!!! HP.mode = ", HP.mode);
           // TODO: what if we running something else ?!
           HP.program = 'heatToWater';
           if(HP.continueRunAfterDefrost) HP.continueRunAfterDefrost = false;
