@@ -739,9 +739,9 @@ export const printDemandObject = () => {
     ...upper,
     ...middle,
     ...lower,
-    boilerUpper,
-    boilerMiddle,
-    boilerLower,
+    boilerUpper: boilerUpper.value,
+    boilerMiddle: boilerMiddle.value,
+    boilerLower: boilerLower.value,
   };
 };
 
