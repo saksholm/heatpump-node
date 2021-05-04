@@ -23,6 +23,8 @@ export const boilerLogic = () => {
     boiler,
   } = GLOBALS;
 
+  console.log("boiler logic, HP.mode:", HP.mode);
+
 
   // boiler upper check minimum
   if( (TH.boilerUpper.value + boiler.deadZone) < boiler.upper.softMinimum) {
@@ -37,6 +39,7 @@ export const boilerLogic = () => {
 
 
   if(HP.mode === 'run') {
+    console.log("boilerlogic :: upper running", HP.mode);
     // if th.boilermiddle is > minimum && th.boilermiddle < maximum === true
     if(
       ((TH.boilerUpper.value - boiler.deadZone) > boiler.upper.softMinimum) &&
@@ -64,6 +67,7 @@ export const boilerLogic = () => {
 
 
   if(HP.mode === 'run') {
+    console.log("boilerlogic :: middle running", HP.mode);
     // if th.boilermiddle is > minimum && th.boilermiddle < maximum === true
     if(
       ((TH.boilerMiddle.value - boiler.deadZone) > boiler.middle.softMinimum) &&
