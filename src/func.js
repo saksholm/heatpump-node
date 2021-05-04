@@ -736,9 +736,9 @@ export const printDemandObject = () => {
   const {boilerUpper, boilerMiddle, boilerLower} = TH;
 
   return {
-    ...upper,
-    ...middle,
-    ...lower,
+    upper: upper,
+    middle: middle,
+    lower: lower,
     boilerUpper: boilerUpper.value,
     boilerMiddle: boilerMiddle.value,
     boilerLower: boilerLower.value,
