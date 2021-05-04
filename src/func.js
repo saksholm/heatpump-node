@@ -731,6 +731,20 @@ export const printTimeoutHandlers = () => {
   console.log("HP.timeoutHandlers", HP.timeoutHandlers);
 };
 
+export const printDemandObject = () => {
+  const {upper,middle, lower} = GLOBALS.boiler;
+  const {boilerUpper, boilerMiddle, boilerLower} = TH;
+
+  return {
+    ...upper,
+    ...middle,
+    ...lower,
+    boilerUpper,
+    boilerMiddle,
+    boilerLower,
+  };
+};
+
 export const resetAlarms = () => {
   HP.alarmA = false;
   HP.alarmAReason = null;
