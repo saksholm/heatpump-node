@@ -68,7 +68,7 @@ export const boilerLogic = () => {
   if(HP.mode === 'run') {
     // if th.boilermiddle is > minimum && th.boilermiddle < maximum === true
     if(
-      ((TH.boilerMiddle.value - boiler.deadZone) > boiler.middle.softMinimum) &&
+      /*((TH.boilerMiddle.value - boiler.deadZone) > boiler.middle.softMinimum) && */
       ((TH.boilerMiddle.value + boiler.deadZone) < boiler.middle.softMaximum)
     ) {
       console.log("boilerlogic :: middle running", HP.mode, "requesting true");
