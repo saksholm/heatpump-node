@@ -13,7 +13,7 @@ export const setCoolingDemand = value => {
   if(value === 'on') {
     console.log("'state/iot/heatpump/coolingDemand' to on");
 
-    mqttPublish(DO.board.mqttClient, 'state/iot/heatpump/coolingDemand', 'on');
+    mqttPublish(DO.board.mqttClient, 'coolingDemand', 'on');
     HP.coolingDemand = true;
 
     // this should be moved!!!
@@ -33,7 +33,7 @@ export const setCoolingDemand = value => {
   if(value === 'off') {
     HP.coolingDemand = false;
     console.log("'state/iot/heatpump/coolingDemand' to off");
-    mqttPublish(DO.board.mqttClient, 'state/iot/heatpump/coolingDemand', 'off');
+    mqttPublish(DO.board.mqttClient, 'coolingDemand', 'off');
   }
 };
 
