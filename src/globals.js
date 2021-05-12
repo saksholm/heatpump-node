@@ -5,7 +5,7 @@ import {HP} from "./hp";
 const GLOBALS = {
   version: '0.2',
   status: 'starting',
-  debug: false,
+  debug: true,
   dryRun: false,
   printTH: false,
   starting: true,
