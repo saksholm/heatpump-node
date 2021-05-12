@@ -52,6 +52,8 @@ export const manualCoolingModeActivate = () => {
 
   DO.ahuFan.set('on');
   DO.ahuFanOutput.set(50);
+
+  HP.allowedToRun = true;
 };
 
 
