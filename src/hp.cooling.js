@@ -4,13 +4,14 @@ import { HP } from "./hp";
 import { DO } from './do';
 
 import {
-  isPidControllerActive,
+  isPidControllerActive, mqttPublish,
 } from './func';
 
 // TODO: move manualCoolingMode from func.js to here
 
 export const setCoolingDemand = value => {
   if(value === 'on') {
+    mqttPublish(DO.board.mqttClient, 'state/iot/heatpump/coolingDemand', 'on');
     HP.coolingDemand = true;
 
     // this should be moved!!!
@@ -29,6 +30,7 @@ export const setCoolingDemand = value => {
   }
   if(value === 'off') {
     HP.coolingDemand = false;
+    mqttPublish(DO.board.mqttClient, 'state/iot/heatpump/coolingDemand', 'off');
   }
 };
 

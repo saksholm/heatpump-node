@@ -77,6 +77,7 @@ const GLOBALS = {
       func: value => {
         setCoolingDemand(value);
         console.log("MQTT COMMAND :: setCoolingDemand", value);
+
       },
     },
     {
