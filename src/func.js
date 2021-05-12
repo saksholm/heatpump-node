@@ -137,9 +137,10 @@ export const mqttSubscriptions = mqttClient => {
 };
 
 export const mqttSubscribe = (mqttClient, mqttTopic) => {
-  mqttClient.subscribe(`cmnd/${GLOBALS.mqttBase}/${mqttTopic}`, (err) => {
+  const fullTopic = `cmnd/${GLOBALS.mqttBase}/${mqttTopic}`;
+  mqttClient.subscribe(fullTopic, (err) => {
     if(err) console.warn(`error in mqttSubscriptions, (${mqttTopic}).. ${err}`);
-    console.log(`Subscribed topic: ${mqttTopic} ...`);
+    console.log(`Subscribed topic: ${mqttTopic} (${fullTopic})...`);
   });
 };
 

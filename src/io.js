@@ -85,6 +85,7 @@ IO.initial = board => {
       printDOObject: () => {console.log("DO Object", printDOObject())},
       printAIObject: () => {console.log("AI Object", printAIObject())},
       printTimeoutHandlers: () => printTimeoutHandlers(),
+      printCommandTopics: () => {console.log("MQTT Command topics:",DO.board.mqttClient.commandTopics)},
       printDemand: () => {console.log("Demand", printDemandObject())},
       resetAlarm: () => resetAlarms(),
     });
