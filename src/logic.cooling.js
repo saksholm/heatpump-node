@@ -1,10 +1,17 @@
 import {HP} from './hp';
 import {GLOBALS} from './globals';
+import {hpCoolingLoop} from "./hp.cooling";
+import {DO} from "./do";
 
 export const coolingLogic = () => {
 
 
   // coolingDemand true... change mode to 'cooling'
+
+  if(HP.coolingDemand) {
+    console.log("coolingDemand debug :: HP.mode", HP.mode);
+  }
+
   if(
     HP.coolingDemand &&
     [
@@ -16,8 +23,12 @@ export const coolingLogic = () => {
     // have to check modes priority can we just stop and change mode
     if(GLOBALS.modesPriority[HP.mode] > GLOBALS.modesPriority['cooling']) {
       HP.stop(`Switching to cooling mode`,false, () => {
-        HP.mode = 'cooling';
+//        HP.mode = 'cooling';
         HP.start();
+        DO.hpOutput?.controller?.setTarget(GLOBALS.coolingTargetTemp);
+        hpCoolingLoop();
+
+
       });
     }
   }

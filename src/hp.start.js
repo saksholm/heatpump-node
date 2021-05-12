@@ -7,7 +7,7 @@ import {
   unixtimestamp,
   setStatus,
   resetPidController,
-  clearDefrostIntervalHandlers,
+  clearDefrostIntervalHandlers, setHPMode,
 } from './func';
 import {GLOBALS} from "./globals";
 
@@ -52,6 +52,7 @@ export const hpStart = function() {
 
   if(HP.mode !== 'manual') {
     HP.mode = 'starting';
+    HP.allowedToRun = true;
     console.log("HP mode is 'starting'");
   }
 
@@ -70,6 +71,23 @@ export const hpStart = function() {
 
     clearDefrostIntervalHandlers();
 
+
+    // TODO: use GLOBALS.modesPriority to check which one is first
+
+
+    if (GLOBALS.hvacCooling || GLOBALS.hvacDrying) {
+      DO.hp4Way.set('cooling');
+      setHPMode('cooling');
+
+      if(GLOBALS.hvacDrying) {
+        // TODO: afterHeating on!!!
+      }
+    } else {
+      if(GLOBALS.heatToWater || GLOBALS.heatToAir) {
+        DO.hp4Way.set('heating');
+      }
+    }
+
     HP.allowedToRun = true; // let's allow HP running (restartDelay is now over)
     console.log("HP.allowedToRun = true");
 
@@ -85,17 +103,7 @@ export const hpStart = function() {
     DO.hpFanOutput.set(20); // hp fan output to 20%
     console.log("hp fan output to 20%");
 
-    if(GLOBALS.heatToWater || GLOBALS.heatToAir) {
-     DO.hp4Way.set('heating');
-    }
 
-    if (GLOBALS.hvacCooling || GLOBALS.hvacDrying) {
-     DO.hp4Way.set('cooling');
-
-     if(GLOBALS.hvacDrying) {
-       // TODO: afterHeating on!!!
-     }
-    }
 
     // initialize if controller is null
     //if(DO.load2Way.controller === null) DO.load2Way.initializeController();

@@ -831,3 +831,8 @@ export const manuallyShutdownEverything = () => {
     DO.hp4Way.set('heating');
   }, 10_000);
 };
+
+export const setHPMode = value => {
+  HP.mode = value;
+  mqttPublish(DO.board.mqttClient, 'hpMode', value);
+};

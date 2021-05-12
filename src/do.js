@@ -494,7 +494,10 @@ export const DO = {
     manualMin: 0,
     manualMax: 70,
     set: function(value, skip=false,manual=false) {
-      if(!defaultForSet(this,value)) return;
+      if(!defaultForSet(this,value)) {
+        console.log("DO.hpOutput.. preventing to do changes on defaultForSet()");
+        return;
+      }
 
       // allow to set value only if allowedToRun is true
 //      console.log(`DEBUG: DO.hpOutput.set().. HP.allowedToRun: ${HP.allowedToRun} `);

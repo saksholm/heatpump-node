@@ -6,6 +6,8 @@ import { DO } from './do';
 import {
   isPidControllerActive, mqttPublish,
 } from './func';
+import {hpStart} from "./hp.start";
+import {GLOBALS} from "./globals";
 
 // TODO: move manualCoolingMode from func.js to here
 
@@ -54,9 +56,16 @@ export const manualCoolingModeActivate = () => {
 
 
 export const hpCoolingLoop = () => {
+  console.log("hpCoolingLoop triggered");
 
-  if(HP.controller !== null) {
-    // we have some controller in use!
-  }
+  setInterval(() => {
+    // cooling loop
+
+    // control AHU fan speed....
+
+
+
+
+  }, 5000);
 
 };

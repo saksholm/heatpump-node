@@ -17,7 +17,9 @@ export const logicHpOutputWatch = () => {
     if(DO.hpOutput.mode === 'auto') {
       // COOLING!!!
       if(HP.mode === 'cooling') {
+        console.log("HP.mode = cooling");
         if(isPidControllerActive(DO.hpOutput)) {
+          console.log("DO.hpOutput controller is active!!!");
           // calculate new output
           const newValue = Math.round( DO.hpOutput.controller.update(TH.ahuCirculationSupply.value) );
           // if new value is not the existing value.. we update
