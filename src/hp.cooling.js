@@ -14,9 +14,16 @@ export const setCoolingDemand = value => {
     HP.coolingDemand = true;
 
     // this should be moved!!!
+/*
     if(isPidControllerActive(DO.hpOutput)) {
       DO.hpOutput.controller.setTarget(HP.cooling.minAhuTemp);
     }
+*/
+
+    /**
+     * TODO: create a change mechanism to switching from any other mode to cooling
+     */
+
 
 
   }
