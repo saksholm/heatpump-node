@@ -48,7 +48,7 @@ export const manualCoolingModeActivate = () => {
 
 
   DO.hpFan.set('on');
-  DO.hpFanOutput.set(20);
+  DO.hpFanOutput.set(10);
 
   DO.ahuFan.set('on');
   DO.ahuFanOutput.set(50);
@@ -64,6 +64,10 @@ export const hpCoolingLoop = () => {
     // cooling loop
 
     // control AHU fan speed....
+
+
+
+    // TODO: if hxIn >35c add hpFanOutput.....
 
 
 
