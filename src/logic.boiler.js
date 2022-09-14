@@ -21,6 +21,7 @@ export const boilerLogic = () => {
 
   const {
     boiler,
+    debugLevels,
   } = GLOBALS;
 
 
@@ -43,7 +44,7 @@ export const boilerLogic = () => {
       ((TH.boilerUpper.value - boiler.deadZone) > boiler.upper.softMinimum) &&
       ((TH.boilerUpper.value + boiler.deadZone) < boiler.upper.softMaximum)
     ) {
-      console.log("boilerlogic :: upper running", HP.mode, "requesting true");
+      debugLevels.boilerDebug && console.log("boilerlogic :: upper running", HP.mode, "requesting true");
       boiler.upper.request = true;
     }
 

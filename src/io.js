@@ -78,6 +78,7 @@ IO.initial = board => {
       debugPID: () => GLOBALS.debugLevels.load2WayControllerPid = !GLOBALS.debugLevels.load2WayControllerPid,
       debugHPFan: () => GLOBALS.debugLevels.hpFanOutput = !GLOBALS.debugLevels.hpFanOutput,
       debugHPOutput: () => GLOBALS.debugLevels.hpOutput = !GLOBALS.debugLevels.hpOutput,
+      debugBoiler: () => GLOBALS.debugLevels.boilerDebug = !GLOBALS.debugLevels.boilerDebug,
       thTable: () => printTHTable(),
       printTHObject: () => {console.log("TH Object", TH)},
       printGLOBALSObject: () => {console.log("GLOBALS Objects", GLOBALS)},
