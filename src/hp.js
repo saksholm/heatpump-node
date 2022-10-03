@@ -43,7 +43,7 @@ export const HP = {
   maxHotgas: 80, // 80c
   maxHotgasEmergency: 90,
   hxInMaximum: 35,
-  hxOutTarget: 40,
+  hxOutTarget: 42, // 40
   cooling: {
     minAhuTemp: 17,
   },
