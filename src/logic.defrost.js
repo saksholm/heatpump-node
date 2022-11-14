@@ -123,7 +123,7 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
 
 
         console.log("TH.betweenCX_FAN.value", TH.betweenCX_FAN.value, TH.exhaust.value, TH.exhaust.value);
-        
+
         // added exhaust as second triggering value if facing some th read lag
         // helps defrost to stop earlier
         if(TH.betweenCX_FAN.value > 10 || TH.exhaust.value > 10) {
