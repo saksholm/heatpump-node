@@ -167,7 +167,7 @@ const GLOBALS = {
     hpFanOutput: false,
     hpOutput: false,
     th: false,
-    boilerDebug: false,
+    boilerDebug: true,
   },
 
 };
