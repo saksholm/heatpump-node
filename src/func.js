@@ -676,7 +676,7 @@ export const reportStopReason = (reason, freezeFrameObj) => {
   if(reason) {
     const obj = Object.assign({reason: reason}, freezeFrameObj ? freezeFrameObj : freezeFrame());
     console.log("reportStopReason obj", obj);
-    mqttPublish(HP.board.mqttClient, 'hp/stopReason', obj.toString(), {retain: true});
+    mqttPublish(HP.board.mqttClient, 'hp/stopReason', JSON.stringify(obj), {retain: true});
 
   }
 };
@@ -836,3 +836,9 @@ export const setHPMode = value => {
   HP.mode = value;
   mqttPublish(DO.board.mqttClient, 'hpMode', value);
 };
+
+export const stopBoostHotWater = () => {
+  if(GLOBALS.boostHotWater) {
+    // switch off and turn off MQTT switch
+  }
+}
