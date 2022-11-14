@@ -30,6 +30,12 @@ const GLOBALS = {
   groundWarmerThanAir: false,
   deadZone: 0.3,
   relayLow: false,
+  nightElectricity: {
+    startHour: 22,
+    endHour: 7,
+    demand: false,
+  },
+  boostHotWater: false,
   modesPriority: {
     drying: 1,
     cooling: 2,
@@ -104,6 +110,20 @@ const GLOBALS = {
         console.log("MQTT COMMAND :: commandTest");
       },
     },
+    {
+      type: 'func',
+      topic: 'nightElectricityOn',
+      func: () => {
+        console.log("MQTT COMMAND :: nightElectricityOn");
+      },
+    },
+    {
+      type: 'func',
+      topic: 'boostHotWater',
+      func: () => {
+        console.log("MQTT COMMAND :: boostHotWater");
+      },
+    }
 
   ],
   debugLevels: {
