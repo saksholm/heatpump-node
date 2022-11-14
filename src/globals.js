@@ -121,7 +121,7 @@ const GLOBALS = {
       type: 'func',
       topic: 'nightElectricityOn',
       func: value => {
-        console.log("MQTT COMMAND :: nightElectricityOn");
+        console.log("MQTT COMMAND :: nightElectricityOn", value);
         if(value === 'on') {
           GLOBALS.nightElectricity.demand = true;
         }
@@ -136,7 +136,7 @@ const GLOBALS = {
       type: 'func',
       topic: 'boostHotWater',
       func: value => {
-        console.log("MQTT COMMAND :: boostHotWater");
+        console.log("MQTT COMMAND :: boostHotWater", value);
         if(value === 'on') {
           GLOBALS.boostHotWater = true;
         }
@@ -150,7 +150,7 @@ const GLOBALS = {
       type: 'func',
       topic: 'preventRun',
       func: value => {
-        console.log("MQTT COMMAND :: prevent run");
+        console.log("MQTT COMMAND :: prevent run", value);
         if(value === 'on') {
           GLOBALS.preventRun = true;
         }
