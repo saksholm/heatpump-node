@@ -147,11 +147,16 @@ export const boilerLogic = () => {
     // stop when no boiler demand
     // stop also when !boostHotWater AND hoursStop
     if(!GLOBALS.heatToWater || (!GLOBALS.boostHotWater && hoursStop) ) {
-      // stop
+
+      // stop messages:
+      let stopReasonMessage;
+      if(!GLOBALS.heatToWater) stopReasonMessage = `boiler logic, no heatToWater demand`;
+      if(!GLOBALS.boostHotWater && hoursStop) stopReasonMessage = `stopped by nightElectricity endHour`;
+
       if(HP.restartTimestamp + HP.minimumRunningTime <= unixtimestamp()) {
         HP.program = 'stop'
-        console.log("no heatToWater demand, stopping");
-        hpStop(`boiler logic, no heatToWater demand`);
+        console.log(stopReasonMessage);
+        hpStop(stopReasonMessage);
       }
 
     }
