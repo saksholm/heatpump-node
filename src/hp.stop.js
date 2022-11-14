@@ -194,6 +194,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
         }
 
 
+        stopBoostHotWater()
 
         if(HP.emergencyShutdown) {
           console.log("\nStopped whole process\n");
@@ -210,7 +211,6 @@ export const hpStop = function(reason, emergency=false, callback=false) {
 //        console.log("DEBUG::GLOBALS", GLOBALS);
 
 
-        stopBoostHotWater()
 
         HP.restartTimestamp = unixtimestamp();
 
