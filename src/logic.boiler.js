@@ -108,7 +108,7 @@ export const boilerLogic = () => {
   ].includes(HP.mode) && !HP.emergencyShutdown && !HP.defrost) {
     const hours = new Date().getHours();
     // calculate if we should start by forced before nightElectricity ends
-    const hourForceTrigger = (GLOBALS.nightElectricity.endHour - GLOBALS.nightElectricity.forceHoursBeforeEnd) >= hours && hours <= GLOBALS.nightElectricity.endHour;
+    const hourForceTrigger = hours >= (GLOBALS.nightElectricity.endHour - GLOBALS.nightElectricity.forceHoursBeforeEnd)  && hours <= GLOBALS.nightElectricity.endHour;
     // if both demand and triggered is true...
     const nightElectricityOnForced = GLOBALS.nightElectricity.demand && hourForceTrigger;
 
