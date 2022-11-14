@@ -15,24 +15,27 @@ export const hpStart = function() {
 //  console.log("hpStart... HP.mode is now", HP.mode);
   // if error... we don't want to start at all!!!
   if(HP.error) {
-    console.log("hpstart :: HP.error = true");
+    console.log("hpStart :: HP.error = true");
     return false
   }
   if(HP.emergencyShutdown) {
-    console.log("hpstart :: HP.emergencyShutdown = true");
+    console.log("hpStart :: HP.emergencyShutdown = true");
     return false;
   }
   if(HP.defrost) {
-    console.log("hpstart :: HP.defrost = true");
+    console.log("hpStart :: HP.defrost = true");
     return false;
   }
   if(HP.afterDry) {
-    console.log("hpstart :: HP.afterDry = true");
+    console.log("hpStart :: HP.afterDry = true");
     return false;
   }
-
+  if(!GLOBALS.nightElectricity.demand) {
+    console.log("hpStart :: GLOBALS.nightElectricity = false");
+    return false;
+  }
   if(GLOBALS.preventRun) {
-    console.log("hpstart :: GLOBALS.preventRun = true");
+    console.log("hpStart :: GLOBALS.preventRun = true");
     return false;
   }
 
