@@ -24,7 +24,7 @@
     "date-fns": "^2.29.3",
     "johnny-five": "^2.1.0",
     "minimist": "^1.2.7",
-    "mqtt": "^4.2.6",
+    "mqtt": "^4.3.7",
     "node-pid-controller": "^1.0.1",
     "serialport": "^9.0.6"
   },
