@@ -7,6 +7,7 @@ import {DI} from './di';
 //import {AI} from './ai';
 
 import {
+  setHPMode,
   unixtimestamp,
 } from './func';
 
@@ -112,12 +113,21 @@ export const boilerLogic = () => {
     // if both demand and triggered is true...
     const nightElectricityOnForced = GLOBALS.nightElectricity.demand && hourForceTrigger;
 
+    //debugs
     if(GLOBALS.debugLevels.boilerDebug && GLOBALS.heatToWater && GLOBALS.nightElectricity.demand) console.log("hpStart::GLOBALS.heatToWater && GLOBALS.nightElectricity.demand true");
     if(GLOBALS.debugLevels.boilerDebug && GLOBALS.boostHotWater) console.log("hpStart::GLOBALS.boostHotWater true");
     if(GLOBALS.debugLevels.boilerDebug && nightElectricityOnForced) console.log("hpStart::nightElectricityOnForced true");
 
 
     if((GLOBALS.heatToWater && GLOBALS.nightElectricity.demand) || GLOBALS.boostHotWater || nightElectricityOnForced) {
+
+      /*
+      TODO: cannot do with setHPMode because it changed HP.mode also... need to create new function to report mqtt 
+      // report modes
+      if(GLOBALS.heatToWater && GLOBALS.nightElectricity.demand) { setHPMode('heatToWater') }
+      if(GLOBALS.boostHotWater) { setHPMode('boostHotWater')}
+      if(nightElectricityOnForced) { setHPMode('nightElectricityOnForced') }
+      */
 
       // if threePhaseMonitor value is ok then start
       if(DI.threePhaseMonitor.value === 0) {
@@ -126,6 +136,7 @@ export const boilerLogic = () => {
 //          console.log("LOGIC boiler :: Allowed to start after restartDelay... FINALLY!!!!!!!!!!!!!!!!! HP.mode = ", HP.mode);
           // TODO: what if we running something else ?!
           HP.program = 'heatToWater';
+
           if(HP.continueRunAfterDefrost) HP.continueRunAfterDefrost = false;
           HP.start();
         }
