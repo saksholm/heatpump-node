@@ -105,7 +105,7 @@ export const boilerLogic = () => {
     'defrost',
   ].includes(HP.mode) && !HP.emergencyShutdown && !HP.defrost) {
 
-    if(GLOBALS.heatToWater || GLOBALS.boostHotWater) {
+    if((GLOBALS.heatToWater && GLOBALS.nightElectricity.demand) || GLOBALS.boostHotWater) {
 
       // if threePhaseMonitor value is ok then start
       if(DI.threePhaseMonitor.value === 0) {
