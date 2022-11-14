@@ -105,7 +105,7 @@ export const boilerLogic = () => {
     'defrost',
   ].includes(HP.mode) && !HP.emergencyShutdown && !HP.defrost) {
 
-    if(GLOBALS.heatToWater) {
+    if(GLOBALS.heatToWater || GLOBALS.boostHotWater) {
 
       // if threePhaseMonitor value is ok then start
       if(DI.threePhaseMonitor.value === 0) {
@@ -125,7 +125,7 @@ export const boilerLogic = () => {
     'run',
     'starting',
   ].includes(HP.mode)) {
-    if(!GLOBALS.heatToWater) {
+    if(!GLOBALS.heatToWater && !GLOBALS.boostHotWater) {
       // stop
       if(HP.restartTimestamp + HP.minimumRunningTime <= unixtimestamp()) {
         HP.program = 'stop'
