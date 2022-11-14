@@ -9,6 +9,7 @@ import {
   freezeFrame,
   unixtimestamp,
   clearDefrostIntervalHandlers,
+  stopBoostHotWater,
 } from './func';
 
 import {
@@ -208,6 +209,8 @@ export const hpStop = function(reason, emergency=false, callback=false) {
 //        console.log("DEBUG::HP Object", HP);
 //        console.log("DEBUG::GLOBALS", GLOBALS);
 
+
+        stopBoostHotWater()
 
         HP.restartTimestamp = unixtimestamp();
 
