@@ -96,6 +96,8 @@ export const boilerLogic = () => {
     || HP.continueRunAfterDefrost;
 
 
+
+
   if(![
     'starting',
     'run',
@@ -104,8 +106,14 @@ export const boilerLogic = () => {
     'manual',
     'defrost',
   ].includes(HP.mode) && !HP.emergencyShutdown && !HP.defrost) {
+    const hours = new Date().getHours();
+    // calculate if we should start by forced before nightElectricity ends
+    const hourForceTrigger = (GLOBALS.nightElectricity.endHour - GLOBALS.nightElectricity.forceHoursBeforeEnd) >= hours && hours <= GLOBALS.nightElectricity.endHour;
+    // if both demand and triggered is true...
+    const nightElectricityOnForced = GLOBALS.nightElectricity.demand && hourForceTrigger;
 
-    if((GLOBALS.heatToWater && GLOBALS.nightElectricity.demand) || GLOBALS.boostHotWater) {
+
+    if((GLOBALS.heatToWater && GLOBALS.nightElectricity.demand) || GLOBALS.boostHotWater || nightElectricityOnForced) {
 
       // if threePhaseMonitor value is ok then start
       if(DI.threePhaseMonitor.value === 0) {
@@ -125,7 +133,16 @@ export const boilerLogic = () => {
     'run',
     'starting',
   ].includes(HP.mode)) {
-    if(!GLOBALS.heatToWater) {
+    const hours = new Date().getHours();
+    const hoursStop = GLOBALS.nightElectricity.endHour <= hours;
+
+    // debugs:
+    if(debugLevels.boilerDebug && !GLOBALS.heatToWater) console.log("hpStop::!GLOBALS.heatToWater true");
+    if(debugLevels.boilerDebug && !GLOBALS.boostHotWater && hoursStop) console.log("hpStop::!GLOBALS.boostHotWater && hoursStop true");
+
+    // stop when no boiler demand
+    // stop also when !boostHotWater AND hoursStop
+    if(!GLOBALS.heatToWater || (!GLOBALS.boostHotWater && hoursStop) ) {
       // stop
       if(HP.restartTimestamp + HP.minimumRunningTime <= unixtimestamp()) {
         HP.program = 'stop'
