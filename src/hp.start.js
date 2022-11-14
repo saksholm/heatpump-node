@@ -31,6 +31,11 @@ export const hpStart = function() {
     return false;
   }
 
+  if(GLOBALS.preventRun) {
+    console.log("hpstart :: GLOBALS.preventRun = true");
+    return false;
+  }
+
   if(HP.mode === 'manual') console.log("HP is now in 'manual' mode........ Choose your poison!!");
 
   // if HP.mode is something on array or HP.allowedToRun is true... lets skip whole function!!
