@@ -841,6 +841,6 @@ export const stopBoostHotWater = () => {
   if(GLOBALS.boostHotWater) {
     // switch off and turn off MQTT switch
     GLOBALS.boostHotWater = false;
-    mqttPublish(HP.board.mqttClient, 'hp/boostHotWater', 'off');
+    mqttPublish(HP.board.mqttClient, 'boostHotWater', 'off');
   }
 }

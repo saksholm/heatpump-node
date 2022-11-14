@@ -128,7 +128,7 @@ const GLOBALS = {
         if(value === 'off') {
           GLOBALS.nightElectricity.demand = false;
         }
-        mqttPublish(HP.board.mqttClient, 'hp/nightElectricityOn', value);
+        mqttPublish(HP.board.mqttClient, 'nightElectricityOn', value);
 
       },
     },
@@ -143,7 +143,7 @@ const GLOBALS = {
         if(value === 'off') {
           GLOBALS.boostHotWater = false;
         }
-        mqttPublish(HP.board.mqttClient, 'hp/boostHotWater', value);
+        mqttPublish(HP.board.mqttClient, 'boostHotWater', value);
       },
     },
     {
@@ -157,7 +157,7 @@ const GLOBALS = {
         if(value === 'off') {
           GLOBALS.preventRun = false;
         }
-        mqttPublish(HP.board.mqttClient, 'hp/preventRun', value);
+        mqttPublish(HP.board.mqttClient, 'preventRun', value);
       },
     },
 
