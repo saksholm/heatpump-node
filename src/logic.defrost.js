@@ -122,8 +122,11 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
         if(DO.ahuFanOutput.value < DO.ahuFanOutput.defrostMax) DO.ahuFanOutput.increase(2);
 
 
-        console.log("TH.betweenCX_FAN.value", TH.betweenCX_FAN.value);
-        if(TH.betweenCX_FAN.value > 10) {
+        console.log("TH.betweenCX_FAN.value", TH.betweenCX_FAN.value, TH.exhaust.value, TH.exhaust.value);
+        
+        // added exhaust as second triggering value if facing some th read lag
+        // helps defrost to stop earlier
+        if(TH.betweenCX_FAN.value > 10 || TH.exhaust.value > 10) {
           console.log("Triggered setTimeout for hpStop().. stopping loopCheck for temperature between CX and FAN");
           HP.timeoutHandlers.defrost3.push(setTimeout(function () {
             console.log("STOPPING DEFROST in 5sec");
