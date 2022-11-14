@@ -28,8 +28,6 @@ LOGIC.loop = () => {
 
 
     coolingLogic();
-
-
     boilerLogic();
     defrostLogic();
 
