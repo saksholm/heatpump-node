@@ -1,5 +1,10 @@
-import {setCoolingDemand} from './hp.cooling';
-import {resetAlarms} from "./func";
+import {
+  setCoolingDemand,
+} from './hp.cooling';
+import {
+  mqttPublish,
+  resetAlarms,
+} from "./func";
 import {HP} from "./hp";
 
 const GLOBALS = {
@@ -9,6 +14,7 @@ const GLOBALS = {
   dryRun: false,
   printTH: false,
   starting: true,
+  preventRun: false,
   activePins: [],
   timersTH: [],
   startupTime: 60*1000, // 60sec to not start hp
@@ -34,6 +40,7 @@ const GLOBALS = {
     startHour: 22,
     endHour: 7,
     demand: false,
+    forceHoursBeforeEnd: 2, // force x hours before nightElectricity ends... only if demand = true
   },
   boostHotWater: false,
   modesPriority: {
@@ -113,17 +120,46 @@ const GLOBALS = {
     {
       type: 'func',
       topic: 'nightElectricityOn',
-      func: () => {
+      func: value => {
         console.log("MQTT COMMAND :: nightElectricityOn");
+        if(value === 'on') {
+          GLOBALS.nightElectricity.demand = true;
+        }
+        if(value === 'off') {
+          GLOBALS.nightElectricity.demand = false;
+        }
+        mqttPublish(HP.board.mqttClient, 'hp/nightElectricityOn', value);
+
       },
     },
     {
       type: 'func',
       topic: 'boostHotWater',
-      func: () => {
+      func: value => {
         console.log("MQTT COMMAND :: boostHotWater");
+        if(value === 'on') {
+          GLOBALS.boostHotWater = true;
+        }
+        if(value === 'off') {
+          GLOBALS.boostHotWater = false;
+        }
+        mqttPublish(HP.board.mqttClient, 'hp/boostHotWater', value);
       },
-    }
+    },
+    {
+      type: 'func',
+      topic: 'preventRun',
+      func: value => {
+        console.log("MQTT COMMAND :: prevent run");
+        if(value === 'on') {
+          GLOBALS.preventRun = true;
+        }
+        if(value === 'off') {
+          GLOBALS.preventRun = false;
+        }
+        mqttPublish(HP.board.mqttClient, 'hp/preventRun', value);
+      },
+    },
 
   ],
   debugLevels: {
