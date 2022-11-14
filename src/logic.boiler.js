@@ -122,7 +122,7 @@ export const boilerLogic = () => {
     if((GLOBALS.heatToWater && GLOBALS.nightElectricity.demand) || GLOBALS.boostHotWater || nightElectricityOnForced) {
 
       /*
-      TODO: cannot do with setHPMode because it changed HP.mode also... need to create new function to report mqtt 
+      TODO: cannot do with setHPMode because it changed HP.mode also... need to create new function to report mqtt
       // report modes
       if(GLOBALS.heatToWater && GLOBALS.nightElectricity.demand) { setHPMode('heatToWater') }
       if(GLOBALS.boostHotWater) { setHPMode('boostHotWater')}
