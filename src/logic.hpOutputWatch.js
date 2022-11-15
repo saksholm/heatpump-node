@@ -78,7 +78,7 @@ export const logicHpOutputWatch = () => {
         'emergencyStop',
       ].includes(HP.mode)) {
         // if load2Way is <65 and hpOutput is not maxValue
-        if(DO.load2Way.value > 30 && DO.hpOutput.value < DO.hpOutput.maxValue) {
+        if(DO.load2Way.value >= 30 && DO.hpOutput.value < DO.hpOutput.maxValue) {
 
           // if hpOutput < 40 && hxIn < 32... we can increase
           if(TH.hxIn.value < 32 && DO.hpOutput.value < 40) {
