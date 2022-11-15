@@ -149,7 +149,7 @@ export const boilerLogic = () => {
     'starting',
   ].includes(HP.mode)) {
     const hours = new Date().getHours();
-    const hoursStop = GLOBALS.nightElectricity.endHour <= hours;
+    const hoursStop = (GLOBALS.nightElectricity.endHour <= hours) && hours <= GLOBALS.nightElectricity.startHour;
     console.log("!!!!!!!!!!!!!!!!!debug stophours", hours, hoursStop);
 
     // debugs:
