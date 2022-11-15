@@ -69,7 +69,7 @@ const GLOBALS = {
       demand: true,
       softMinimum: 28.0, //25.0,
       softMaximum: 39.9, // 37.0,
-      hardMinimum: 20.0,
+      hardMinimum: 22.0,
       hardMaximum: 60.0,
     },
     lower: { // bottom
