@@ -92,6 +92,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
     // wait 20s before shutting water pump, 2-way valve
     console.log("\nWaiting 20s before continuing\n");
     HP.timeoutHandlers.stopStep2 = setTimeout(() => {
+      console.log("DEBUG::HP.timeoutHandlers.stopStep2");
 
       DO.damperConvection.set('open'); //output.on();
       console.log("damper convection open");
@@ -117,6 +118,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
           'HOTGAS_DEFROST'
         ].includes(reason)) {
           if(GLOBALS.lastRunTime > 10*60 && GLOBALS.lastRunTime < GLOBALS.afterDryLimit) {
+            console.log("DEBUG::stop...123");
             console.log(`After dry activated, last run is too short (<${Math.floor(GLOBALS.afterDryLimit/60)})...  ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
 
             HP.afterDry = true; // prevent things to start too early
@@ -134,6 +136,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
 
 
           } else {
+            console.log("DEBUG::stop...234");
             console.log(`After dry not activated, last run was ${GLOBALS.lastRunTime} seconds (${Math.floor(GLOBALS.lastRunTime / 60)} mins)`);
 
             HP.afterDry = true;
@@ -164,6 +167,8 @@ export const hpStop = function(reason, emergency=false, callback=false) {
           console.log("#debug1 reason:", reason);
           if(reason !== 'MANUAL_DEFROST') runDefrostCycle(hp4WayMode, 'hp.stop() in #debug1');
         } else {
+          console.log("DEBUG::stop... HP.defrost = false");
+
           DO.waterpumpCharging.set('off'); // waterpump charging relay to on
           console.log("waterpump charging output off()");
           DO.load2Way.shutdown(); // let's open 2way valve 0%
@@ -176,6 +181,8 @@ export const hpStop = function(reason, emergency=false, callback=false) {
           console.log("load 2-way pid controller to 0");
 
           if(['STOPPING_DEFROST'].includes(reason)) {
+            console.log("debug::stop... stopping defrost true");
+
             DO.hp4Way.set('heating');
             DO.ahuFan.set('off');
             DO.ahuFanOutput.shutdown();
