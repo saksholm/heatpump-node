@@ -71,7 +71,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
   GLOBALS.lastRunTime = timestamp - HP.actualRunStartTimestamp;
 
   // publish lastRunTime
-  mqttPublish(HP.board.mqttClient, 'hp/lastRunTime', GLOBALS.lastRunTime);
+  mqttPublish(HP.board.mqttClient, 'lastRunTime', GLOBALS.lastRunTime);
 
   const freezeFrameObj = freezeFrame();
   reportStopReason(reason,  freezeFrameObj);
