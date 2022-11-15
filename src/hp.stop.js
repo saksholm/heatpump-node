@@ -194,7 +194,7 @@ export const hpStop = function(reason, emergency=false, callback=false) {
         }
 
 
-        stopBoostHotWater()
+        stopBoostHotWater();
 
         if(HP.emergencyShutdown) {
           console.log("\nStopped whole process\n");
