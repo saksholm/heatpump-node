@@ -30,8 +30,8 @@ export const hpStart = function() {
     console.log("hpStart :: HP.afterDry = true");
     return false;
   }
-  if(!GLOBALS.nightElectricity.demand) {
-    console.log("hpStart :: GLOBALS.nightElectricity = false");
+  if(!GLOBALS.boostHotWater && !GLOBALS.nightElectricity.demand) {
+    console.log("hpStart :: !GLOBALS.boostHotWater && !GLOBALS.nightElectricity = false");
     return false;
   }
   if(GLOBALS.preventRun) {
