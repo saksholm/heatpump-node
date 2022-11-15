@@ -81,7 +81,7 @@ export const logicHpOutputWatch = () => {
         if(DO.load2Way.value > 30 && DO.hpOutput.value < DO.hpOutput.maxValue) {
 
           // if hpOutput < 40 && hxIn < 32... we can increase
-          if(DO.hpOutput.value < 40 && TH.hxIn.value < 32) {
+          if(TH.hxIn.value < 32 && DO.hpOutput.value < 40) {
             DO.hpOutput.increase(1);
           }
           GLOBALS.debugLevels.hpOutput && console.log(`HP.loop :: increasing hpOutput (to ${DO.hpOutput.value}) by 1% because load2Way (${DO.load2Way.value}) is bigger than 40% (reverted.. 100% is closed), HP.mode = ${HP.mode}`);
