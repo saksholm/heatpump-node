@@ -150,7 +150,7 @@ export const boilerLogic = () => {
   ].includes(HP.mode)) {
     const hours = new Date().getHours();
     const hoursStop = (GLOBALS.nightElectricity.endHour <= hours) && hours <= GLOBALS.nightElectricity.startHour;
-    console.log("!!!!!!!!!!!!!!!!!debug stophours", hours, hoursStop);
+    if(GLOBALS.debugLevels.boilerDebug) console.log("!!!!!!!!!!!!!!!!!debug stophours", hours, hoursStop);
 
     // debugs:
     if(debugLevels.boilerDebug && !GLOBALS.heatToWater) console.log("hpStop::!GLOBALS.heatToWater true");
