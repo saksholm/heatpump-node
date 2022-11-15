@@ -114,9 +114,9 @@ export const boilerLogic = () => {
     const nightElectricityOnForced = GLOBALS.nightElectricity.demand && hourForceTrigger;
 
     //debugs
-    if(GLOBALS.debugLevels.boilerDebug && GLOBALS.heatToWater && GLOBALS.nightElectricity.demand) console.log("hpStart::GLOBALS.heatToWater && GLOBALS.nightElectricity.demand true");
-    if(GLOBALS.debugLevels.boilerDebug && GLOBALS.boostHotWater) console.log("hpStart::GLOBALS.boostHotWater true");
-    if(GLOBALS.debugLevels.boilerDebug && nightElectricityOnForced) console.log("hpStart::nightElectricityOnForced true");
+    if(GLOBALS.debugLevels.boilerDebug && GLOBALS.heatToWater && GLOBALS.nightElectricity.demand) console.log("debugLevels.boilerDebug::hpStart::GLOBALS.heatToWater && GLOBALS.nightElectricity.demand true");
+    if(GLOBALS.debugLevels.boilerDebug && GLOBALS.boostHotWater === true) console.log("debugLevels.boilerDebug::hpStart::GLOBALS.boostHotWater true");
+    if(GLOBALS.debugLevels.boilerDebug && nightElectricityOnForced) console.log("debugLevels.boilerDebug::hpStart::nightElectricityOnForced true");
 
 
     if((GLOBALS.heatToWater && GLOBALS.nightElectricity.demand) || GLOBALS.boostHotWater || nightElectricityOnForced) {
