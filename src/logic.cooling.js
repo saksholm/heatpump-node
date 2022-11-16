@@ -24,6 +24,7 @@ export const coolingLogic = () => {
     if(GLOBALS.modesPriority[HP.mode] > GLOBALS.modesPriority['cooling']) {
       HP.stop(`Switching to cooling mode`,false, () => {
 //        HP.mode = 'cooling';
+        console.log("logic.cooling.js::HP.start()", new Date().toISOString());
         HP.start();
         DO.hpOutput?.controller?.setTarget(GLOBALS.coolingTargetTemp);
         hpCoolingLoop();

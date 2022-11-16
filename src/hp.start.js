@@ -61,7 +61,7 @@ export const hpStart = function() {
   if(HP.mode !== 'manual') {
     HP.mode = 'starting';
     HP.allowedToRun = true;
-    console.log("HP mode is 'starting'");
+    console.log("HP mode is 'starting'", new Date().toISOString());
   }
 
   const timeoutMillis = calculateTimeout(HP.restartTimestamp, HP.restartDelay, true);
