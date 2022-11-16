@@ -173,7 +173,7 @@ export const hpStart = function() {
          HP.actualRunStartTimestamp = unixtimestamp();
          DO.hpOutput.set(25); // set HP to 15% load
          console.log("hp output to 25%");
-         console.log("HP.actualRunStartTimestamp", HP.actualRunStartTimestamp);
+         console.log("HP.actualRunStartTimestamp", HP.actualRunStartTimestamp, new Date().toISOString());
 
          clearTimeout(HP.timeoutHandlers.startStep1);
          clearTimeout(HP.timeoutHandlers.startStep2);

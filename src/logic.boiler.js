@@ -167,6 +167,7 @@ export const boilerLogic = () => {
 
       if(HP.restartTimestamp + HP.minimumRunningTime <= unixtimestamp()) {
         HP.program = 'stop'
+        console.log(new Date().toISOString());
         console.log(stopReasonMessage);
         hpStop(stopReasonMessage);
       }
