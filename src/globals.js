@@ -163,7 +163,7 @@ const GLOBALS = {
 
   ],
   debugLevels: {
-    load2WayControllerPid: false,
+    load2WayControllerPid: true,
     hpFanOutput: false,
     hpOutput: false,
     th: false,
