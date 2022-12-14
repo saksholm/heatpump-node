@@ -448,7 +448,7 @@ export const DO = {
     decrease: function(step=1){decreaseValue(this,step)},
     setTarget: function(value) {this.target = value},
     controller: null,
-    controller_p: 0.02,//0.01,//0.25,
+    controller_p: 0.01,//0.25,
     controller_i: 0.15,//0.01,
     controller_d: 0.01,
     controller_time: 2,
