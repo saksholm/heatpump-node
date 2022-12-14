@@ -120,7 +120,7 @@ export const boilerLogic = () => {
 
 
     if((GLOBALS.heatToWater && GLOBALS.nightElectricity.demand) || GLOBALS.boostHotWater || nightElectricityOnForced) {
-      console.log("start is triggered 12345", new Date().toISOString());
+//      console.log("start is triggered 12345", new Date().toISOString());
       /*
       TODO: cannot do with setHPMode because it changed HP.mode also... need to create new function to report mqtt
       // report modes
