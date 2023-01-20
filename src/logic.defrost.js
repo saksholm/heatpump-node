@@ -135,6 +135,7 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
 //            hpStop(`STOPPING_DEFROST`);
 
             manuallyShutdownEverything();
+            DO.load2Way.manualMode = false;
 
 //            clearHandlers(clearTimeout, HP.timeoutHandlers.defrost3);
           }, 5 * 1000));
