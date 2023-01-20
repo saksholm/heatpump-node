@@ -88,18 +88,18 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
 //  DO.load2Way.controller.target(0);
   // set to 50%
   DO.load2Way.manualMode = true;
-  DO.load2Way.set(50); // % of close...
+  DO.load2Way.set(65); // % of close...
 
 
-  console.log("....waiting.....", 20, 'seconds');
+  console.log("....waiting.....", 40, 'seconds');
 
   DO.hpOutput.set(0,true,true);
 
   HP.timeoutHandlers.defrost1.push(setTimeout(function() {
 //    resetPidController(DO.load2Way);
 
-    DO.load2Way.manualMode = false;
-    DO.load2Way.controller?.setTarget(40);
+//    DO.load2Way.manualMode = false;
+//    DO.load2Way.controller?.setTarget(40);
 
     console.log("STARTING PUMP!", 20);
     HP.allowedToRun = true;
@@ -148,6 +148,6 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
     }, 45_000));
 
     // /setTimeout 1
-  }, 20_000));
+  }, 40_000));
 
 };
