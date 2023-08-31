@@ -138,7 +138,7 @@ export const boilerLogic = () => {
           HP.program = 'heatToWater';
 
           if(HP.continueRunAfterDefrost) HP.continueRunAfterDefrost = false;
-          console.log("really starting now....257687", new Date().toISOString());
+//          console.log("really starting now....257687", new Date().toISOString());
           HP.start();
         }
       }
