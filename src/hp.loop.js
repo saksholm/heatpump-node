@@ -19,8 +19,8 @@ export const hpLoop = () => {
 
     if(HP.dynamicHPOutput) {
       const getDynamicHPOutput = calculateDynamicHPOutput();
-      if(getDynamicHPOutput !== DO.hpOutput.value) {
-        DO.hpOutput.value = getDynamicHPOutput;
+      if(getDynamicHPOutput !== DO.hpOutput.maxValue) {
+        DO.hpOutput.maxValue = getDynamicHPOutput;
         if(GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::HP.loop::dynamicHPOutput value", getDynamicHPOutput, new Date().toISOString());
       }
     }
