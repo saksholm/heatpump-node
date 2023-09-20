@@ -208,7 +208,7 @@ export const mqttCommandTopics = () => {
 export const mqttOnMessage = (mqttClient,topic,message) => {
   const {commandTopics} = mqttClient;
   commandTopics.filter(x => x.topic === topic).map(obj => {
-    console.log(`Got message, topic: ${obj.topic}, msg buffer: ${message}, message str: ${message.toString()}, message type: ${typeof message}`);
+    console.log(`Got message, topic: ${obj.topic}, msg buffer: ${message}, message str: ${message.toString()}, message type: ${typeof message}, ts: ${new Date().toISOString()}`);
     obj.set(message.toString());
   });
 };
