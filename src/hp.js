@@ -28,8 +28,8 @@ export const HP = {
   mode: 'stop', // idle, stop, stopping, starting, running, alarmA, alarmB, defrost
   dynamicHPOutput: true,
   dynamicHPOutputParams: { // this idea is give some values for dynamic output values... value - outdoor temperature = max output.
-    temperatures: [10,0,-10],
-    values: [45, 50, 55],
+    temperatures: [-10,0,10],
+    values: [55, 50, 45],
   },
   alarmA: false,
   alarmB: false,
