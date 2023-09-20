@@ -26,6 +26,7 @@ export const HP = {
   error: false,
   program: 'idle', // idle, stop, cooling, heating, heatToWater
   mode: 'stop', // idle, stop, stopping, starting, running, alarmA, alarmB, defrost
+  dynamicHPOutput: true,
   alarmA: false,
   alarmB: false,
   alarmAReason: null,
