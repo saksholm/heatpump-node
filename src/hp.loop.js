@@ -11,10 +11,19 @@ import {logicLoad2WayController} from './logic.load2way';
 import {logicHxIn} from './logic.hxIn';
 import {logicHpOutputWatch} from './logic.hpOutputWatch';
 import {logicHpFanOutputWatch} from './logic.hpFanOutputWatch';
-
+import {calculateDynamicHPOutput} from './func';
+import {de} from "date-fns/locale";
 
 export const hpLoop = () => {
   HP.board.loop(GLOBALS.logicLoopInterval,() => {
+
+    if(HP.dynamicHPOutput) {
+      const getDynamicHPOutput = calculateDynamicHPOutput();
+      if(getDynamicHPOutput !== DO.hpOutput.value) {
+        DO.hpOutput.value = getDynamicHPOutput;
+        if(GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::HP.loop::dynamicHPOutput value", getDynamicHPOutput, new Date().toISOString());
+      }
+    }
 
     logicAlarms();
     hotgasWatch();
@@ -38,8 +47,6 @@ export const hpLoop = () => {
 
     logicHpOutputWatch();
     logicHpFanOutputWatch();
-
-
 
   });
 
