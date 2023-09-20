@@ -491,6 +491,7 @@ export const DO = {
     defaultValue: 20,
     minValue: 10,
     maxValue: 60,
+    maxValueDefault: 60,
     manualMin: 0,
     manualMax: 70,
     set: function(value, skip=false,manual=false) {
