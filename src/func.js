@@ -847,3 +847,22 @@ export const stopBoostHotWater = () => {
     if(HP.mode === 'run') {}
   }
 }
+
+export const calculateDynamicHPOutput = () => {
+  const temperature = DO.damperOutside.value === 'open' ? TH.outside.value : TH.beforeCHG.value;
+  const {temperatures, values} = HP.dynamicHPOutputParams;
+
+  let idxToUsed;
+
+  temperatures.forEach((temp,idx) => {
+    if(temperature >= temp) idxToUsed = idx;
+  });
+
+  const dynamicParam = values[idxToUsed];
+  let dynamicMaxHPOutput = dynamicParam - temperature;
+
+  if(dynamicMaxHPOutput > DO.hpOutput.maxValue) dynamicMaxHPOutput = DO.hpOutput.maxValue;
+
+  return Math.floor(dynamicMaxHPOutput);
+
+};
