@@ -6,6 +6,7 @@ import {
   resetAlarms,
 } from "./func";
 import {HP} from "./hp";
+import {DO} from "./do";
 
 const GLOBALS = {
   version: '0.2',
@@ -160,6 +161,28 @@ const GLOBALS = {
         mqttPublish(HP.board.mqttClient, 'preventRun', value);
       },
     },
+    {
+      type: 'func',
+      topic: 'setMaxHPOutput',
+      func: value => {
+        let setValue = value;
+        if(value > DO.hpOutput.maxValue) setValue = DO.hpOutput.maxValue;
+        if(value < DO.hpOutput.minValue) setValue = DO.hpOutput.minValue;
+        console.log("MQTT COMMAND :: set max HP output", setValue);
+        DO.hpOutput.maxValue = setValue;
+        mqttPublish(HP.board.mqttClient, 'setMaxHPOutput', setValue);
+      }
+    },
+    {
+      type: 'func',
+      topic: 'setDynamicHPOutput',
+      func: value => {
+        console.log("MQTT COMMAND :: setDynamicHPOutput", value);
+        if(value === 'on') HP.dynamicHPOutput = true;
+        if(value === 'off') HP.dynamicHPOutput = false;
+        mqttPublish(HP.board.mqttClient, 'setDynamicHPOutput', value);
+      },
+    },
 
   ],
   debugLevels: {
@@ -168,6 +191,7 @@ const GLOBALS = {
     hpOutput: false,
     th: false,
     boilerDebug: false,
+    dynamicHPOutput: true,
   },
 
 };
