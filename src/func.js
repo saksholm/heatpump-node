@@ -864,6 +864,7 @@ export const calculateDynamicHPOutput = () => {
   if(GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::calculateDynamicHPOutput()::values", idxToUsed, dynamicParam, temperature);
 
   if(dynamicMaxHPOutput > DO.hpOutput.maxValue) dynamicMaxHPOutput = DO.hpOutput.maxValue;
+  if(GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::calculateDynamicHPOutput()::after manipulation values", idxToUsed, dynamicParam, temperature);
 
   return Math.floor(dynamicMaxHPOutput);
 
