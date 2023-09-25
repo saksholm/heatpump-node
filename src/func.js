@@ -159,7 +159,7 @@ export const mqttPublish = (mqttClient,topic,value, options={}) => {
   let checkedValue;
   switch (valueType) {
     case "function": {
-      checkedValue = value().toString;
+      checkedValue = value().toString();
       break;
     }
     case "number": {
