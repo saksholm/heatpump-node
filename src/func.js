@@ -102,7 +102,7 @@ export const genericInitial = (module, name, board, callback=null) => {
       }
 
       if(typeof instance?.mqttExtraStates !== "undefined" && instance?.mqttExtraStates?.length > 0) {
-        console.log("MQTT Publishes for module", name);
+        console.log(name, " MQTT Publishes for module", name);
         instance?.mqttExtraStates.forEach(mqttObj => {
           console.log("  :: MQTT extra publishes topic:", mqttObj.topic);
           mqttPublish(module.board.mqttClient, mqttObj.topic, mqttObj.value);
