@@ -523,11 +523,11 @@ export const DO = {
     mqttExtraStates: [
       {
         topic: 'hp/hpOutputMaxValue',
-        value: this.hpOutput.maxValue,
+        value: DO.hpOutput.maxValue,
       },
       {
         topic: 'hp/hpOutputMaxValueDefault',
-        value: this.hpOutput.maxValueDefault,
+        value: DO.hpOutput.maxValueDefault,
       },
     ],
     repl: {
