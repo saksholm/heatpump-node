@@ -191,7 +191,7 @@ const GLOBALS = {
     hpOutput: false,
     th: false,
     boilerDebug: false,
-    dynamicHPOutput: true,
+    dynamicHPOutput: false,
   },
 
 };
