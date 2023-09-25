@@ -522,10 +522,12 @@ export const DO = {
     mqttState: 'hp/hpOutput',
     mqttExtraStates: [
       {
+        name: 'hpOutputMaxValue',
         topic: 'hp/hpOutputMaxValue',
         value: function() {return DO.hpOutput.maxValue},
       },
       {
+        name: 'hpOutputMaxValueDefault',
         topic: 'hp/hpOutputMaxValueDefault',
         value: function() {return DO.hpOutput.maxValueDefault},
       },

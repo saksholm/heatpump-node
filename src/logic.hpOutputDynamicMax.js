@@ -1,6 +1,6 @@
 import {DO} from "./do";
 import {HP} from "./hp";
-import {calculateDynamicHPOutput} from "./func";
+import {calculateDynamicHPOutput, mqttPublish} from "./func";
 import {GLOBALS} from "./globals";
 
 export const dynamicHpOutputMax = () => {
@@ -10,6 +10,11 @@ export const dynamicHpOutputMax = () => {
       // set new if we are below max default
       if(getDynamicHPOutput < DO.hpOutput.maxValueDefault) {
         DO.hpOutput.maxValue = getDynamicHPOutput;
+
+        // find topic by name and publish
+        const topic = DO.hpOutput.mqttExtraStates.find(x => x.name === 'hpOutputMaxValue').topic;
+        mqttPublish(DO.board.mqttClient, topic, DO.hpOutput.maxValue);
+
         if(GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::HP.loop::dynamicHPOutput dynamicValue", getDynamicHPOutput, "maxValue", DO.hpOutput.maxValue, "maxDefault", DO.hpOutput.maxValueDefault, new Date().toISOString());
       }
     } else {
