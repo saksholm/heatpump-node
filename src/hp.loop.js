@@ -11,23 +11,14 @@ import {logicLoad2WayController} from './logic.load2way';
 import {logicHxIn} from './logic.hxIn';
 import {logicHpOutputWatch} from './logic.hpOutputWatch';
 import {logicHpFanOutputWatch} from './logic.hpFanOutputWatch';
-import {calculateDynamicHPOutput} from './func';
+import {dynamicHpOutputMax} from './logic.hpOutputDynamicMax';
+
 import {de} from "date-fns/locale";
 
 export const hpLoop = () => {
   HP.board.loop(GLOBALS.logicLoopInterval,() => {
-
-    if(HP.dynamicHPOutput) {
-      const getDynamicHPOutput = calculateDynamicHPOutput();
-      // set new if we are below max default
-      if(getDynamicHPOutput < DO.hpOutput.maxValueDefault) {
-        DO.hpOutput.maxValue = getDynamicHPOutput;
-        if(GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::HP.loop::dynamicHPOutput dynamicValue", getDynamicHPOutput, "maxValue", DO.hpOutput.maxValue, "maxDefault", DO.hpOutput.maxValueDefault, new Date().toISOString());
-      }
-    } else {
-      // set to default
-      if(DO.hpOutput.maxValue < DO.hpOutput.maxValueDefault) DO.hpOutput.maxValue = DO.hpOutput.maxValueDefault;
-    }
+    // hp allowed to run.. change max hp output value dynamically
+    dynamicHpOutputMax();
 
     logicAlarms();
     hotgasWatch();
