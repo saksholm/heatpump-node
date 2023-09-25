@@ -107,14 +107,6 @@ export const HP = {
       }
     },
   },
-  mqttExtraStates: [
-    {
-      name: 'dynamicHPOutput',
-      topic: 'hp/dynamicHPOutput',
-      value: function() {return HP.dynamicHPOutput.toString()},
-    },
-
-  ],
   mqttStatus: function(val) {
     if(val) {
       if(Object.keys(HP.mqtt).includes(val)) {

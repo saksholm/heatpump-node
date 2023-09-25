@@ -531,6 +531,11 @@ export const DO = {
         topic: 'hp/hpOutputMaxValueDefault',
         value: function() {return DO.hpOutput.maxValueDefault},
       },
+      {
+        name: 'dynamicHPOutput',
+        topic: 'hp/dynamicHPOutput',
+        value: function() {return HP.dynamicHPOutput.toString()},
+      },
     ],
     repl: {
       hpOutput: value => DO.hpOutput.set(value, false,true),
