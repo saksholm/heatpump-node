@@ -19,12 +19,14 @@ export const hpLoop = () => {
 
     if(HP.dynamicHPOutput) {
       const getDynamicHPOutput = calculateDynamicHPOutput();
-      if(getDynamicHPOutput !== DO.hpOutput.maxValue) {
+      // set new if we are below max default
+      if(getDynamicHPOutput < DO.hpOutput.maxValueDefault) {
         DO.hpOutput.maxValue = getDynamicHPOutput;
         if(GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::HP.loop::dynamicHPOutput value", getDynamicHPOutput, new Date().toISOString());
       }
     } else {
-      if(DO.hpOutput.maxValue !== DO.hpOutput.maxValueDefault) DO.hpOutput.maxValue = DO.hpOutput.maxValueDefault;
+      // set to default
+      if(DO.hpOutput.maxValue < DO.hpOutput.maxValueDefault) DO.hpOutput.maxValue = DO.hpOutput.maxValueDefault;
     }
 
     logicAlarms();
