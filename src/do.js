@@ -520,6 +520,16 @@ export const DO = {
     decrease: function(step=1){decreaseValue(this,step)},
     mqttCommand: '', // not allowed
     mqttState: 'hp/hpOutput',
+    mqttExtraStates: [
+      {
+        topic: 'hp/hpOutputMaxValue',
+        value: DO.hpOutput.maxValue,
+      },
+      {
+        topic: 'hp/hpOutputMaxValueDefault',
+        value: DO.hpOutput.maxValueDefault,
+      },
+    ],
     repl: {
       hpOutput: value => DO.hpOutput.set(value, false,true),
       hpOutputShutdown: () => DO.hpOutput.set(0,true),
