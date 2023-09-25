@@ -151,8 +151,28 @@ export const mqttSubscribe = (mqttClient, mqttTopic) => {
 
 export const mqttPublish = (mqttClient,topic,value, options={}) => {
   const t = `state/${GLOBALS.mqttBase}/${topic}`;
-  const v = typeof value !== "string" ? value.toString() : value;
-  mqttClient.publish(t,v,options, (err) => {
+  const valueType = typeof value;
+
+  let checkedValue;
+  switch (valueType) {
+    case "function": {
+      checkedValue = value().toString;
+      break;
+    }
+    case "number": {
+      checkedValue = value.toString();
+      break;
+    }
+    case "string": {
+      checkedValue = value;
+      break;
+    }
+    default:
+      checkedValue = value;
+      break;
+  }
+//  const v = typeof value !== "string" ? value.toString() : value;
+  mqttClient.publish(t,checkedValue,options, (err) => {
     if(err) console.log(`mqttPublish (${t}) error: ${err}`);
   });
 };
