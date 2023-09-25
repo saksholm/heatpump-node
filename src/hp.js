@@ -111,7 +111,7 @@ export const HP = {
     {
       name: 'dynamicHPOutput',
       topic: 'hp/dynamicHPOutput',
-      value: function() {return HP.dynamicHPOutput},
+      value: function() {return HP.dynamicHPOutput.toString()},
     },
 
   ],
