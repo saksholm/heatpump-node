@@ -114,7 +114,7 @@ export const genericInitial = (module, name, board, callback=null) => {
   if(callback) callback();
 };
 
-export const injectRepls = (module, key) => {
+export const injectRepls = (module, key) => {
 
   setTimeout(() => {
     console.log(`injecting repl's from ${key}`);
