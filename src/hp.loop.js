@@ -22,7 +22,7 @@ export const hpLoop = () => {
       // set new if we are below max default
       if(getDynamicHPOutput < DO.hpOutput.maxValueDefault) {
         DO.hpOutput.maxValue = getDynamicHPOutput;
-        if(GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::HP.loop::dynamicHPOutput value", getDynamicHPOutput, "maxValue", DO.hpOutput.maxValue, new Date().toISOString());
+        if(GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::HP.loop::dynamicHPOutput dynamicValue", getDynamicHPOutput, "maxValue", DO.hpOutput.maxValue, "maxDefault", Do.hpOutput.maxValueDefault, new Date().toISOString());
       }
     } else {
       // set to default
