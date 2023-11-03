@@ -10,6 +10,9 @@ export const dynamicHpOutputMax = () => {
       // set new if we are below max default
       if(getDynamicHPOutput < DO.hpOutput.maxValueDefault) {
         DO.hpOutput.maxValue = getDynamicHPOutput;
+        if(DO.hpOutput.value > getDynamicHPOutput) {
+          DO.hpOutput.set(getDynamicHPOutput);
+        }
 
         // find topic by name and publish
         const topic = DO.hpOutput.mqttExtraStates.find(x => x.name === 'hpOutputMaxValue').topic;
