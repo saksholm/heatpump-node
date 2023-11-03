@@ -29,7 +29,7 @@ export const HP = {
   dynamicHPOutput: true,
   dynamicHPOutputParams: { // this idea is give some values for dynamic output values... value - outdoor temperature = max output.
     temperatures: [-10,0,10],
-    values: [55, 50, 40],
+    values: [55, 50, 45],
   },
   alarmA: false,
   alarmB: false,
