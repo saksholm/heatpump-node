@@ -121,8 +121,8 @@ try {
 try {
   mqttClient.on('message', (topic, message) => {
     if(GLOBALS.debug) {
-      console.log("topic",topic.toString());
-      console.log("message",message.toString());
+      console.log("topic:",topic.toString());
+      console.log("message payload (typeof/value (toString)): ", typeof message, message.toString());
     }
 
     // handle mqtt messages dynamically..
