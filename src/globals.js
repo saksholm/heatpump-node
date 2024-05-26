@@ -163,6 +163,13 @@ const GLOBALS = {
     },
     {
       type: 'func',
+      topic: 'setHPOutput',
+      func: value => {
+        DO.hpOutput.set(value);
+      },
+    },
+    {
+      type: 'func',
       topic: 'setMaxHPOutput',
       func: value => {
         let setValue = value;
