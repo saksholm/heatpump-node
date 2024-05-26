@@ -190,6 +190,13 @@ const GLOBALS = {
         mqttPublish(HP.board.mqttClient, 'setDynamicHPOutput', value);
       },
     },
+    {
+      type: 'func',
+      topic: 'setLoad2WaySetpoint',
+      func: value => {
+        DO.load2Way.set(value);
+      },
+    },
 
   ],
   debugLevels: {
