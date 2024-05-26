@@ -541,6 +541,7 @@ export const DO = {
       hpOutput: value => DO.hpOutput.set(value, false,true),
       hpOutputShutdown: () => DO.hpOutput.set(0,true),
       hpOutputSetMode: value => { DO.hpOutput.setMode(value)},
+      hpDynamicOutput: value => { HP.dynamicHPOutput = value } // TODO: checks?
     },
     output: null,
     initial: function() {
