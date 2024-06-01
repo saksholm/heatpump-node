@@ -11,7 +11,7 @@ import {GLOBALS} from "./globals";
 export const logicHpOutputWatch = () => {
   // old enough to make new checks
   const timestamp = unixtimestamp();
-  if(timestamp > (HP.outputWatchInterval + HP.nextLoopIntervalTimestamps.output) ) {
+  if(HP.mode !== 'stop' && timestamp > (HP.outputWatchInterval + HP.nextLoopIntervalTimestamps.output) ) {
 
 
     if(DO.hpOutput.mode === 'auto') {
