@@ -27,7 +27,7 @@ const GLOBALS = {
   afterDryTime: 40*60,
   afterDryTimeShort: 5*60,
   afterDryHpFanOutput: 60,
-  coolingTargetTemp: 15,
+  coolingTargetTemp: 13,
   hvacCooling: false,
   hvacDrying: false, // means cooling & after heating
   hvacHeating: false, // water or pump?!
