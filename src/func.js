@@ -878,30 +878,16 @@ export const stopBoostHotWater = () => {
 
 export const calculateDynamicHPOutput = () => {
   const temperature = DO.damperOutside.value === 'open' ? TH.outside.value : TH.beforeCHG.value;
+  const {temperatures, values} = HP.dynamicHPOutputParams;
 
   let idxToUsed;
-  let dynamicParam;
-  let dynamicMaxHPOutput;
 
-  // HEATING
-  if(HP.mode === 'heating') {
-    HP.dynamicHPOutputParams.heating.temperatures.forEach((temp, idx) => {
-      if (temperature >= temp) idxToUsed = idx;
-    });
+  temperatures.forEach((temp,idx) => {
+    if(temperature >= temp) idxToUsed = idx;
+  });
 
-    dynamicParam = HP.dynamicHPOutputParams.heating.values[idxToUsed];
-    dynamicMaxHPOutput = dynamicParam - temperature;
-  }
-
-  // COOLING
-  if(HP.mode === 'cooling') {
-    HP.dynamicHPOutputParams.cooling.temperatures.forEach((temp, idx) => {
-      if (temperature >= temp) idxToUsed = idx;
-    });
-
-    dynamicParam = HP.dynamicHPOutputParams.cooling.values[idxToUsed];
-    dynamicMaxHPOutput = dynamicParam - temperature;
-  }
+  const dynamicParam = values[idxToUsed];
+  let dynamicMaxHPOutput = dynamicParam - temperature;
 
   if(GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::calculateDynamicHPOutput()::values", idxToUsed, dynamicParam, temperature, dynamicMaxHPOutput);
 
@@ -909,4 +895,5 @@ export const calculateDynamicHPOutput = () => {
   if(GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::calculateDynamicHPOutput()::after manipulation values", idxToUsed, dynamicParam, temperature, dynamicMaxHPOutput);
 
   return Math.floor(dynamicMaxHPOutput);
+
 };
