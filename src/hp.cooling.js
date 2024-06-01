@@ -92,6 +92,8 @@ export const manualCoolingModeDeactivate = () => {
 };
 
 export const hpCoolingLoop = () => {
+  if(HP.coolingDemand === true && HP.mode === 'cooling') return false;
+  
   console.log("hpCoolingLoop triggered.... what is HP.mode??", HP.mode);
 
 
