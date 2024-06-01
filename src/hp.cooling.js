@@ -114,6 +114,8 @@ export const hpCoolingLoop = () => {
   DO.hpOutput.set(20);
 
 
+  HP.allowedToRun = true;
+
   setInterval(() => {
     // cooling loop
 
