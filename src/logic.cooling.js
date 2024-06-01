@@ -10,6 +10,8 @@ export const coolingLogic = () => {
 
   if(HP.coolingDemand) {
     console.log("coolingDemand debug :: HP.mode", HP.mode);
+    DO.hpOutput?.controller?.setTarget(GLOBALS.coolingTargetTemp);
+    hpCoolingLoop();
   }
 
   if(
