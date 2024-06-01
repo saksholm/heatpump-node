@@ -56,7 +56,12 @@ export const HP = {
   hxInMaximum: 35,
   hxOutTarget: 42, // 40
   cooling: {
-    minAhuTemp: 17,
+    minAhuTemp: 13,
+    maxAhuTemp: 18,
+    hxOutMax: 48,
+    hxOutMin: 35,
+    exhaustMax: 45,
+    exhaustMin: 35,
   },
   heating: {
 
