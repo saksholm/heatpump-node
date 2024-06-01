@@ -65,18 +65,22 @@ export const manualCoolingModeActivate = () => {
 export const manualCoolingModeDeactivate = () => {
   HP.allowedToRun = false;
   // set waterpump off after 30s.
+  console.log("shutting down cooling");
   setTimeout(() => {
+    console.log("shutting down waterpump");
     DO.waterpumpCharging.set('off');
 
     // turnoff hpFan
     setTimeout(() => {
+      console.log("shutting down hpDan and damper");
       DO.hpFanOutput.set(0);
       DO.hpFan.set('off');
       DO.damperOutside.set('close');
 
       // turn off ahuFan
       setTimeout(() => {
-        DO.ahuFanOutput(0);
+        console.log("shutting down ahuFan");
+        DO.ahuFanOutput.set(0);
         DO.ahuFan.set('off');
       }, 120_000);
 
@@ -109,6 +113,9 @@ export const hpCoolingLoop = () => {
 
   DO.hpOutput.set(20);
 
+
+  HP.mode = 'cooling';
+  HP.allowedToRun = true;
 
   setInterval(() => {
     // cooling loop
