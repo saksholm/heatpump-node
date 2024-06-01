@@ -90,6 +90,7 @@ export const manualCoolingModeDeactivate = () => {
 export const hpCoolingLoop = () => {
   console.log("hpCoolingLoop triggered");
 
+  DO.hp4Way.set('cooling');
 
   // control AHU intial fan speed....
   DO.ahuFan.set('on');
