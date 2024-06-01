@@ -8,7 +8,7 @@ export const coolingLogic = () => {
 
   // coolingDemand true... change mode to 'cooling'
 
-  if(HP.coolingDemand && HP.mode === 'stop') {
+  if(HP.coolingDemand && HP.mode === 'stop' && HP.manual !== true) {
     console.log("coolingDemand debug :: HP.mode", HP.mode);
     DO.hpOutput?.controller?.setTarget(GLOBALS.coolingTargetTemp);
 
