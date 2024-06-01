@@ -253,7 +253,7 @@ export const DI = {
 
   },
   highPressureSwitch: {
-    active: true,
+    active: false,
     type: 'digitalIn',
     name: 'High Pressure Switch',
     pin: 36,
