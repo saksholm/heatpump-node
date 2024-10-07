@@ -66,3 +66,4 @@ settings.js
 src/temp.js
 src/secrets.js
 .idea
+.gittoken
