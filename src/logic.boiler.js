@@ -109,9 +109,9 @@ export const boilerLogic = () => {
   ].includes(HP.mode) && !HP.emergencyShutdown && !HP.defrost) {
     const hours = new Date().getHours();
     // calculate if we should start by forced before nightElectricity ends
-    const hourForceTrigger = hours >= (GLOBALS.nightElectricity.endHour - GLOBALS.nightElectricity.forceHoursBeforeEnd)  && hours <= GLOBALS.nightElectricity.endHour;
+    const hourForceTrigger = GLOBALS.nightElectricity.active && hours >= (GLOBALS.nightElectricity.endHour - GLOBALS.nightElectricity.forceHoursBeforeEnd)  && hours <= GLOBALS.nightElectricity.endHour;
     // if both demand and triggered is true...
-    const nightElectricityOnForced = GLOBALS.nightElectricity.demand && hourForceTrigger;
+    const nightElectricityOnForced = GLOBALS.nightElectricity.active && GLOBALS.nightElectricity.demand && hourForceTrigger;
 
     //debugs
     if(GLOBALS.debugLevels.boilerDebug && GLOBALS.heatToWater && GLOBALS.nightElectricity.demand) console.log("debugLevels.boilerDebug::hpStart::GLOBALS.heatToWater && GLOBALS.nightElectricity.demand true");
@@ -155,16 +155,16 @@ export const boilerLogic = () => {
 
     // debugs:
     if(debugLevels.boilerDebug && !GLOBALS.heatToWater) console.log("hpStop::!GLOBALS.heatToWater true");
-    if(debugLevels.boilerDebug && !GLOBALS.boostHotWater && hoursStop) console.log("hpStop::!GLOBALS.boostHotWater && hoursStop true");
+    if(debugLevels.boilerDebug && !GLOBALS.boostHotWater && (GLOBALS.nightElectricity.active && hoursStop)) console.log("hpStop::!GLOBALS.boostHotWater && hoursStop true");
 
     // stop when no boiler demand
     // stop also when !boostHotWater AND hoursStop
-    if(!GLOBALS.heatToWater || (!GLOBALS.boostHotWater && hoursStop) ) {
+    if(!GLOBALS.heatToWater || (!GLOBALS.boostHotWater && (GLOBALS.nightElectricity.active && hoursStop)) ) {
 
       // stop messages:
       let stopReasonMessage;
       if(!GLOBALS.heatToWater) stopReasonMessage = `boiler logic, no heatToWater demand`;
-      if(!GLOBALS.boostHotWater && hoursStop) stopReasonMessage = `stopped by nightElectricity endHour`;
+      if(!GLOBALS.boostHotWater && (GLOBALS.nightElectricity.active && hoursStop)) stopReasonMessage = `stopped by nightElectricity endHour`;
 
       if(HP.restartTimestamp + HP.minimumRunningTime <= unixtimestamp()) {
         HP.program = 'stop'
