@@ -38,6 +38,7 @@ const GLOBALS = {
   deadZone: 0.3,
   relayLow: false,
   nightElectricity: {
+    active: false,
     startHour: 22,
     endHour: 7,
     demand: false,
