@@ -82,6 +82,7 @@ IO.initial = board => {
       debugHPOutput: () => GLOBALS.debugLevels.hpOutput = !GLOBALS.debugLevels.hpOutput,
       debugBoiler: () => GLOBALS.debugLevels.boilerDebug = !GLOBALS.debugLevels.boilerDebug,
       debugHpMax: () => GLOBALS.debugLevels.dynamicHPOutput = !GLOBALS.debugLevels.dynamicHPOutput,
+      debugMqttMessages: () => GLOBALS.debugLevels.mqttMessages = !GLOBALS.debugLevels.mqttMessages,
       thTable: () => printTHTable(),
       printTHObject: () => {console.log("TH Object", TH)},
       printGLOBALSObject: () => {console.log("GLOBALS Objects", GLOBALS)},
