@@ -120,10 +120,9 @@ try {
 
 try {
   mqttClient.on('message', (topic, message) => {
-    if(GLOBALS.debug) {
-      console.log("topic:",topic.toString());
-      console.log("message payload (typeof/value (toString)): ", typeof message, message.toString());
-    }
+    if(GLOBALS.debugLevels.mqttMessages) console.log("topic:",topic.toString());
+    if(GLOBALS.debugLevels.mqttMessages) console.log("message payload (typeof/value (toString)): ", typeof message, message.toString());
+
 
     // handle mqtt messages dynamically..
     // based on dynamically created mqttCommandTopics array

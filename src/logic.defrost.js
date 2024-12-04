@@ -126,7 +126,10 @@ export const runDefrostCycle = (hp4wayMode='heating', where='') => {
 
         // added exhaust as second triggering value if facing some th read lag
         // helps defrost to stop earlier
-        if(TH.betweenCX_FAN.value > 10 || TH.exhaust.value > 10) {
+        const THBetweenCxFan = TH.betweenCX_FAN.value;
+        const THExhaust = TH.exhaust.value;
+
+        if((THBetweenCxFan !== 85 && THBetweenCxFan > 10) || (THExhaust !== 85 && THExhaust > 10)) {
           console.log("Triggered setTimeout for hpStop().. stopping loopCheck for temperature between CX and FAN");
           HP.timeoutHandlers.defrost3.push(setTimeout(function () {
             console.log("STOPPING DEFROST in 5sec");

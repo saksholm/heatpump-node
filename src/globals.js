@@ -207,6 +207,7 @@ const GLOBALS = {
     th: false,
     boilerDebug: false,
     dynamicHPOutput: false,
+    mqttMessages: false,
   },
 
 };
