@@ -69,13 +69,13 @@ export const TH = {
     active: true,
     objectName: 'th2',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/beforeCHG',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -87,13 +87,13 @@ export const TH = {
     active: true,
     objectName: 'th3',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/betweenCHG_CX',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -237,7 +237,7 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/hxOut',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
