@@ -338,7 +338,7 @@ export const DO = {
     mqttCommand: '', // not allowed!
     mqttState: 'hp/hp4Way',
     output: null,
-    initial: function() {
+    initial: function () {
       this.output = new five.Relay(this.pin, this.relayType);
       this.set(this.value, true);
       initialized.done(this.name);
@@ -357,12 +357,12 @@ export const DO = {
     pin: 29,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "off",
-    enum: ['on','off'],
+    enum: ['on', 'off'],
     relayType: 'NO',
-    set: function(value) {
-      if(!defaultForSet(this,value)) return;
+    set: function (value) {
+      if (!defaultForSet(this, value)) return;
 
-      if(typeof value !== 'boolean') value = convertStringToBoolean(value);
+      if (typeof value !== 'boolean') value = convertStringToBoolean(value);
       this.value = value;
       relayOnOff(this);
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
@@ -370,7 +370,7 @@ export const DO = {
     mqttCommand: '', // not allowed
     mqttState: 'hp/hpFan',
     output: null,
-    initial: function() {
+    initial: function () {
       this.output = new five.Relay(this.pin, this.relayType);
       this.set(this.value);
       initialized.done(this.name);
@@ -394,8 +394,8 @@ export const DO = {
     maxValue: 60,
     manualMin: 0,
     manualMax: 80,
-    set: function(value,skip=false, manual=true) {
-      if(!defaultForSet(this,value)) return;
+    set: function (value, skip = false, manual = true) {
+      if (!defaultForSet(this, value)) return;
       this.value = constrain(value, manual ? this.manualMin : this.minValue, manual ? this.manualMax : this.maxValue);
 
       DO.board.analogWrite(this.pin, skip ? this.value : mapPercentToPWM(this.value, manual ? this.manualMin : this.minValue, manual ? this.manualMax : this.maxValue));
@@ -404,17 +404,17 @@ export const DO = {
 
       // TODO: ramp?!? up/down
     },
-    shutdown: function() {DO.hpFanOutput.set(0, false, true)},
-    increase: function(step=1){increaseValue(this,step)},
-    decrease: function(step=1){decreaseValue(this,step)},
+    shutdown: function () { DO.hpFanOutput.set(0, false, true) },
+    increase: function (step = 1) { increaseValue(this, step) },
+    decrease: function (step = 1) { decreaseValue(this, step) },
     mqttCommand: 'hp/fanOutput',
     mqttState: 'hp/fanOutput',
     repl: {
       hpFanOutput: value => DO.hpFanOutput.set(value, false, true),
-      hpFanOutputShutdown: () => DO.hpFanOutput.set(0,true),
+      hpFanOutputShutdown: () => DO.hpFanOutput.set(0, true),
     },
     output: null,
-    initial: function() {
+    initial: function () {
       DO.board.pinMode(this.pin, this.pinMode);
       DO.board.analogWrite(this.pin, this.value);
       initialized.done(this.name);
@@ -433,8 +433,8 @@ export const DO = {
     maxValueOnDefrost: 80,
     target: null,
     manualMode: false,
-    set: function(value) {
-      if(!defaultForSet(this,value)) return;
+    set: function (value) {
+      if (!defaultForSet(this, value)) return;
 
       this.value = constrain(value, this.minValue, HP.mode === 'run' ? this.maxValueOnRunning : this.maxValue);
       DO.board.analogWrite(this.pin, mapPercentToPWM(this.value, this.minValue, this.maxValue));
@@ -443,30 +443,30 @@ export const DO = {
 
       // TODO: ramp?!? up/down
     },
-    shutdown: function() {this.value = 0; this.controller.reset(); },
-    increase: function(step=1){increaseValue(this,step)},
-    decrease: function(step=1){decreaseValue(this,step)},
-    setTarget: function(value) {this.target = value},
+    shutdown: function () { this.value = 0; this.controller.reset(); },
+    increase: function (step = 1) { increaseValue(this, step) },
+    decrease: function (step = 1) { decreaseValue(this, step) },
+    setTarget: function (value) { this.target = value },
     controller: null,
     controller_p: 0.01,//0.25,
     controller_i: 0.15,//0.01,
     controller_d: 0.01,
     controller_time: 2,
-    startDelay: 10*1000, // delay 90s-90deg.. wait 30s
+    startDelay: 10 * 1000, // delay 90s-90deg.. wait 30s
     mqttCommand: '', // not allowed
     mqttState: 'hp/load2Way',
     output: null,
-    initial: function() {
+    initial: function () {
       DO.board.pinMode(this.pin, this.pinMode);
       //this.output = five.PWM
       DO.board.analogWrite(this.pin, this.value);
 
       this.initializeController();
-//      this.controller = pidController(this.controller_p, this.controller_i, this.controller_d, this.controller_time);
+      //      this.controller = pidController(this.controller_p, this.controller_i, this.controller_d, this.controller_time);
       initialized.done(this.name);
 
     },
-    initializeController: function() {
+    initializeController: function () {
       this.target = HP.hxOutTarget;
       initializePidController(this, () => {
         this.set(this.minValue); // pre value if somehow changed to something else
@@ -494,15 +494,15 @@ export const DO = {
     maxValueDefault: 60,
     manualMin: 0,
     manualMax: 70,
-    set: function(value, skip=false,manual=false) {
-      if(!defaultForSet(this,value)) {
+    set: function (value, skip = false, manual = false) {
+      if (!defaultForSet(this, value)) {
         console.log("DO.hpOutput.. preventing to do changes on defaultForSet()");
         return;
       }
 
       // allow to set value only if allowedToRun is true
-//      console.log(`DEBUG: DO.hpOutput.set().. HP.allowedToRun: ${HP.allowedToRun} `);
-      if(HP.allowedToRun || skip) {
+      //      console.log(`DEBUG: DO.hpOutput.set().. HP.allowedToRun: ${HP.allowedToRun} `);
+      if (HP.allowedToRun || skip) {
         this.value = manual
           ? constrain(parseInt(value), this.manualMin, this.manualMax)
           : skip
@@ -514,27 +514,27 @@ export const DO = {
       }
 
     },
-    setMode: function(value) {this.mode = value;},
-    shutdown: function() {this.set( 0, true)}, //TODO: change this to more relevant
-    increase: function(step=1){increaseValue(this,step)},
-    decrease: function(step=1){decreaseValue(this,step)},
+    setMode: function (value) { this.mode = value; },
+    shutdown: function () { this.set(0, true) }, //TODO: change this to more relevant
+    increase: function (step = 1) { increaseValue(this, step) },
+    decrease: function (step = 1) { decreaseValue(this, step) },
     mqttCommand: '', // not allowed
     mqttState: 'hp/hpOutput',
     mqttExtraStates: [
       {
         name: 'hpOutputMaxValue',
         topic: 'hp/hpOutputMaxValue',
-        value: function() {return DO.hpOutput.maxValue},
+        value: function () { return DO.hpOutput.maxValue },
       },
       {
         name: 'hpOutputMaxValueDefault',
         topic: 'hp/hpOutputMaxValueDefault',
-        value: function() {return DO.hpOutput.maxValueDefault},
+        value: function () { return DO.hpOutput.maxValueDefault },
       },
       {
         name: 'dynamicHPOutput',
         topic: 'hp/dynamicHPOutput',
-        value: function() {return HP.dynamicHPOutput.toString()},
+        value: function () { return HP.dynamicHPOutput.toString() },
       },
     ],
     repl: {
