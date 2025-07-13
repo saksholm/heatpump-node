@@ -479,34 +479,34 @@ export const decreaseValue = (instance, step = 1) => {
 
 export const valueToOnOff = instance => {
 
-//  console.log("whaat is this", instance.name, instance);
+  //  console.log("whaat is this", instance.name, instance);
   // TODO: handle instance.enum
-  if(instance.output !== null) {
-    if(instance.value === "on") instance.output?.open(); // on
-    if(instance.value === "off") instance.output?.close(); // off
-    if(instance.value === true) instance.output?.open(); // on
-    if(instance.value === false) instance.output?.close(); // off
-    if(instance.value === "open") instance.output?.open();
-    if(instance.value === "close") instance.output?.close();
+  if (instance.output !== null) {
+    if (instance.value === "on") instance.output?.open(); // on
+    if (instance.value === "off") instance.output?.close(); // off
+    if (instance.value === true) instance.output?.open(); // on
+    if (instance.value === false) instance.output?.close(); // off
+    if (instance.value === "open") instance.output?.open();
+    if (instance.value === "close") instance.output?.close();
   }
 };
 
 
 
-export const handleI2C_TH_Data = (bytes,thObj={},scale=100, ret=false) => {
+export const handleI2C_TH_Data = (bytes, thObj = {}, scale = 100, ret = false) => {
   let bytePairs = [];
   let thCount = 1;
   const timestamp = unixtimestamp();
 
-  for(let i=0, length=bytes.length; i<length; i++) {
+  for (let i = 0, length = bytes.length; i < length; i++) {
     const byte = bytes[i];
-    if(bytePairs.length <= 2) {
+    if (bytePairs.length <= 2) {
       bytePairs.push(byte);
     }
-    if(bytePairs.length === 2) {
+    if (bytePairs.length === 2) {
       const buf = Buffer.from(bytePairs);
       const int = buf.readInt16BE(0);
-      const th = int/scale;
+      const th = int / scale;
       const thKey = `th${thCount}`;
 
       const obj = {
