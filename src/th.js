@@ -361,17 +361,22 @@ TH.onChanges = () => {
 
   // I2C readings:
 
-  setInterval(() => {
-    // address 2
-    // register 99 is spoofed (requested all temperatures)
-    // bytes 28 = 14 temperatures, 2bytes each
+  // I2C readings with memory leak fix
+  let currentI2CRead = null;
 
-    TH.board.i2cReadOnce(0x02, 99, 28, function(bytes) {
-//     console.log("this is bytes", bytes);
-     handleI2C_TH_Data(bytes, TH.thI2CReads);
+  setInterval(() => {
+    // Cancel previous read if it exists
+    if (currentI2CRead && typeof currentI2CRead.cancel === 'function') {
+      currentI2CRead.cancel();
+    }
+
+    // Start new read
+    currentI2CRead = TH.board.i2cReadOnce(0x02, 99, 28, function (bytes) {
+      //     console.log("this is bytes", bytes);
+      handleI2C_TH_Data(bytes, TH.thI2CReads);
     });
-//    console.log("thObj", TH.thI2CReads);
-}, 2000);
+    //    console.log("thObj", TH.thI2CReads);
+  }, 2000);
 
 };
 
