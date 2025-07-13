@@ -21,36 +21,36 @@ export const parseMQTTString = path => {
   return `${GLOBALS.mqttBase}${path}`;
 };
 
-export const unixtimestamp = (datetime=null, microtime=false) => {
-  if(!datetime) datetime = new Date();
-  if(microtime) return getUnixTime(datetime * 1000);
+export const unixtimestamp = (datetime = null, microtime = false) => {
+  if (!datetime) datetime = new Date();
+  if (microtime) return getUnixTime(datetime * 1000);
   return getUnixTime(datetime);
 };
 
-export const calculateTimeout = (timestamp, delay, milliseconds=false) => {
+export const calculateTimeout = (timestamp, delay, milliseconds = false) => {
   let timeout;
 
-  if( timestamp === 0) timeout = 0;
-  if(timestamp !== 0) {
+  if (timestamp === 0) timeout = 0;
+  if (timestamp !== 0) {
     const currentTimestamp = unixtimestamp();
-    if( timestamp + delay <= currentTimestamp )  timeout = 0;
-    if( currentTimestamp - timestamp <= delay )  timeout = (timestamp + delay) - currentTimestamp;
+    if (timestamp + delay <= currentTimestamp) timeout = 0;
+    if (currentTimestamp - timestamp <= delay) timeout = (timestamp + delay) - currentTimestamp;
   }
-  if(milliseconds) return timeout * 1000;
+  if (milliseconds) return timeout * 1000;
   return timeout;
 };
 
-export const mapPercentToPWM = (value,min=false,max=false) => {
+export const mapPercentToPWM = (value, min = false, max = false) => {
   value = parseInt(value);
   // moved these to defaultForSet check
-//  if(min && value < min) console.warn(`value (${value}) is under minimum (${min})`);
-//  if(max && value > max) console.warn(`value (${value}) is over maximum (${max})`);
+  //  if(min && value < min) console.warn(`value (${value}) is under minimum (${min})`);
+  //  if(max && value > max) console.warn(`value (${value}) is over maximum (${max})`);
   value = constrain(value, (min ? min : 0), (max ? max : 100));
-  return map(value, 0,100, 0,255);
+  return map(value, 0, 100, 0, 255);
 };
 
-export const genericInitial = (module, name, board, callback=null) => {
-  if(module.board === null) {
+export const genericInitial = (module, name, board, callback = null) => {
+  if (module.board === null) {
     module.board = board;
   }
 
@@ -59,17 +59,17 @@ export const genericInitial = (module, name, board, callback=null) => {
   Object.keys(module).map(key => {
     const instance = module[key];
 
-    if(
+    if (
       key !== "board" &&
       instance !== null &&
       instance &&
       instance.active
     ) {
-      if(typeof instance.initial === "function") {
+      if (typeof instance.initial === "function") {
 
         let delay = 0;
-        if(instance.type === 'DS18B20') {
-          delay = 100*ds18b20delayCount;
+        if (instance.type === 'DS18B20') {
+          delay = 100 * ds18b20delayCount;
           ds18b20delayCount = ds18b20delayCount + 1;
           setTimeout(() => instance.initial(), delay);
         } else {
@@ -78,30 +78,30 @@ export const genericInitial = (module, name, board, callback=null) => {
 
         const check = !!instance.pin && GLOBALS.activePins.find(x => x.pin === instance.pin);
 
-        if(check) { console.log("\n\n\n\n\n\n\nPIN IS ALREADY IN USE!!!!!", instance.pin, "\n\n\n\n\n\n\n\n\n\n"); }
+        if (check) { console.log("\n\n\n\n\n\n\nPIN IS ALREADY IN USE!!!!!", instance.pin, "\n\n\n\n\n\n\n\n\n\n"); }
         const obj = {
           module: name,
           name: instance.name,
           pin: instance.pin,
           type: instance.type,
         };
-        if(instance.address) obj.address = instance.address;
+        if (instance.address) obj.address = instance.address;
         GLOBALS.activePins.push(obj);
       }
-      if(typeof instance.repl === "object") {
-//        board.repl.inject(instance.repl);
+      if (typeof instance.repl === "object") {
+        //        board.repl.inject(instance.repl);
         try {
-          injectRepls(module,key);
+          injectRepls(module, key);
 
-        } catch(e) {
-          console.err("genericInitial catch on repls inject",e);
+        } catch (e) {
+          console.err("genericInitial catch on repls inject", e);
         }
       }
-      if(instance?.mqttState?.length > 0) {
+      if (instance?.mqttState?.length > 0) {
         mqttPublish(module.board.mqttClient, instance.mqttState, instance.value);
       }
 
-      if(typeof instance?.mqttExtraStates !== "undefined" && instance?.mqttExtraStates?.length > 0) {
+      if (typeof instance?.mqttExtraStates !== "undefined" && instance?.mqttExtraStates?.length > 0) {
         console.log(name, " MQTT Publishes for module", name);
         instance?.mqttExtraStates.forEach(mqttObj => {
           console.log("  :: MQTT extra publishes topic:", mqttObj.topic);
@@ -110,8 +110,8 @@ export const genericInitial = (module, name, board, callback=null) => {
       }
     }
   });
-  console.log(`\n${name} initial setup`.padEnd(41,"."), `DONE\n`);
-  if(callback) callback();
+  console.log(`\n${name} initial setup`.padEnd(41, "."), `DONE\n`);
+  if (callback) callback();
 };
 
 export const injectRepls = (module, key) => {
