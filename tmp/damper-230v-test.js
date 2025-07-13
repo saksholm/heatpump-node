@@ -42,22 +42,23 @@ board.on("ready", function () {
         const relay = damperRelays[currentRelayIndex];
         console.log(`\n--- Testing ${relay.name} (Pin ${relay.pin}) ---`);
 
-        // Test with longer pulses for 230VAC relays
+        // Test with 150s damper running time
         setTimeout(() => {
-            console.log(`${relay.name}: RELAY ON (10 seconds)`);
+            console.log(`${relay.name}: RELAY ON (150 seconds for full damper movement)`);
             console.log("  - Check relay board LED for this channel");
             console.log("  - Listen for relay click sound");
+            console.log("  - Watch damper movement (if 230VAC connected)");
             relay.output.open();
 
             setTimeout(() => {
-                console.log(`${relay.name}: RELAY OFF (5 seconds)`);
+                console.log(`${relay.name}: RELAY OFF (150 seconds for reverse movement)`);
                 relay.output.close();
 
                 setTimeout(() => {
                     currentRelayIndex++;
                     testDamperRelay();
-                }, 2000);
-            }, 10000);
+                }, 5000); // Wait 5s between dampers
+            }, 150000); // 150 seconds for full damper movement
         }, 1000);
     }
 
