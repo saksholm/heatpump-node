@@ -572,7 +572,7 @@ export const setStatus = status => {
   // TODO: mqtt update
 };
 
-export const lcdNextScreenHelper = (instanceName, instance, nextScreen, nextRotateSpeed=LCD.screen.defaultRotateSpeed) => {
+export const lcdNextScreenHelper = (instanceName, instance, nextScreen, nextRotateSpeed = LCD.screen.defaultRotateSpeed) => {
   LCD.screen.nextRotateSpeed = LCD.screen.stickyScreen === instanceName ? LCD.screen.stickyScreenTime : nextRotateSpeed;
   LCD.screen.nextScreen = nextScreen || "basic";
   LCD.screen.currentInstance = instance;
@@ -786,31 +786,31 @@ export const resetAlarms = () => {
 
 
 export const clearDefrostIntervalHandlers = () => {
-//  console.log("DEBUG :: clearDefrostIntervalHandlers() ", HP.timeoutHandlers);
-  if(!!HP.timeoutHandlers.defrost1.length) {
+  //  console.log("DEBUG :: clearDefrostIntervalHandlers() ", HP.timeoutHandlers);
+  if (!!HP.timeoutHandlers.defrost1.length) {
     clearHandlers(clearTimeout, HP.timeoutHandlers.defrost1);
-//    clearTimeout(HP.timeoutHandlers.defrost1);
-//    HP.timeoutHandlers.defrost1 = null;
+    //    clearTimeout(HP.timeoutHandlers.defrost1);
+    //    HP.timeoutHandlers.defrost1 = null;
   }
-  if(!!HP.timeoutHandlers.defrost2.length) {
+  if (!!HP.timeoutHandlers.defrost2.length) {
     clearHandlers(clearInterval, HP.timeoutHandlers.defrost2);
-//    clearInterval(HP.timeoutHandlers.defrost2); // yes, it's interval! not typo
-//    HP.timeoutHandlers.defrost2 = null;
+    //    clearInterval(HP.timeoutHandlers.defrost2); // yes, it's interval! not typo
+    //    HP.timeoutHandlers.defrost2 = null;
   }
-  if(!!HP.timeoutHandlers.defrost3.length) {
+  if (!!HP.timeoutHandlers.defrost3.length) {
     clearHandlers(clearTimeout, HP.timeoutHandlers.defrost3);
-//    clearTimeout(HP.timeoutHandlers.defrost3);
-//    HP.timeoutHandlers.defrost3 = null;
+    //    clearTimeout(HP.timeoutHandlers.defrost3);
+    //    HP.timeoutHandlers.defrost3 = null;
   }
-  if(!!HP.timeoutHandlers.defrost4.length) {
+  if (!!HP.timeoutHandlers.defrost4.length) {
     clearHandlers(clearTimeout, HP.timeoutHandlers.defrost4);
-//    clearTimeout(HP.timeoutHandlers.defrost4);
-//    HP.timeoutHandlers.defrost4 = null;
+    //    clearTimeout(HP.timeoutHandlers.defrost4);
+    //    HP.timeoutHandlers.defrost4 = null;
   }
 };
 
 export const clearHandlers = (func, instance) => {
-  if(instance.length) {
+  if (instance.length) {
     instance.map(x => func(x));
   }
   instance = [];
@@ -866,13 +866,13 @@ export const setHPMode = value => {
 };
 
 export const stopBoostHotWater = () => {
-  if(GLOBALS.boostHotWater) {
+  if (GLOBALS.boostHotWater) {
     // switch off and turn off MQTT switch
     GLOBALS.boostHotWater = false;
     mqttPublish(HP.board.mqttClient, 'boostHotWater', 'off');
-    
+
     // TODO: check if running and stop it
-    if(HP.mode === 'run') {}
+    if (HP.mode === 'run') { }
   }
 }
 
@@ -884,7 +884,7 @@ export const calculateDynamicHPOutput = () => {
   let dynamicMaxHPOutput;
 
   // HEATING
-  if(HP.mode === 'heating') {
+  if (HP.mode === 'heating') {
     HP.dynamicHPOutputParams.heating.temperatures.forEach((temp, idx) => {
       if (temperature >= temp) idxToUsed = idx;
     });
@@ -894,7 +894,7 @@ export const calculateDynamicHPOutput = () => {
   }
 
   // COOLING
-  if(HP.mode === 'cooling') {
+  if (HP.mode === 'cooling') {
     HP.dynamicHPOutputParams.cooling.temperatures.forEach((temp, idx) => {
       if (temperature >= temp) idxToUsed = idx;
     });
