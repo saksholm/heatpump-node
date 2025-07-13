@@ -288,17 +288,17 @@ export const DO = {
     pin: 27,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "off", // true/false
-    enum: ["on","off"],
+    enum: ["on", "off"],
     relayType: 'NO',
-    set: function(value) {
-      if(!defaultForSet(this,value)) return;
+    set: function (value) {
+      if (!defaultForSet(this, value)) return;
       this.value = value;
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: 'hp/chgPumpRequest',
     mqttState: 'hp/chgPumpRequest',
     output: null,
-    initial: function() {
+    initial: function () {
       this.output = new five.Relay(this.pin, this.relayType);
       this.set(this.value);
       initialized.done(this.name);
@@ -319,15 +319,15 @@ export const DO = {
     value: "heating",
     enum: ["heating", "cooling"],
     relayType: 'NO',
-    set: function(value, initial=false) {
-      if(!defaultForSet(this,value)) return;
+    set: function (value, initial = false) {
+      if (!defaultForSet(this, value)) return;
       console.log("HP4WAY DEBUG!!!", value);
       //TODO: check if stuff is running... cant change if running!!!
 
-      if(!['starting','stopping','heating','cooling','run'].includes(HP.mode) || initial === true) {
+      if (!['starting', 'stopping', 'heating', 'cooling', 'run'].includes(HP.mode) || initial === true) {
         this.value = value;
-        if(this.value === "heating") this.output.close();
-        if(this.value === "cooling") this.output.open();
+        if (this.value === "heating") this.output.close();
+        if (this.value === "cooling") this.output.open();
         console.log("switched 4-way!", this.value);
         mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       } else {
