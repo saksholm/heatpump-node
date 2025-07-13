@@ -248,14 +248,14 @@ export const TH = {
     active: true,
     objectName: 'th12',
     value: 0,
-    interval: 30*1000,
-    set: function(value) {
+    interval: 30 * 1000,
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/boilerUpper',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -266,14 +266,14 @@ export const TH = {
     active: true,
     objectName: 'th13',
     value: 0,
-    interval: 30*1000,
-    set: function(value) {
+    interval: 30 * 1000,
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/boilerMiddle',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -284,14 +284,14 @@ export const TH = {
     active: true,
     objectName: 'th14',
     value: 0,
-    interval: 30*1000,
-    set: function(value) {
+    interval: 30 * 1000,
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/boilerLower',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -305,9 +305,9 @@ TH.onChanges = () => {
   Object.keys(TH).map(key => {
     setTimeout(() => {
       const instance = TH[key];
-      if(key !== "board" && instance !== null && instance && instance.active) {
-        if(instance.output !== null && instance.type === 'thermometer10k') {
-          instance.output.on("data", function(value){
+      if (key !== "board" && instance !== null && instance && instance.active) {
+        if (instance.output !== null && instance.type === 'thermometer10k') {
+          instance.output.on("data", function (value) {
 
             const {celsius} = value;
             if(instance.value !== celsius) {
