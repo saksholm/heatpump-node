@@ -1,56 +1,56 @@
 import five from 'johnny-five';
 import getUnixTime from 'date-fns/getUnixTime';
 import Controller from 'node-pid-controller';
-import {GLOBALS} from './globals';
-import {DO} from './do';
+import { GLOBALS } from './globals';
+import { DO } from './do';
 //import {DI} from './di';
 //import {AO} from './ao';
 //import {AI} from './ai';
-import {TH} from './th';
-import {HP} from './hp';
-import {LCD} from './lcd';
-import {AI} from "./ai";
+import { TH } from './th';
+import { HP } from './hp';
+import { LCD } from './lcd';
+import { AI } from "./ai";
 
 const {
   map,
   constrain,
-//  sum,
+  //  sum,
 } = five.Fn;
 
 export const parseMQTTString = path => {
   return `${GLOBALS.mqttBase}${path}`;
 };
 
-export const unixtimestamp = (datetime=null, microtime=false) => {
-  if(!datetime) datetime = new Date();
-  if(microtime) return getUnixTime(datetime * 1000);
+export const unixtimestamp = (datetime = null, microtime = false) => {
+  if (!datetime) datetime = new Date();
+  if (microtime) return getUnixTime(datetime * 1000);
   return getUnixTime(datetime);
 };
 
-export const calculateTimeout = (timestamp, delay, milliseconds=false) => {
+export const calculateTimeout = (timestamp, delay, milliseconds = false) => {
   let timeout;
 
-  if( timestamp === 0) timeout = 0;
-  if(timestamp !== 0) {
+  if (timestamp === 0) timeout = 0;
+  if (timestamp !== 0) {
     const currentTimestamp = unixtimestamp();
-    if( timestamp + delay <= currentTimestamp )  timeout = 0;
-    if( currentTimestamp - timestamp <= delay )  timeout = (timestamp + delay) - currentTimestamp;
+    if (timestamp + delay <= currentTimestamp) timeout = 0;
+    if (currentTimestamp - timestamp <= delay) timeout = (timestamp + delay) - currentTimestamp;
   }
-  if(milliseconds) return timeout * 1000;
+  if (milliseconds) return timeout * 1000;
   return timeout;
 };
 
-export const mapPercentToPWM = (value,min=false,max=false) => {
+export const mapPercentToPWM = (value, min = false, max = false) => {
   value = parseInt(value);
   // moved these to defaultForSet check
-//  if(min && value < min) console.warn(`value (${value}) is under minimum (${min})`);
-//  if(max && value > max) console.warn(`value (${value}) is over maximum (${max})`);
+  //  if(min && value < min) console.warn(`value (${value}) is under minimum (${min})`);
+  //  if(max && value > max) console.warn(`value (${value}) is over maximum (${max})`);
   value = constrain(value, (min ? min : 0), (max ? max : 100));
-  return map(value, 0,100, 0,255);
+  return map(value, 0, 100, 0, 255);
 };
 
-export const genericInitial = (module, name, board, callback=null) => {
-  if(module.board === null) {
+export const genericInitial = (module, name, board, callback = null) => {
+  if (module.board === null) {
     module.board = board;
   }
 
@@ -59,17 +59,17 @@ export const genericInitial = (module, name, board, callback=null) => {
   Object.keys(module).map(key => {
     const instance = module[key];
 
-    if(
+    if (
       key !== "board" &&
       instance !== null &&
       instance &&
       instance.active
     ) {
-      if(typeof instance.initial === "function") {
+      if (typeof instance.initial === "function") {
 
         let delay = 0;
-        if(instance.type === 'DS18B20') {
-          delay = 100*ds18b20delayCount;
+        if (instance.type === 'DS18B20') {
+          delay = 100 * ds18b20delayCount;
           ds18b20delayCount = ds18b20delayCount + 1;
           setTimeout(() => instance.initial(), delay);
         } else {
@@ -78,30 +78,30 @@ export const genericInitial = (module, name, board, callback=null) => {
 
         const check = !!instance.pin && GLOBALS.activePins.find(x => x.pin === instance.pin);
 
-        if(check) { console.log("\n\n\n\n\n\n\nPIN IS ALREADY IN USE!!!!!", instance.pin, "\n\n\n\n\n\n\n\n\n\n"); }
+        if (check) { console.log("\n\n\n\n\n\n\nPIN IS ALREADY IN USE!!!!!", instance.pin, "\n\n\n\n\n\n\n\n\n\n"); }
         const obj = {
           module: name,
           name: instance.name,
           pin: instance.pin,
           type: instance.type,
         };
-        if(instance.address) obj.address = instance.address;
+        if (instance.address) obj.address = instance.address;
         GLOBALS.activePins.push(obj);
       }
-      if(typeof instance.repl === "object") {
-//        board.repl.inject(instance.repl);
+      if (typeof instance.repl === "object") {
+        //        board.repl.inject(instance.repl);
         try {
-          injectRepls(module,key);
+          injectRepls(module, key);
 
-        } catch(e) {
-          console.err("genericInitial catch on repls inject",e);
+        } catch (e) {
+          console.err("genericInitial catch on repls inject", e);
         }
       }
-      if(instance?.mqttState?.length > 0) {
+      if (instance?.mqttState?.length > 0) {
         mqttPublish(module.board.mqttClient, instance.mqttState, instance.value);
       }
 
-      if(typeof instance?.mqttExtraStates !== "undefined" && instance?.mqttExtraStates?.length > 0) {
+      if (typeof instance?.mqttExtraStates !== "undefined" && instance?.mqttExtraStates?.length > 0) {
         console.log(name, " MQTT Publishes for module", name);
         instance?.mqttExtraStates.forEach(mqttObj => {
           console.log("  :: MQTT extra publishes topic:", mqttObj.topic);
@@ -110,8 +110,8 @@ export const genericInitial = (module, name, board, callback=null) => {
       }
     }
   });
-  console.log(`\n${name} initial setup`.padEnd(41,"."), `DONE\n`);
-  if(callback) callback();
+  console.log(`\n${name} initial setup`.padEnd(41, "."), `DONE\n`);
+  if (callback) callback();
 };
 
 export const injectRepls = (module, key) => {
@@ -121,7 +121,7 @@ export const injectRepls = (module, key) => {
     const repl = module[key].repl;
 
     module.board.repl.inject(repl);
-  },200);
+  }, 200);
 };
 
 
@@ -129,16 +129,16 @@ export const mqttSubscriptions = mqttClient => {
   Object.keys(DO).map(key => {
     const instance = DO[key];
 
-    if(key !== "board" && instance !== null && instance ) {
-      if(typeof instance.mqttCommand === "string" && instance.mqttCommand !== "") {
+    if (key !== "board" && instance !== null && instance) {
+      if (typeof instance.mqttCommand === "string" && instance.mqttCommand !== "") {
 
         mqttSubscribe(mqttClient, instance.mqttCommand);
-/*
-        mqttClient.subscribe(`cmnd/${GLOBALS.mqttBase}/${instance.mqttCommand}`, (err) => {
-          if(err) console.warn(`error in mqttSubscriptions, (${instance.mqttCommand}).. ${err}`);
-          console.log(`Subscribed topic: ${instance.mqttCommand} ...`);
-        });
-*/
+        /*
+                mqttClient.subscribe(`cmnd/${GLOBALS.mqttBase}/${instance.mqttCommand}`, (err) => {
+                  if(err) console.warn(`error in mqttSubscriptions, (${instance.mqttCommand}).. ${err}`);
+                  console.log(`Subscribed topic: ${instance.mqttCommand} ...`);
+                });
+        */
       }
     }
   });
@@ -147,12 +147,12 @@ export const mqttSubscriptions = mqttClient => {
 export const mqttSubscribe = (mqttClient, mqttTopic) => {
   const fullTopic = `cmnd/${GLOBALS.mqttBase}/${mqttTopic}`;
   mqttClient.subscribe(fullTopic, (err) => {
-    if(err) console.warn(`error in mqttSubscriptions, (${mqttTopic}).. ${err}`);
+    if (err) console.warn(`error in mqttSubscriptions, (${mqttTopic}).. ${err}`);
     console.log(`Subscribed topic: ${mqttTopic} (${fullTopic})...`);
   });
 };
 
-export const mqttPublish = (mqttClient,topic,value, options={}) => {
+export const mqttPublish = (mqttClient, topic, value, options = {}) => {
   const t = `state/${GLOBALS.mqttBase}/${topic}`;
   const valueType = typeof value;
 
@@ -174,9 +174,9 @@ export const mqttPublish = (mqttClient,topic,value, options={}) => {
       checkedValue = value;
       break;
   }
-//  const v = typeof value !== "string" ? value.toString() : value;
-  mqttClient.publish(t,checkedValue,options, (err) => {
-    if(err) console.log(`mqttPublish (${t}) error: ${err}`);
+  //  const v = typeof value !== "string" ? value.toString() : value;
+  mqttClient.publish(t, checkedValue, options, (err) => {
+    if (err) console.log(`mqttPublish (${t}) error: ${err}`);
   });
 };
 
@@ -185,12 +185,12 @@ export const mqttCommandTopics = () => {
 
   Object.keys(DO).map(key => {
     const instance = DO[key];
-    if(key !== "board" && instance !== null && instance.mqttCommand) {
-      if(typeof instance.mqttCommand === "string" && !!instance.mqttCommand) {
+    if (key !== "board" && instance !== null && instance.mqttCommand) {
+      if (typeof instance.mqttCommand === "string" && !!instance.mqttCommand) {
 
         const topic = `cmnd/${GLOBALS.mqttBase}/${instance.mqttCommand}`;
 
-        switch(instance.type) {
+        switch (instance.type) {
           case 'pwm':
             arr.push({
               topic: topic,
@@ -233,8 +233,8 @@ export const mqttCommandTopics = () => {
   return arr;
 };
 
-export const mqttOnMessage = (mqttClient,topic,message) => {
-  const {commandTopics} = mqttClient;
+export const mqttOnMessage = (mqttClient, topic, message) => {
+  const { commandTopics } = mqttClient;
   commandTopics.filter(x => x.topic === topic).map(obj => {
     console.log(`Got message, topic: ${obj.topic}, msg buffer: ${message}, message str: ${message.toString()}, message type: ${typeof message}, ts: ${new Date().toISOString()}`);
     obj.set(message.toString());
@@ -243,8 +243,8 @@ export const mqttOnMessage = (mqttClient,topic,message) => {
 
 export const convertStringToBoolean = str => {
   str = str.toLowerCase();
-  if(str === "true") return true;
-  if(str === "false") return false;
+  if (str === "true") return true;
+  if (str === "false") return false;
   return str;
 };
 
@@ -261,8 +261,8 @@ export const relayOnOff = instance => {
   }
 };
 
-export const pidController = (p=0.25,i=0.01,d=0.01,time=1, i_max=100) => {
-  return new Controller(p,i,d,time);
+export const pidController = (p = 0.25, i = 0.01, d = 0.01, time = 1, i_max = 100) => {
+  return new Controller(p, i, d, time);
 };
 
 export const round2Decimals = value => {
@@ -270,14 +270,14 @@ export const round2Decimals = value => {
 };
 
 
-export const calculateThermistorValue = (raw, {beta, roomTemp, balanceResistor, resistorRoomTemp, maxAdc}) => {
+export const calculateThermistorValue = (raw, { beta, roomTemp, balanceResistor, resistorRoomTemp, maxAdc }) => {
   // (c) original idea is from: https://www.allaboutcircuits.com/projects/measuring-temperature-with-an-ntc-thermistor/
 
-  const rThermistor = balanceResistor * ( (maxAdc / raw) - 1);
+  const rThermistor = balanceResistor * ((maxAdc / raw) - 1);
   const tKelvin = (beta * roomTemp) / (beta + (roomTemp * Math.log(rThermistor / resistorRoomTemp)));
   const tCelsius = tKelvin - 273.15;  // convert kelvin to celsius
 
-  if(GLOBALS.debug) {
+  if (GLOBALS.debug) {
     console.log("calculateThermistorValue called raw:", raw);
     console.log("rThermistor", rThermistor);
     console.log("tKelvin", tKelvin);
@@ -288,39 +288,39 @@ export const calculateThermistorValue = (raw, {beta, roomTemp, balanceResistor, 
 
 };
 
-export const defaultForSet = (instance,value) => {
-//  console.log("defaultForSet in: ", value, instance.name);
-  if(!instance.active) { console.warn(`name: ${instance.name}, type: ${instance.type} not active!`); return false; }
-  if(instance.enum) {
-    if(typeof value === 'undefined' || !instance.enum?.includes(value)) {
+export const defaultForSet = (instance, value) => {
+  //  console.log("defaultForSet in: ", value, instance.name);
+  if (!instance.active) { console.warn(`name: ${instance.name}, type: ${instance.type} not active!`); return false; }
+  if (instance.enum) {
+    if (typeof value === 'undefined' || !instance.enum?.includes(value)) {
       GLOBALS.debug && console.warn(`${instance.name} set value not match enum.. enum: ${instance.enum}, value: ${value}`);
       console.warn("Now failing defaultForSet... NAME:", instance.name, "and value is: ", value, "and enums are: ", instance.enum);
       return false;
     }
   }
 
-  if(instance.minValue) {
-    if(value < instance.minValue) console.warn(`value (${value}) is under minimum (${instance.minValue})`);
+  if (instance.minValue) {
+    if (value < instance.minValue) console.warn(`value (${value}) is under minimum (${instance.minValue})`);
   }
-  if(instance.maxValue) {
-    if(value > instance.maxValue) console.warn(`value (${value}) is over maximum (${instance.maxValue})`);
+  if (instance.maxValue) {
+    if (value > instance.maxValue) console.warn(`value (${value}) is over maximum (${instance.maxValue})`);
   }
 
   return true;
 };
 
 export const validateTemperatures = value => {
-  if(parseInt(value) > 120) return false;
-  if(parseInt(value) < -40) return false;
+  if (parseInt(value) > 120) return false;
+  if (parseInt(value) < -40) return false;
   return value;
 };
 
 export const checkThreshold = (value, instance) => {
-  if(value > instance.value) {
-    if(value - instance.value >= (instance.threshold || TH.threshold) ) return true;
+  if (value > instance.value) {
+    if (value - instance.value >= (instance.threshold || TH.threshold)) return true;
   }
-  if(value < instance.value) {
-    if(instance.value - value >= (instance.threshold || TH.threshold) ) return true;
+  if (value < instance.value) {
+    if (instance.value - value >= (instance.threshold || TH.threshold)) return true;
   }
 
   return false;
@@ -335,42 +335,42 @@ export const setupDS18B20 = instance => {
   });
 };
 
-export const setupI2C_DS18B20 = (instance=false, board=false) => {
-  if(instance && board) {
+export const setupI2C_DS18B20 = (instance = false, board = false) => {
+  if (instance && board) {
     const {
       interval,
       name,
-//      i2c,
+      //      i2c,
       objectName,
     } = instance;
 
-    if(objectName) {
+    if (objectName) {
 
       const {
         loop,
       } = board;
 
       // register handle?!?
-      GLOBALS.timersTH[objectName] = {changeIntervalMax: 0};
-      GLOBALS.timersTH[objectName] = {changeIntervalMaxTimes: 0};
+      GLOBALS.timersTH[objectName] = { changeIntervalMax: 0 };
+      GLOBALS.timersTH[objectName] = { changeIntervalMaxTimes: 0 };
 
       loop(interval || TH.interval, () => {
         const timestamp = unixtimestamp();
         const {
           value,
           i2cReadTimestamp,
-//          valueChangedTimestamp,
-//          valueChangedTimestampAgo,
+          //          valueChangedTimestamp,
+          //          valueChangedTimestampAgo,
         } = TH.thI2CReads[objectName];
 
-        if(value !== null && instance.value !== value) {
-          if(validateTemperatures(value)) {
-            // validated temperature... save it
-            if(checkThreshold(value,instance)) {
-              if(GLOBALS.printTH) console.log(`${name.padEnd(40, ".")} - temperature read AND over threshold!`, value);
+        if (value !== null && instance.value !== value) {
+          if (validateTemperatures(value)) {
+            // Allow first read or threshold-passed reads
+            if (instance.value === 0 || instance.value === null || checkThreshold(value, instance)) {
+              if (GLOBALS.printTH) console.log(`${name.padEnd(40, ".")} - temperature read AND over threshold!`, value);
               instance.set(round2Decimals(value));
             } else {
-              if(GLOBALS.printTH) console.log(`${name.padEnd(40, ".")} - temperature read`, value);
+              if (GLOBALS.printTH) console.log(`${name.padEnd(40, ".")} - temperature read`, value);
             }
 
 
@@ -381,8 +381,8 @@ export const setupI2C_DS18B20 = (instance=false, board=false) => {
         // so we can know if slave card/sensor is alive
         // TODO: hand error over to mqtt?
 
-        if(GLOBALS.debug && !!i2cReadTimestamp && (i2cReadTimestamp + (interval*2) < timestamp)) {
-         console.warn(`${name} is not readed from I2C address for a while (>${interval*2} seconds) ... x2 interval cycle.\nPlease check what's going on!`);
+        if (GLOBALS.debug && !!i2cReadTimestamp && (i2cReadTimestamp + (interval * 2) < timestamp)) {
+          console.warn(`${name} is not readed from I2C address for a while (>${interval * 2} seconds) ... x2 interval cycle.\nPlease check what's going on!`);
         }
 
       });
@@ -394,8 +394,8 @@ export const setupI2C_DS18B20 = (instance=false, board=false) => {
       console.error(`ERROR: ${name} not contains objectName property!`);
     }
   } else {
-    if(!instance) console.error(`ERROR in setupI2C_DS18B20(), instance missing`);
-    if(!board) console.error(`ERROR in setupI2C_DS18B20(), board missing`, instance?.name ? instance.name : '');
+    if (!instance) console.error(`ERROR in setupI2C_DS18B20(), instance missing`);
+    if (!board) console.error(`ERROR in setupI2C_DS18B20(), board missing`, instance?.name ? instance.name : '');
   }
 
 };
@@ -462,51 +462,51 @@ const readI2CDS18B20 = (instance, board) => {
 };
 
 */
-export const increaseValue = (instance, step=1) => {
-  let newValue = instance.value+step;
+export const increaseValue = (instance, step = 1) => {
+  let newValue = instance.value + step;
   //console.log(`increaseValue(), instance: ${instance.name}, newValue: ${newValue}`);
-  if(newValue > instance.maxValue) newValue = instance.maxValue;
-  if(newValue < instance.minValue) newValue = instance.minValue;
+  if (newValue > instance.maxValue) newValue = instance.maxValue;
+  if (newValue < instance.minValue) newValue = instance.minValue;
   instance.set(newValue);
 };
 
-export const decreaseValue = (instance,step=1) => {
+export const decreaseValue = (instance, step = 1) => {
   let newValue = instance.value - step;
-  if(newValue < instance.minValue) newValue = instance.minValue;
-  if(newValue > instance.maxValue) newValue = instance.maxValue;
+  if (newValue < instance.minValue) newValue = instance.minValue;
+  if (newValue > instance.maxValue) newValue = instance.maxValue;
   instance.set(newValue);
 };
 
 export const valueToOnOff = instance => {
 
-//  console.log("whaat is this", instance.name, instance);
+  //  console.log("whaat is this", instance.name, instance);
   // TODO: handle instance.enum
-  if(instance.output !== null) {
-    if(instance.value === "on") instance.output?.open(); // on
-    if(instance.value === "off") instance.output?.close(); // off
-    if(instance.value === true) instance.output?.open(); // on
-    if(instance.value === false) instance.output?.close(); // off
-    if(instance.value === "open") instance.output?.open();
-    if(instance.value === "close") instance.output?.close();
+  if (instance.output !== null) {
+    if (instance.value === "on") instance.output?.open(); // on
+    if (instance.value === "off") instance.output?.close(); // off
+    if (instance.value === true) instance.output?.open(); // on
+    if (instance.value === false) instance.output?.close(); // off
+    if (instance.value === "open") instance.output?.open();
+    if (instance.value === "close") instance.output?.close();
   }
 };
 
 
 
-export const handleI2C_TH_Data = (bytes,thObj={},scale=100, ret=false) => {
+export const handleI2C_TH_Data = (bytes, thObj = {}, scale = 100, ret = false) => {
   let bytePairs = [];
   let thCount = 1;
   const timestamp = unixtimestamp();
 
-  for(let i=0, length=bytes.length; i<length; i++) {
+  for (let i = 0, length = bytes.length; i < length; i++) {
     const byte = bytes[i];
-    if(bytePairs.length <= 2) {
+    if (bytePairs.length <= 2) {
       bytePairs.push(byte);
     }
-    if(bytePairs.length === 2) {
+    if (bytePairs.length === 2) {
       const buf = Buffer.from(bytePairs);
       const int = buf.readInt16BE(0);
-      const th = int/scale;
+      const th = int / scale;
       const thKey = `th${thCount}`;
 
       const obj = {
@@ -514,10 +514,10 @@ export const handleI2C_TH_Data = (bytes,thObj={},scale=100, ret=false) => {
         i2cReadTimestamp: timestamp,
       };
 
-      if(ret) return obj;
+      if (ret) return obj;
 
       // value is changed...
-      if(thObj[thKey]?.value !== th) {
+      if (thObj[thKey]?.value !== th) {
         thObj[thKey] = {
           ...obj,
           valueChangedTimestamp: timestamp,
@@ -540,30 +540,30 @@ export const handleI2C_TH_Data = (bytes,thObj={},scale=100, ret=false) => {
 }
 
 export const createLCDDataScreen = displayElements => {
-  if(displayElements?.length > 0) {
+  if (displayElements?.length > 0) {
     const lcd = LCD.screen.output;
     lcd.clear();
 
-//    let count = 1;
-    displayElements.map((obj,idx) => {
-      const {name,lcdName, value} = obj.element;
+    //    let count = 1;
+    displayElements.map((obj, idx) => {
+      const { name, lcdName, value } = obj.element;
       const displayName = lcdName || 'xxxx';
-      if(lcdName === undefined) console.warn(`Missing lcdName instance in '${name}'`);
-      lcd.cursor(idx,0).print(`${displayName.padEnd(15," ")} ${value.toFixed(1)}`);
+      if (lcdName === undefined) console.warn(`Missing lcdName instance in '${name}'`);
+      lcd.cursor(idx, 0).print(`${displayName.padEnd(15, " ")} ${value.toFixed(1)}`);
     });
-    lcd.cursor(0,49);
+    lcd.cursor(0, 49);
 
-    LCD.screen.activeInterval = setInterval(function() {
-      displayElements.map((obj,idx) => {
+    LCD.screen.activeInterval = setInterval(function () {
+      displayElements.map((obj, idx) => {
         const {
-//          name,
-//          lcdName,
+          //          name,
+          //          lcdName,
           value,
         } = obj.element;
-        lcd.cursor(idx,15).print(`${value.toFixed(1).padStart(5," ")}`);
+        lcd.cursor(idx, 15).print(`${value.toFixed(1).padStart(5, " ")}`);
       });
-      lcd.cursor(0,49);
-    },1500);
+      lcd.cursor(0, 49);
+    }, 1500);
   }
 }
 
@@ -572,16 +572,16 @@ export const setStatus = status => {
   // TODO: mqtt update
 };
 
-export const lcdNextScreenHelper = (instanceName, instance, nextScreen, nextRotateSpeed=LCD.screen.defaultRotateSpeed) => {
+export const lcdNextScreenHelper = (instanceName, instance, nextScreen, nextRotateSpeed = LCD.screen.defaultRotateSpeed) => {
   LCD.screen.nextRotateSpeed = LCD.screen.stickyScreen === instanceName ? LCD.screen.stickyScreenTime : nextRotateSpeed;
   LCD.screen.nextScreen = nextScreen || "basic";
   LCD.screen.currentInstance = instance;
   instance();
 };
 
-export const initializePidController = (instance,callback) => {
+export const initializePidController = (instance, callback) => {
   console.log("initializePidController() called...");
-  if(!isPidControllerActive(instance)) {
+  if (!isPidControllerActive(instance)) {
     console.log("pid controller is not active.. activating");
     const {
       controller_p,
@@ -589,10 +589,10 @@ export const initializePidController = (instance,callback) => {
       controller_d,
       controller_time,
     } = instance;
-//    instance.controller = pidController(controller_p, controller_i, controller_d, controller_time);
+    //    instance.controller = pidController(controller_p, controller_i, controller_d, controller_time);
     instance.controller = pidController(controller_p, controller_i, controller_d);
 
-    if(isFunction(callback)) {
+    if (isFunction(callback)) {
       console.log("initializePidController() callback is function.. calling");
       callback();
     }
@@ -605,16 +605,16 @@ export const isPidControllerActive = instance => {
 
 export const resetPidController = (instance, callback) => {
   console.log("resetPidController() called...");
-  if(isPidControllerActive(instance)) {
+  if (isPidControllerActive(instance)) {
     console.log("pid instance is active...");
     instance.controller.reset();
     instance.controller = null;
-    console.log("reset instance: ", instance.name,"PID controller");
+    console.log("reset instance: ", instance.name, "PID controller");
     console.log("calling initializePidController()");
     initializePidController(instance, callback);
   }
 
-//  if(isFunction(callback)) callback();
+  //  if(isFunction(callback)) callback();
 };
 
 
@@ -701,27 +701,27 @@ export const freezeFrame = () => {
 };
 
 export const reportStopReason = (reason, freezeFrameObj) => {
-  if(reason) {
-    const obj = Object.assign({reason: reason}, freezeFrameObj ? freezeFrameObj : freezeFrame());
+  if (reason) {
+    const obj = Object.assign({ reason: reason }, freezeFrameObj ? freezeFrameObj : freezeFrame());
     console.log("reportStopReason obj", obj);
-    mqttPublish(HP.board.mqttClient, 'stopReason', JSON.stringify(obj), {retain: true});
+    mqttPublish(HP.board.mqttClient, 'stopReason', JSON.stringify(obj), { retain: true });
 
   }
 };
 
 
 export const boilerControlTHValid = () => {
-//  const currentTimestamp = unixtimestamp();
-  if(TH.boilerUpper.active && TH.boilerUpper.value === 0) return false;
-  if(TH.boilerMiddle.active && TH.boilerMiddle.value === 0) return false;
-  if(TH.boilerLower.active && TH.boilerLower.value === 0) return false;
+  //  const currentTimestamp = unixtimestamp();
+  if (TH.boilerUpper.active && TH.boilerUpper.value === 0) return false;
+  if (TH.boilerMiddle.active && TH.boilerMiddle.value === 0) return false;
+  if (TH.boilerLower.active && TH.boilerLower.value === 0) return false;
 
   return true;
 };
 
 
 export const printChangedTHValues = (thObj, thKey) => {
-  if(GLOBALS.debugLevels.th) {
+  if (GLOBALS.debugLevels.th) {
     const thName = Object.keys(TH).filter(objKey => TH[objKey].objectName === thKey)?.name || 'failed to get proper name';
     console.log(`DEBUG: TH ${thName} changed to ${thObj.value}`);
   }
@@ -730,29 +730,29 @@ export const printChangedTHValues = (thObj, thKey) => {
 export const printTHTable = () => {
   const array = [];
   Object.keys(TH.thI2CReads).map(thKey => {
-//    console.log("thKey", thKey);
+    //    console.log("thKey", thKey);
     const instance = TH.thI2CReads[thKey];
-//    console.log("instance", instance);
+    //    console.log("instance", instance);
     const thObject = TH[Object.keys(TH).filter(thObjectKey => TH[thObjectKey].objectName === thKey)[0]];
-//    console.log("thObject", thObject);
-    array.push({name: thObject.name.toString(), temperature: instance.value});
+    //    console.log("thObject", thObject);
+    array.push({ name: thObject.name.toString(), temperature: instance.value });
   });
 
   console.table(array);
 };
 
 export const printHPObject = () => {
-  const {board, mqttClient, mqtt, mqttStatus, start, stop, loop, initial, ...rest} = HP;
+  const { board, mqttClient, mqtt, mqttStatus, start, stop, loop, initial, ...rest } = HP;
   return rest;
 };
 
 export const printDOObject = () => {
-  const {board, initial, ...rest} = DO;
+  const { board, initial, ...rest } = DO;
   return rest;
 };
 
 export const printAIObject = () => {
-  const {board, initial, onChanges, ...rest} = AI;
+  const { board, initial, onChanges, ...rest } = AI;
   return rest;
 };
 
@@ -761,8 +761,8 @@ export const printTimeoutHandlers = () => {
 };
 
 export const printDemandObject = () => {
-  const {upper,middle, lower} = GLOBALS.boiler;
-  const {boilerUpper, boilerMiddle, boilerLower} = TH;
+  const { upper, middle, lower } = GLOBALS.boiler;
+  const { boilerUpper, boilerMiddle, boilerLower } = TH;
 
   return {
     upper: upper,
@@ -786,31 +786,31 @@ export const resetAlarms = () => {
 
 
 export const clearDefrostIntervalHandlers = () => {
-//  console.log("DEBUG :: clearDefrostIntervalHandlers() ", HP.timeoutHandlers);
-  if(!!HP.timeoutHandlers.defrost1.length) {
+  //  console.log("DEBUG :: clearDefrostIntervalHandlers() ", HP.timeoutHandlers);
+  if (!!HP.timeoutHandlers.defrost1.length) {
     clearHandlers(clearTimeout, HP.timeoutHandlers.defrost1);
-//    clearTimeout(HP.timeoutHandlers.defrost1);
-//    HP.timeoutHandlers.defrost1 = null;
+    //    clearTimeout(HP.timeoutHandlers.defrost1);
+    //    HP.timeoutHandlers.defrost1 = null;
   }
-  if(!!HP.timeoutHandlers.defrost2.length) {
+  if (!!HP.timeoutHandlers.defrost2.length) {
     clearHandlers(clearInterval, HP.timeoutHandlers.defrost2);
-//    clearInterval(HP.timeoutHandlers.defrost2); // yes, it's interval! not typo
-//    HP.timeoutHandlers.defrost2 = null;
+    //    clearInterval(HP.timeoutHandlers.defrost2); // yes, it's interval! not typo
+    //    HP.timeoutHandlers.defrost2 = null;
   }
-  if(!!HP.timeoutHandlers.defrost3.length) {
+  if (!!HP.timeoutHandlers.defrost3.length) {
     clearHandlers(clearTimeout, HP.timeoutHandlers.defrost3);
-//    clearTimeout(HP.timeoutHandlers.defrost3);
-//    HP.timeoutHandlers.defrost3 = null;
+    //    clearTimeout(HP.timeoutHandlers.defrost3);
+    //    HP.timeoutHandlers.defrost3 = null;
   }
-  if(!!HP.timeoutHandlers.defrost4.length) {
+  if (!!HP.timeoutHandlers.defrost4.length) {
     clearHandlers(clearTimeout, HP.timeoutHandlers.defrost4);
-//    clearTimeout(HP.timeoutHandlers.defrost4);
-//    HP.timeoutHandlers.defrost4 = null;
+    //    clearTimeout(HP.timeoutHandlers.defrost4);
+    //    HP.timeoutHandlers.defrost4 = null;
   }
 };
 
 export const clearHandlers = (func, instance) => {
-  if(instance.length) {
+  if (instance.length) {
     instance.map(x => func(x));
   }
   instance = [];
@@ -866,13 +866,13 @@ export const setHPMode = value => {
 };
 
 export const stopBoostHotWater = () => {
-  if(GLOBALS.boostHotWater) {
+  if (GLOBALS.boostHotWater) {
     // switch off and turn off MQTT switch
     GLOBALS.boostHotWater = false;
     mqttPublish(HP.board.mqttClient, 'boostHotWater', 'off');
-    
+
     // TODO: check if running and stop it
-    if(HP.mode === 'run') {}
+    if (HP.mode === 'run') { }
   }
 }
 
@@ -884,7 +884,7 @@ export const calculateDynamicHPOutput = () => {
   let dynamicMaxHPOutput;
 
   // HEATING
-  if(HP.mode === 'heating') {
+  if (HP.mode === 'heating') {
     HP.dynamicHPOutputParams.heating.temperatures.forEach((temp, idx) => {
       if (temperature >= temp) idxToUsed = idx;
     });
@@ -894,7 +894,7 @@ export const calculateDynamicHPOutput = () => {
   }
 
   // COOLING
-  if(HP.mode === 'cooling') {
+  if (HP.mode === 'cooling') {
     HP.dynamicHPOutputParams.cooling.temperatures.forEach((temp, idx) => {
       if (temperature >= temp) idxToUsed = idx;
     });
@@ -903,10 +903,10 @@ export const calculateDynamicHPOutput = () => {
     dynamicMaxHPOutput = dynamicParam - temperature;
   }
 
-  if(GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::calculateDynamicHPOutput()::values", idxToUsed, dynamicParam, temperature, dynamicMaxHPOutput);
+  if (GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::calculateDynamicHPOutput()::values", idxToUsed, dynamicParam, temperature, dynamicMaxHPOutput);
 
-  if(dynamicMaxHPOutput >= DO.hpOutput.maxValueDefault) dynamicMaxHPOutput = DO.hpOutput.maxValueDefault;
-  if(GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::calculateDynamicHPOutput()::after manipulation values", idxToUsed, dynamicParam, temperature, dynamicMaxHPOutput);
+  if (dynamicMaxHPOutput >= DO.hpOutput.maxValueDefault) dynamicMaxHPOutput = DO.hpOutput.maxValueDefault;
+  if (GLOBALS.debugLevels.dynamicHPOutput) console.log("DEBUG::calculateDynamicHPOutput()::after manipulation values", idxToUsed, dynamicParam, temperature, dynamicMaxHPOutput);
 
   return Math.floor(dynamicMaxHPOutput);
 };
