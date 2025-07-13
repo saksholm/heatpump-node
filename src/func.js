@@ -363,11 +363,11 @@ export const setupI2C_DS18B20 = (instance = false, board = false) => {
           //          valueChangedTimestampAgo,
         } = TH.thI2CReads[objectName];
 
-        if(value !== null && instance.value !== value) {
-          if(validateTemperatures(value)) {
-            // validated temperature... save it
-            if(checkThreshold(value,instance)) {
-              if(GLOBALS.printTH) console.log(`${name.padEnd(40, ".")} - temperature read AND over threshold!`, value);
+        if (value !== null && instance.value !== value) {
+          if (validateTemperatures(value)) {
+            // Allow first read or threshold-passed reads
+            if (instance.value === 0 || instance.value === null || checkThreshold(value, instance)) {
+              if (GLOBALS.printTH) console.log(`${name.padEnd(40, ".")} - temperature read AND over threshold!`, value);
               instance.set(round2Decimals(value));
             } else {
               if (GLOBALS.printTH) console.log(`${name.padEnd(40, ".")} - temperature read`, value);
