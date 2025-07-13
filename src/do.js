@@ -50,8 +50,9 @@ export const DO = {
     type: 'relay',
     name: 'AHU Fan',
     active: true,
-    pin: 22,
-//    pinMode: Pin.OUTPUT, // OUTPUT
+    //    pin: 22,
+    pin: 40,
+    //    pinMode: Pin.OUTPUT, // OUTPUT
     value: "off", // true/false
     enum: ["on", "off"],
     relayType: 'NO',
@@ -116,7 +117,8 @@ export const DO = {
     type: 'relay',
     name: 'HP allowed',
     active: true,
-    pin: 23,
+    //    pin: 23,
+    pin: 41,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "off", // true/false
     enum: ["on", "off"],
@@ -148,7 +150,8 @@ export const DO = {
     type: 'relay',
     name: 'Damper outside',
     active: true,
-    pin: 24,
+    //    pin: 24,
+    pin: 42,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "close", // true/false
     enum: ["open", "close"],
@@ -201,7 +204,8 @@ export const DO = {
     type: 'relay',
     name: 'Damper convection',
     active: true,
-    pin: 25,
+    //    pin: 25,
+    pin: 43,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "open", // true/false
     enum: ["open", "close"],
@@ -254,7 +258,8 @@ export const DO = {
     type: 'relay',
     name: 'Waterpump charging',
     active: true,
-    pin: 26,
+    //    pin: 26,
+    pin: 44,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "off", // true/false
     enum: ["on", "off"],
@@ -285,7 +290,8 @@ export const DO = {
     type: 'relay',
     name: 'CHG pump request',
     active: true,
-    pin: 27,
+    //    pin: 27,
+    pin: 45,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "off", // true/false
     enum: ["on", "off"],
@@ -314,7 +320,8 @@ export const DO = {
     type: 'relay',
     name: 'HP 4-way valve',
     active: true,
-    pin: 28,
+    //    pin: 28,
+    pin: 46,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "heating",
     enum: ["heating", "cooling"],
@@ -354,7 +361,8 @@ export const DO = {
     type: 'relay',
     name: 'HP fan',
     active: true,
-    pin: 29,
+    //  pin: 29,
+    pin: 47,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "off",
     enum: ['on', 'off'],
