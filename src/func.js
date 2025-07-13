@@ -359,8 +359,8 @@ export const setupI2C_DS18B20 = (instance = false, board = false) => {
         const {
           value,
           i2cReadTimestamp,
-//          valueChangedTimestamp,
-//          valueChangedTimestampAgo,
+          //          valueChangedTimestamp,
+          //          valueChangedTimestampAgo,
         } = TH.thI2CReads[objectName];
 
         if(value !== null && instance.value !== value) {
@@ -370,7 +370,7 @@ export const setupI2C_DS18B20 = (instance = false, board = false) => {
               if(GLOBALS.printTH) console.log(`${name.padEnd(40, ".")} - temperature read AND over threshold!`, value);
               instance.set(round2Decimals(value));
             } else {
-              if(GLOBALS.printTH) console.log(`${name.padEnd(40, ".")} - temperature read`, value);
+              if (GLOBALS.printTH) console.log(`${name.padEnd(40, ".")} - temperature read`, value);
             }
 
 
@@ -381,8 +381,8 @@ export const setupI2C_DS18B20 = (instance = false, board = false) => {
         // so we can know if slave card/sensor is alive
         // TODO: hand error over to mqtt?
 
-        if(GLOBALS.debug && !!i2cReadTimestamp && (i2cReadTimestamp + (interval*2) < timestamp)) {
-         console.warn(`${name} is not readed from I2C address for a while (>${interval*2} seconds) ... x2 interval cycle.\nPlease check what's going on!`);
+        if (GLOBALS.debug && !!i2cReadTimestamp && (i2cReadTimestamp + (interval * 2) < timestamp)) {
+          console.warn(`${name} is not readed from I2C address for a while (>${interval * 2} seconds) ... x2 interval cycle.\nPlease check what's going on!`);
         }
 
       });
@@ -394,8 +394,8 @@ export const setupI2C_DS18B20 = (instance = false, board = false) => {
       console.error(`ERROR: ${name} not contains objectName property!`);
     }
   } else {
-    if(!instance) console.error(`ERROR in setupI2C_DS18B20(), instance missing`);
-    if(!board) console.error(`ERROR in setupI2C_DS18B20(), board missing`, instance?.name ? instance.name : '');
+    if (!instance) console.error(`ERROR in setupI2C_DS18B20(), instance missing`);
+    if (!board) console.error(`ERROR in setupI2C_DS18B20(), board missing`, instance?.name ? instance.name : '');
   }
 
 };
@@ -462,18 +462,18 @@ const readI2CDS18B20 = (instance, board) => {
 };
 
 */
-export const increaseValue = (instance, step=1) => {
-  let newValue = instance.value+step;
+export const increaseValue = (instance, step = 1) => {
+  let newValue = instance.value + step;
   //console.log(`increaseValue(), instance: ${instance.name}, newValue: ${newValue}`);
-  if(newValue > instance.maxValue) newValue = instance.maxValue;
-  if(newValue < instance.minValue) newValue = instance.minValue;
+  if (newValue > instance.maxValue) newValue = instance.maxValue;
+  if (newValue < instance.minValue) newValue = instance.minValue;
   instance.set(newValue);
 };
 
-export const decreaseValue = (instance,step=1) => {
+export const decreaseValue = (instance, step = 1) => {
   let newValue = instance.value - step;
-  if(newValue < instance.minValue) newValue = instance.minValue;
-  if(newValue > instance.maxValue) newValue = instance.maxValue;
+  if (newValue < instance.minValue) newValue = instance.minValue;
+  if (newValue > instance.maxValue) newValue = instance.maxValue;
   instance.set(newValue);
 };
 
