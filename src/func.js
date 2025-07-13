@@ -185,12 +185,12 @@ export const mqttCommandTopics = () => {
 
   Object.keys(DO).map(key => {
     const instance = DO[key];
-    if(key !== "board" && instance !== null && instance.mqttCommand) {
-      if(typeof instance.mqttCommand === "string" && !!instance.mqttCommand) {
+    if (key !== "board" && instance !== null && instance.mqttCommand) {
+      if (typeof instance.mqttCommand === "string" && !!instance.mqttCommand) {
 
         const topic = `cmnd/${GLOBALS.mqttBase}/${instance.mqttCommand}`;
 
-        switch(instance.type) {
+        switch (instance.type) {
           case 'pwm':
             arr.push({
               topic: topic,
@@ -233,8 +233,8 @@ export const mqttCommandTopics = () => {
   return arr;
 };
 
-export const mqttOnMessage = (mqttClient,topic,message) => {
-  const {commandTopics} = mqttClient;
+export const mqttOnMessage = (mqttClient, topic, message) => {
+  const { commandTopics } = mqttClient;
   commandTopics.filter(x => x.topic === topic).map(obj => {
     console.log(`Got message, topic: ${obj.topic}, msg buffer: ${message}, message str: ${message.toString()}, message type: ${typeof message}, ts: ${new Date().toISOString()}`);
     obj.set(message.toString());
@@ -243,8 +243,8 @@ export const mqttOnMessage = (mqttClient,topic,message) => {
 
 export const convertStringToBoolean = str => {
   str = str.toLowerCase();
-  if(str === "true") return true;
-  if(str === "false") return false;
+  if (str === "true") return true;
+  if (str === "false") return false;
   return str;
 };
 
@@ -261,8 +261,8 @@ export const relayOnOff = instance => {
   }
 };
 
-export const pidController = (p=0.25,i=0.01,d=0.01,time=1, i_max=100) => {
-  return new Controller(p,i,d,time);
+export const pidController = (p = 0.25, i = 0.01, d = 0.01, time = 1, i_max = 100) => {
+  return new Controller(p, i, d, time);
 };
 
 export const round2Decimals = value => {
@@ -270,14 +270,14 @@ export const round2Decimals = value => {
 };
 
 
-export const calculateThermistorValue = (raw, {beta, roomTemp, balanceResistor, resistorRoomTemp, maxAdc}) => {
+export const calculateThermistorValue = (raw, { beta, roomTemp, balanceResistor, resistorRoomTemp, maxAdc }) => {
   // (c) original idea is from: https://www.allaboutcircuits.com/projects/measuring-temperature-with-an-ntc-thermistor/
 
-  const rThermistor = balanceResistor * ( (maxAdc / raw) - 1);
+  const rThermistor = balanceResistor * ((maxAdc / raw) - 1);
   const tKelvin = (beta * roomTemp) / (beta + (roomTemp * Math.log(rThermistor / resistorRoomTemp)));
   const tCelsius = tKelvin - 273.15;  // convert kelvin to celsius
 
-  if(GLOBALS.debug) {
+  if (GLOBALS.debug) {
     console.log("calculateThermistorValue called raw:", raw);
     console.log("rThermistor", rThermistor);
     console.log("tKelvin", tKelvin);
