@@ -288,39 +288,39 @@ export const calculateThermistorValue = (raw, { beta, roomTemp, balanceResistor,
 
 };
 
-export const defaultForSet = (instance,value) => {
-//  console.log("defaultForSet in: ", value, instance.name);
-  if(!instance.active) { console.warn(`name: ${instance.name}, type: ${instance.type} not active!`); return false; }
-  if(instance.enum) {
-    if(typeof value === 'undefined' || !instance.enum?.includes(value)) {
+export const defaultForSet = (instance, value) => {
+  //  console.log("defaultForSet in: ", value, instance.name);
+  if (!instance.active) { console.warn(`name: ${instance.name}, type: ${instance.type} not active!`); return false; }
+  if (instance.enum) {
+    if (typeof value === 'undefined' || !instance.enum?.includes(value)) {
       GLOBALS.debug && console.warn(`${instance.name} set value not match enum.. enum: ${instance.enum}, value: ${value}`);
       console.warn("Now failing defaultForSet... NAME:", instance.name, "and value is: ", value, "and enums are: ", instance.enum);
       return false;
     }
   }
 
-  if(instance.minValue) {
-    if(value < instance.minValue) console.warn(`value (${value}) is under minimum (${instance.minValue})`);
+  if (instance.minValue) {
+    if (value < instance.minValue) console.warn(`value (${value}) is under minimum (${instance.minValue})`);
   }
-  if(instance.maxValue) {
-    if(value > instance.maxValue) console.warn(`value (${value}) is over maximum (${instance.maxValue})`);
+  if (instance.maxValue) {
+    if (value > instance.maxValue) console.warn(`value (${value}) is over maximum (${instance.maxValue})`);
   }
 
   return true;
 };
 
 export const validateTemperatures = value => {
-  if(parseInt(value) > 120) return false;
-  if(parseInt(value) < -40) return false;
+  if (parseInt(value) > 120) return false;
+  if (parseInt(value) < -40) return false;
   return value;
 };
 
 export const checkThreshold = (value, instance) => {
-  if(value > instance.value) {
-    if(value - instance.value >= (instance.threshold || TH.threshold) ) return true;
+  if (value > instance.value) {
+    if (value - instance.value >= (instance.threshold || TH.threshold)) return true;
   }
-  if(value < instance.value) {
-    if(instance.value - value >= (instance.threshold || TH.threshold) ) return true;
+  if (value < instance.value) {
+    if (instance.value - value >= (instance.threshold || TH.threshold)) return true;
   }
 
   return false;
@@ -335,24 +335,24 @@ export const setupDS18B20 = instance => {
   });
 };
 
-export const setupI2C_DS18B20 = (instance=false, board=false) => {
-  if(instance && board) {
+export const setupI2C_DS18B20 = (instance = false, board = false) => {
+  if (instance && board) {
     const {
       interval,
       name,
-//      i2c,
+      //      i2c,
       objectName,
     } = instance;
 
-    if(objectName) {
+    if (objectName) {
 
       const {
         loop,
       } = board;
 
       // register handle?!?
-      GLOBALS.timersTH[objectName] = {changeIntervalMax: 0};
-      GLOBALS.timersTH[objectName] = {changeIntervalMaxTimes: 0};
+      GLOBALS.timersTH[objectName] = { changeIntervalMax: 0 };
+      GLOBALS.timersTH[objectName] = { changeIntervalMaxTimes: 0 };
 
       loop(interval || TH.interval, () => {
         const timestamp = unixtimestamp();
