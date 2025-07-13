@@ -15,14 +15,14 @@ board.on("ready", function () {
 
     // Define relays directly with their pins and names
     const relays = [
-        { name: 'AHU Fan', pin: 22, relayType: 'NO' },
-        { name: 'HP allowed', pin: 23, relayType: 'NC' },
-        { name: 'Damper outside', pin: 24, relayType: 'NO' },
-        { name: 'Damper convection', pin: 25, relayType: 'NO' },
-        { name: 'Waterpump charging', pin: 26, relayType: 'NO' },
-        { name: 'CHG pump request', pin: 27, relayType: 'NO' },
-        { name: 'HP 4-way valve', pin: 28, relayType: 'NO' },
-        { name: 'HP fan', pin: 29, relayType: 'NO' },
+        { name: 'AHU Fan', pin: 40, relayType: 'NO' },
+        { name: 'HP allowed', pin: 41, relayType: 'NC' },
+        { name: 'Damper outside', pin: 42, relayType: 'NO' },
+        { name: 'Damper convection', pin: 43, relayType: 'NO' },
+        { name: 'Waterpump charging', pin: 44, relayType: 'NO' },
+        { name: 'CHG pump request', pin: 45, relayType: 'NO' },
+        { name: 'HP 4-way valve', pin: 46, relayType: 'NO' },
+        { name: 'HP fan', pin: 47, relayType: 'NO' },
         { name: 'HP CG 3-way valve', pin: 0, relayType: 'NO' }
     ];
 
