@@ -1,20 +1,20 @@
 import five from 'johnny-five';
 import getUnixTime from 'date-fns/getUnixTime';
 import Controller from 'node-pid-controller';
-import {GLOBALS} from './globals';
-import {DO} from './do';
+import { GLOBALS } from './globals';
+import { DO } from './do';
 //import {DI} from './di';
 //import {AO} from './ao';
 //import {AI} from './ai';
-import {TH} from './th';
-import {HP} from './hp';
-import {LCD} from './lcd';
-import {AI} from "./ai";
+import { TH } from './th';
+import { HP } from './hp';
+import { LCD } from './lcd';
+import { AI } from "./ai";
 
 const {
   map,
   constrain,
-//  sum,
+  //  sum,
 } = five.Fn;
 
 export const parseMQTTString = path => {
