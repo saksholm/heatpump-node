@@ -2,30 +2,30 @@ import five from 'johnny-five';
 import {
   Initialized,
 } from './initialized.class';
-import {GLOBALS} from './globals';
+import { GLOBALS } from './globals';
 import {
   genericInitial,
   mqttPublish,
   round2Decimals,
-//  calculateThermistorValue,
+  //  calculateThermistorValue,
   validateTemperatures,
-//  setupDS18B20,
+  //  setupDS18B20,
   setupI2C_DS18B20,
   handleI2C_TH_Data,
 } from './func';
 const {
-//  constrain,
-//  map,
-//  inRange,
-//  range,
-//  sum,
-//  toFixed,
-//  uid,
+  //  constrain,
+  //  map,
+  //  inRange,
+  //  range,
+  //  sum,
+  //  toFixed,
+  //  uid,
 
 } = five.Fn;
 
 const {
-//  Pin,
+  //  Pin,
 } = five;
 
 const initialized = new Initialized('TH');
@@ -35,10 +35,10 @@ const initialized = new Initialized('TH');
 
 export const TH = {
   board: null,
-  interval: 5*1000, // 5sec
+  interval: 5 * 1000, // 5sec
   threshold: 0.1, // TODO: implement this also
   changeIntervalMaxTimes: 10, // 10 times interval... OR changeIntervalMax...
-  changeIntervalMax: 5*60*1000, //5mins
+  changeIntervalMax: 5 * 60 * 1000, //5mins
 
 
   thI2CReads: {}, // this is just initial.. contains all I2C data!!!
@@ -50,14 +50,14 @@ export const TH = {
     active: true,
     objectName: 'th1',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/outside',
-    interval: 5*1000,//60*1000, // 1min
-    initial: function() {
+    interval: 5 * 1000,//60*1000, // 1min
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
