@@ -121,7 +121,7 @@ export const injectRepls = (module, key) => {
     const repl = module[key].repl;
 
     module.board.repl.inject(repl);
-  },200);
+  }, 200);
 };
 
 
@@ -129,16 +129,16 @@ export const mqttSubscriptions = mqttClient => {
   Object.keys(DO).map(key => {
     const instance = DO[key];
 
-    if(key !== "board" && instance !== null && instance ) {
-      if(typeof instance.mqttCommand === "string" && instance.mqttCommand !== "") {
+    if (key !== "board" && instance !== null && instance) {
+      if (typeof instance.mqttCommand === "string" && instance.mqttCommand !== "") {
 
         mqttSubscribe(mqttClient, instance.mqttCommand);
-/*
-        mqttClient.subscribe(`cmnd/${GLOBALS.mqttBase}/${instance.mqttCommand}`, (err) => {
-          if(err) console.warn(`error in mqttSubscriptions, (${instance.mqttCommand}).. ${err}`);
-          console.log(`Subscribed topic: ${instance.mqttCommand} ...`);
-        });
-*/
+        /*
+                mqttClient.subscribe(`cmnd/${GLOBALS.mqttBase}/${instance.mqttCommand}`, (err) => {
+                  if(err) console.warn(`error in mqttSubscriptions, (${instance.mqttCommand}).. ${err}`);
+                  console.log(`Subscribed topic: ${instance.mqttCommand} ...`);
+                });
+        */
       }
     }
   });
@@ -147,12 +147,12 @@ export const mqttSubscriptions = mqttClient => {
 export const mqttSubscribe = (mqttClient, mqttTopic) => {
   const fullTopic = `cmnd/${GLOBALS.mqttBase}/${mqttTopic}`;
   mqttClient.subscribe(fullTopic, (err) => {
-    if(err) console.warn(`error in mqttSubscriptions, (${mqttTopic}).. ${err}`);
+    if (err) console.warn(`error in mqttSubscriptions, (${mqttTopic}).. ${err}`);
     console.log(`Subscribed topic: ${mqttTopic} (${fullTopic})...`);
   });
 };
 
-export const mqttPublish = (mqttClient,topic,value, options={}) => {
+export const mqttPublish = (mqttClient, topic, value, options = {}) => {
   const t = `state/${GLOBALS.mqttBase}/${topic}`;
   const valueType = typeof value;
 
@@ -174,9 +174,9 @@ export const mqttPublish = (mqttClient,topic,value, options={}) => {
       checkedValue = value;
       break;
   }
-//  const v = typeof value !== "string" ? value.toString() : value;
-  mqttClient.publish(t,checkedValue,options, (err) => {
-    if(err) console.log(`mqttPublish (${t}) error: ${err}`);
+  //  const v = typeof value !== "string" ? value.toString() : value;
+  mqttClient.publish(t, checkedValue, options, (err) => {
+    if (err) console.log(`mqttPublish (${t}) error: ${err}`);
   });
 };
 
