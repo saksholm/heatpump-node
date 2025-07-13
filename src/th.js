@@ -168,7 +168,7 @@ export const TH = {
     },
     mqttCommand: '',
     mqttState: 'th/glygolOut',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -180,13 +180,13 @@ export const TH = {
     active: true,
     objectName: 'th8',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/hotgas',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -197,13 +197,13 @@ export const TH = {
     active: true,
     objectName: 'th9',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/ahuSupply',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -214,13 +214,13 @@ export const TH = {
     active: true,
     objectName: 'th10',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/hxIn',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -231,7 +231,7 @@ export const TH = {
     active: true,
     objectName: 'th11',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
