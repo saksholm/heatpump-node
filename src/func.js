@@ -514,10 +514,10 @@ export const handleI2C_TH_Data = (bytes, thObj = {}, scale = 100, ret = false) =
         i2cReadTimestamp: timestamp,
       };
 
-      if(ret) return obj;
+      if (ret) return obj;
 
       // value is changed...
-      if(thObj[thKey]?.value !== th) {
+      if (thObj[thKey]?.value !== th) {
         thObj[thKey] = {
           ...obj,
           valueChangedTimestamp: timestamp,
@@ -540,30 +540,30 @@ export const handleI2C_TH_Data = (bytes, thObj = {}, scale = 100, ret = false) =
 }
 
 export const createLCDDataScreen = displayElements => {
-  if(displayElements?.length > 0) {
+  if (displayElements?.length > 0) {
     const lcd = LCD.screen.output;
     lcd.clear();
 
-//    let count = 1;
-    displayElements.map((obj,idx) => {
-      const {name,lcdName, value} = obj.element;
+    //    let count = 1;
+    displayElements.map((obj, idx) => {
+      const { name, lcdName, value } = obj.element;
       const displayName = lcdName || 'xxxx';
-      if(lcdName === undefined) console.warn(`Missing lcdName instance in '${name}'`);
-      lcd.cursor(idx,0).print(`${displayName.padEnd(15," ")} ${value.toFixed(1)}`);
+      if (lcdName === undefined) console.warn(`Missing lcdName instance in '${name}'`);
+      lcd.cursor(idx, 0).print(`${displayName.padEnd(15, " ")} ${value.toFixed(1)}`);
     });
-    lcd.cursor(0,49);
+    lcd.cursor(0, 49);
 
-    LCD.screen.activeInterval = setInterval(function() {
-      displayElements.map((obj,idx) => {
+    LCD.screen.activeInterval = setInterval(function () {
+      displayElements.map((obj, idx) => {
         const {
-//          name,
-//          lcdName,
+          //          name,
+          //          lcdName,
           value,
         } = obj.element;
-        lcd.cursor(idx,15).print(`${value.toFixed(1).padStart(5," ")}`);
+        lcd.cursor(idx, 15).print(`${value.toFixed(1).padStart(5, " ")}`);
       });
-      lcd.cursor(0,49);
-    },1500);
+      lcd.cursor(0, 49);
+    }, 1500);
   }
 }
 
