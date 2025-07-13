@@ -329,18 +329,18 @@ TH.onChanges = () => {
           });
           console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
         }
-        if(instance.output !== null && instance.type === 'DS18B20') {
-          instance.output.on("error", function(err) {
+        if (instance.output !== null && instance.type === 'DS18B20') {
+          instance.output.on("error", function (err) {
             console.log(`Error on reading TH ${instance.name}: ${err}`);
           });
 
-          instance.output.on("change", function() {
-            const {celsius, address} = instance.output;
-            if(validateTemperatures(celsius)) {
-              if(GLOBALS.debug && GLOBALS.printTH) console.log(`Thermometer at address: 0x${address.toString(16)}`);
-              if(GLOBALS.debug && GLOBALS.printTH) console.log(`TH ${instance.name} ${celsius}C`);
+          instance.output.on("change", function () {
+            const { celsius, address } = instance.output;
+            if (validateTemperatures(celsius)) {
+              if (GLOBALS.debug && GLOBALS.printTH) console.log(`Thermometer at address: 0x${address.toString(16)}`);
+              if (GLOBALS.debug && GLOBALS.printTH) console.log(`TH ${instance.name} ${celsius}C`);
               instance.set(round2Decimals(celsius));
-              if(GLOBALS.debug && GLOBALS.printTH) console.warn(`${instance.name} value changed to ${celsius}`);
+              if (GLOBALS.debug && GLOBALS.printTH) console.warn(`${instance.name} value changed to ${celsius}`);
             } else {
               console.log("ignoring temp", celsius, instance.name);
             }
@@ -349,7 +349,7 @@ TH.onChanges = () => {
           console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
         }
 
-        if(instance.type === 'I2C_DS18B20') {
+        if (instance.type === 'I2C_DS18B20') {
 
         }
 
