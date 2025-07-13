@@ -13,30 +13,31 @@ board.on("ready", function () {
     console.log("Will cycle through all relays: ON (3s) -> OFF (3s) -> next relay");
     console.log("---");
 
-    // Import the DO module
-    const { DO } = require('../src/do.js');
+    // Define relays directly with their pins and names
+    const relays = [
+        { name: 'AHU Fan', pin: 22, relayType: 'NO' },
+        { name: 'HP allowed', pin: 23, relayType: 'NC' },
+        { name: 'Damper outside', pin: 24, relayType: 'NO' },
+        { name: 'Damper convection', pin: 25, relayType: 'NO' },
+        { name: 'Waterpump charging', pin: 26, relayType: 'NO' },
+        { name: 'CHG pump request', pin: 27, relayType: 'NO' },
+        { name: 'HP 4-way valve', pin: 28, relayType: 'NO' },
+        { name: 'HP fan', pin: 29, relayType: 'NO' },
+        { name: 'HP CG 3-way valve', pin: 0, relayType: 'NO' }
+    ];
 
-    // Initialize DO module
-    DO.initial(this);
+    // Initialize relay objects
+    relays.forEach(relay => {
+        relay.output = new five.Relay(relay.pin, relay.relayType);
+        relay.output.off(); // Start with all relays OFF
+    });
 
     // Wait for initialization to complete
     setTimeout(() => {
         startRelayTest();
-    }, 5000);
+    }, 2000);
 
     function startRelayTest() {
-        const relays = [
-            { name: 'ahuFan', instance: DO.ahuFan },
-            { name: 'hpAllowed', instance: DO.hpAllowed },
-            { name: 'damperOutside', instance: DO.damperOutside },
-            { name: 'damperConvection', instance: DO.damperConvection },
-            { name: 'waterpumpCharging', instance: DO.waterpumpCharging },
-            { name: 'chgPumpRequest', instance: DO.chgPumpRequest },
-            { name: 'hp4Way', instance: DO.hp4Way },
-            { name: 'hpFan', instance: DO.hpFan },
-            { name: 'hpCGValve', instance: DO.hpCGValve }
-        ];
-
         let currentRelayIndex = 0;
 
         function testNextRelay() {
@@ -46,7 +47,7 @@ board.on("ready", function () {
                 // Turn off all relays
                 relays.forEach(relay => {
                     console.log(`Turning OFF: ${relay.name}`);
-                    relay.instance.set(relay.instance.enum[1]); // Turn off
+                    relay.output.off();
                 });
 
                 setTimeout(() => {
@@ -61,12 +62,12 @@ board.on("ready", function () {
 
             // Turn relay ON
             console.log(`${relay.name}: ON`);
-            relay.instance.set(relay.instance.enum[0]); // Use first enum value (usually "on")
+            relay.output.on();
 
             // Wait 3 seconds, then turn OFF
             setTimeout(() => {
                 console.log(`${relay.name}: OFF`);
-                relay.instance.set(relay.instance.enum[1]); // Use second enum value (usually "off")
+                relay.output.off();
 
                 // Wait 3 seconds, then test next relay
                 setTimeout(() => {
@@ -86,12 +87,9 @@ board.on("ready", function () {
         console.log("Turning all relays OFF...");
 
         // Turn off all relays
-        Object.keys(DO).forEach(key => {
-            const instance = DO[key];
-            if (instance && instance.type === 'relay' && instance.active) {
-                console.log(`Turning OFF: ${instance.name}`);
-                instance.set(instance.enum[1]); // Turn off
-            }
+        relays.forEach(relay => {
+            console.log(`Turning OFF: ${relay.name}`);
+            relay.output.off();
         });
 
         setTimeout(() => {
