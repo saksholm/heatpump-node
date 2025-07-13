@@ -8,7 +8,7 @@ import {
   mqttPublish,
   convertStringToBoolean,
   relayOnOff,
-//  pidController,
+  //  pidController,
   defaultForSet,
   increaseValue,
   decreaseValue,
@@ -16,7 +16,7 @@ import {
   initializePidController,
 } from './func';
 
-import {HP} from './hp';
+import { HP } from './hp';
 
 const initialized = new Initialized('DO');
 
@@ -32,12 +32,12 @@ SERVO	  4	      Pin.SERVO
 
 const {
   constrain,
-//  map,
-//  inRange,
-//  range,
-//  sum,
-//  toFixed,
-//  uid,
+  //  map,
+  //  inRange,
+  //  range,
+  //  sum,
+  //  toFixed,
+  //  uid,
 } = five.Fn;
 
 const {
@@ -53,10 +53,10 @@ export const DO = {
     pin: 22,
 //    pinMode: Pin.OUTPUT, // OUTPUT
     value: "off", // true/false
-    enum: ["on","off"],
+    enum: ["on", "off"],
     relayType: 'NO',
-    set: function(value) {
-      if(!defaultForSet(this,value)) return;
+    set: function (value) {
+      if (!defaultForSet(this, value)) return;
 
       this.value = value;
       valueToOnOff(this);
