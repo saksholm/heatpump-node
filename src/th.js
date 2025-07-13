@@ -309,19 +309,19 @@ TH.onChanges = () => {
         if (instance.output !== null && instance.type === 'thermometer10k') {
           instance.output.on("data", function (value) {
 
-            const {celsius} = value;
-            if(instance.value !== celsius) {
+            const { celsius } = value;
+            if (instance.value !== celsius) {
               const roundedCelsius = round2Decimals(celsius);
-              if(typeof instance.threshold === "number") {
+              if (typeof instance.threshold === "number") {
                 // if change is gte/lte threshold
-                if(roundedCelsius >= (instance.value + instance.threshold) || roundedCelsius <= instance.value - instance.threshold ) {
+                if (roundedCelsius >= (instance.value + instance.threshold) || roundedCelsius <= instance.value - instance.threshold) {
                   instance.set(roundedCelsius);
-                  if(GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${value}`);
+                  if (GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${value}`);
                 }
               } else {
                 // set value just based on interval
                 instance.set(roundedCelsius);
-                if(GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${value}`);
+                if (GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${value}`);
               }
 
             }
