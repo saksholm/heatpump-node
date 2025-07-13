@@ -16,17 +16,19 @@ board.on("ready", function () {
     console.log("Interval: 2000ms");
     console.log("---");
 
-    // Use i2cRead for continuous reading (no memory leak)
-    this.i2cRead(0x02, 99, 28, function (bytes) {
-        console.log(`Read #${i++}`);
-        console.log("Bytes read: ", bytes);
-        console.log("Bytes length: ", bytes.length);
+    setInterval(() => {
 
-        // Use the same processing logic as the main project
-        readTH(bytes, thObj);
-        console.log("thObj", thObj);
-        console.log("---");
-    });
+        this.i2cReadOnce(0x02, 99, 28, function (bytes) {
+            console.log(`Read #${i++}`);
+            console.log("Bytes read: ", bytes);
+            console.log("Bytes length: ", bytes.length);
+
+            // Use the same processing logic as the main project
+            readTH(bytes, thObj);
+            console.log("thObj", thObj);
+            console.log("---");
+        });
+    }, 2000);
 
 });
 
