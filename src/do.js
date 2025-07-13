@@ -538,14 +538,14 @@ export const DO = {
       },
     ],
     repl: {
-      hpOutput: value => DO.hpOutput.set(value, false,true),
+      hpOutput: value => DO.hpOutput.set(value, false, true),
       hpOutputForce: value => DO.hpOutput.set(value, true, true),
-      hpOutputShutdown: () => DO.hpOutput.set(0,true),
-      hpOutputSetMode: value => { DO.hpOutput.setMode(value)},
+      hpOutputShutdown: () => DO.hpOutput.set(0, true),
+      hpOutputSetMode: value => { DO.hpOutput.setMode(value) },
       hpDynamicOutput: value => { HP.dynamicHPOutput = value } // TODO: checks?
     },
     output: null,
-    initial: function() {
+    initial: function () {
       DO.board.pinMode(this.pin, this.pinMode);
       DO.board.analogWrite(this.pin, this.value);
       initialized.done(this.name);
@@ -560,12 +560,12 @@ export const DO = {
     value: "off",
     enum: ["on", "off"],
     relayType: 'NO',
-    set: function(value) {
-      if(!defaultForSet(this,value)) return;
+    set: function (value) {
+      if (!defaultForSet(this, value)) return;
 
       this.value = value;
-//      if(this.value === "on") this.output.on();
-//      if(this.value === "off") this.output.off();
+      //      if(this.value === "on") this.output.on();
+      //      if(this.value === "off") this.output.off();
       relayOnOff();
 
       mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
@@ -577,13 +577,13 @@ export const DO = {
       hpCGValveOn: () => DO.hpCGValve.set("on"),
       hpCGValveOff: () => DO.hpCGValve.set("off"),
     },
-    initial: function() {
+    initial: function () {
       this.output = new five.Relay({
         pin: this.pin,
         type: this.relayType
       });
 
-//      DO.board.repl.inject({hpCGValveOn: function() {DO.hpCGValve.output.on() } });
+      //      DO.board.repl.inject({hpCGValveOn: function() {DO.hpCGValve.output.on() } });
       this.set(this.value);
       initialized.done(this.name);
 
@@ -594,10 +594,10 @@ export const DO = {
   // hx pumppu, restart delay
   // 4-way
 
-/*
-    pinMode(AO_3WAY, OUTPUT); // 3-way valve for cg
-    pinMode(DO_4WAY, OUTPUT); // 4-way valve - heat/cooling .... ??? 0 = cooling, 1 = heating?
-*/
+  /*
+      pinMode(AO_3WAY, OUTPUT); // 3-way valve for cg
+      pinMode(DO_4WAY, OUTPUT); // 4-way valve - heat/cooling .... ??? 0 = cooling, 1 = heating?
+  */
 };
 
 DO.initial = board => genericInitial(DO, 'DO', board);
