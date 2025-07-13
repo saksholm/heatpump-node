@@ -29,7 +29,7 @@ board.on("ready", function () {
     // Initialize relay objects
     relays.forEach(relay => {
         relay.output = new five.Relay(relay.pin, relay.relayType);
-        relay.output.off(); // Start with all relays OFF
+        relay.output.close(); // Start with all relays OFF
     });
 
     // Wait for initialization to complete
@@ -47,7 +47,7 @@ board.on("ready", function () {
                 // Turn off all relays
                 relays.forEach(relay => {
                     console.log(`Turning OFF: ${relay.name}`);
-                    relay.output.off();
+                    relay.output.close();
                 });
 
                 setTimeout(() => {
@@ -62,12 +62,12 @@ board.on("ready", function () {
 
             // Turn relay ON
             console.log(`${relay.name}: ON`);
-            relay.output.on();
+            relay.output.open();
 
             // Wait 3 seconds, then turn OFF
             setTimeout(() => {
                 console.log(`${relay.name}: OFF`);
-                relay.output.off();
+                relay.output.close();
 
                 // Wait 3 seconds, then test next relay
                 setTimeout(() => {
@@ -89,7 +89,7 @@ board.on("ready", function () {
         // Turn off all relays
         relays.forEach(relay => {
             console.log(`Turning OFF: ${relay.name}`);
-            relay.output.off();
+            relay.output.close();
         });
 
         setTimeout(() => {
