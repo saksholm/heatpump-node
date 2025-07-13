@@ -579,9 +579,9 @@ export const lcdNextScreenHelper = (instanceName, instance, nextScreen, nextRota
   instance();
 };
 
-export const initializePidController = (instance,callback) => {
+export const initializePidController = (instance, callback) => {
   console.log("initializePidController() called...");
-  if(!isPidControllerActive(instance)) {
+  if (!isPidControllerActive(instance)) {
     console.log("pid controller is not active.. activating");
     const {
       controller_p,
@@ -589,10 +589,10 @@ export const initializePidController = (instance,callback) => {
       controller_d,
       controller_time,
     } = instance;
-//    instance.controller = pidController(controller_p, controller_i, controller_d, controller_time);
+    //    instance.controller = pidController(controller_p, controller_i, controller_d, controller_time);
     instance.controller = pidController(controller_p, controller_i, controller_d);
 
-    if(isFunction(callback)) {
+    if (isFunction(callback)) {
       console.log("initializePidController() callback is function.. calling");
       callback();
     }
@@ -605,16 +605,16 @@ export const isPidControllerActive = instance => {
 
 export const resetPidController = (instance, callback) => {
   console.log("resetPidController() called...");
-  if(isPidControllerActive(instance)) {
+  if (isPidControllerActive(instance)) {
     console.log("pid instance is active...");
     instance.controller.reset();
     instance.controller = null;
-    console.log("reset instance: ", instance.name,"PID controller");
+    console.log("reset instance: ", instance.name, "PID controller");
     console.log("calling initializePidController()");
     initializePidController(instance, callback);
   }
 
-//  if(isFunction(callback)) callback();
+  //  if(isFunction(callback)) callback();
 };
 
 
@@ -701,27 +701,27 @@ export const freezeFrame = () => {
 };
 
 export const reportStopReason = (reason, freezeFrameObj) => {
-  if(reason) {
-    const obj = Object.assign({reason: reason}, freezeFrameObj ? freezeFrameObj : freezeFrame());
+  if (reason) {
+    const obj = Object.assign({ reason: reason }, freezeFrameObj ? freezeFrameObj : freezeFrame());
     console.log("reportStopReason obj", obj);
-    mqttPublish(HP.board.mqttClient, 'stopReason', JSON.stringify(obj), {retain: true});
+    mqttPublish(HP.board.mqttClient, 'stopReason', JSON.stringify(obj), { retain: true });
 
   }
 };
 
 
 export const boilerControlTHValid = () => {
-//  const currentTimestamp = unixtimestamp();
-  if(TH.boilerUpper.active && TH.boilerUpper.value === 0) return false;
-  if(TH.boilerMiddle.active && TH.boilerMiddle.value === 0) return false;
-  if(TH.boilerLower.active && TH.boilerLower.value === 0) return false;
+  //  const currentTimestamp = unixtimestamp();
+  if (TH.boilerUpper.active && TH.boilerUpper.value === 0) return false;
+  if (TH.boilerMiddle.active && TH.boilerMiddle.value === 0) return false;
+  if (TH.boilerLower.active && TH.boilerLower.value === 0) return false;
 
   return true;
 };
 
 
 export const printChangedTHValues = (thObj, thKey) => {
-  if(GLOBALS.debugLevels.th) {
+  if (GLOBALS.debugLevels.th) {
     const thName = Object.keys(TH).filter(objKey => TH[objKey].objectName === thKey)?.name || 'failed to get proper name';
     console.log(`DEBUG: TH ${thName} changed to ${thObj.value}`);
   }
@@ -730,29 +730,29 @@ export const printChangedTHValues = (thObj, thKey) => {
 export const printTHTable = () => {
   const array = [];
   Object.keys(TH.thI2CReads).map(thKey => {
-//    console.log("thKey", thKey);
+    //    console.log("thKey", thKey);
     const instance = TH.thI2CReads[thKey];
-//    console.log("instance", instance);
+    //    console.log("instance", instance);
     const thObject = TH[Object.keys(TH).filter(thObjectKey => TH[thObjectKey].objectName === thKey)[0]];
-//    console.log("thObject", thObject);
-    array.push({name: thObject.name.toString(), temperature: instance.value});
+    //    console.log("thObject", thObject);
+    array.push({ name: thObject.name.toString(), temperature: instance.value });
   });
 
   console.table(array);
 };
 
 export const printHPObject = () => {
-  const {board, mqttClient, mqtt, mqttStatus, start, stop, loop, initial, ...rest} = HP;
+  const { board, mqttClient, mqtt, mqttStatus, start, stop, loop, initial, ...rest } = HP;
   return rest;
 };
 
 export const printDOObject = () => {
-  const {board, initial, ...rest} = DO;
+  const { board, initial, ...rest } = DO;
   return rest;
 };
 
 export const printAIObject = () => {
-  const {board, initial, onChanges, ...rest} = AI;
+  const { board, initial, onChanges, ...rest } = AI;
   return rest;
 };
 
@@ -761,8 +761,8 @@ export const printTimeoutHandlers = () => {
 };
 
 export const printDemandObject = () => {
-  const {upper,middle, lower} = GLOBALS.boiler;
-  const {boilerUpper, boilerMiddle, boilerLower} = TH;
+  const { upper, middle, lower } = GLOBALS.boiler;
+  const { boilerUpper, boilerMiddle, boilerLower } = TH;
 
   return {
     upper: upper,
