@@ -2,30 +2,30 @@ import five from 'johnny-five';
 import {
   Initialized,
 } from './initialized.class';
-import {GLOBALS} from './globals';
+import { GLOBALS } from './globals';
 import {
   genericInitial,
   mqttPublish,
   round2Decimals,
-//  calculateThermistorValue,
+  //  calculateThermistorValue,
   validateTemperatures,
-//  setupDS18B20,
+  //  setupDS18B20,
   setupI2C_DS18B20,
   handleI2C_TH_Data,
 } from './func';
 const {
-//  constrain,
-//  map,
-//  inRange,
-//  range,
-//  sum,
-//  toFixed,
-//  uid,
+  //  constrain,
+  //  map,
+  //  inRange,
+  //  range,
+  //  sum,
+  //  toFixed,
+  //  uid,
 
 } = five.Fn;
 
 const {
-//  Pin,
+  //  Pin,
 } = five;
 
 const initialized = new Initialized('TH');
@@ -35,10 +35,10 @@ const initialized = new Initialized('TH');
 
 export const TH = {
   board: null,
-  interval: 5*1000, // 5sec
+  interval: 5 * 1000, // 5sec
   threshold: 0.1, // TODO: implement this also
   changeIntervalMaxTimes: 10, // 10 times interval... OR changeIntervalMax...
-  changeIntervalMax: 5*60*1000, //5mins
+  changeIntervalMax: 5 * 60 * 1000, //5mins
 
 
   thI2CReads: {}, // this is just initial.. contains all I2C data!!!
@@ -50,14 +50,14 @@ export const TH = {
     active: true,
     objectName: 'th1',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/outside',
-    interval: 5*1000,//60*1000, // 1min
-    initial: function() {
+    interval: 5 * 1000,//60*1000, // 1min
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -69,13 +69,13 @@ export const TH = {
     active: true,
     objectName: 'th2',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/beforeCHG',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -87,13 +87,13 @@ export const TH = {
     active: true,
     objectName: 'th3',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/betweenCHG_CX',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -105,13 +105,13 @@ export const TH = {
     active: true,
     objectName: 'th4',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/betweenCX_FAN',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -123,13 +123,13 @@ export const TH = {
     active: true,
     objectName: 'th5',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/exhaust',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -141,15 +141,15 @@ export const TH = {
     active: true,
     objectName: 'th6',
     value: 0,
-    interval: 10*1000, // 10sec
-    set: function(value) {
+    interval: 10 * 1000, // 10sec
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/glygolIn',
     output: null,
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -161,14 +161,14 @@ export const TH = {
     active: true,
     objectName: 'th7',
     value: 0,
-    interval: 10*1000, // 10sec
-    set: function(value) {
+    interval: 10 * 1000, // 10sec
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/glygolOut',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -180,13 +180,13 @@ export const TH = {
     active: true,
     objectName: 'th8',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/hotgas',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -197,13 +197,13 @@ export const TH = {
     active: true,
     objectName: 'th9',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/ahuSupply',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -214,13 +214,13 @@ export const TH = {
     active: true,
     objectName: 'th10',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/hxIn',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -231,13 +231,13 @@ export const TH = {
     active: true,
     objectName: 'th11',
     value: 0,
-    set: function(value) {
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/hxOut',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -248,14 +248,14 @@ export const TH = {
     active: true,
     objectName: 'th12',
     value: 0,
-    interval: 30*1000,
-    set: function(value) {
+    interval: 30 * 1000,
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/boilerUpper',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -266,14 +266,14 @@ export const TH = {
     active: true,
     objectName: 'th13',
     value: 0,
-    interval: 30*1000,
-    set: function(value) {
+    interval: 30 * 1000,
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/boilerMiddle',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -284,14 +284,14 @@ export const TH = {
     active: true,
     objectName: 'th14',
     value: 0,
-    interval: 30*1000,
-    set: function(value) {
+    interval: 30 * 1000,
+    set: function (value) {
       this.value = value;
       mqttPublish(TH.board.mqttClient, this.mqttState, this.value);
     },
     mqttCommand: '',
     mqttState: 'th/boilerLower',
-    initial: function() {
+    initial: function () {
       setupI2C_DS18B20(this, TH.board);
       initialized.done(this.name);
     },
@@ -305,23 +305,23 @@ TH.onChanges = () => {
   Object.keys(TH).map(key => {
     setTimeout(() => {
       const instance = TH[key];
-      if(key !== "board" && instance !== null && instance && instance.active) {
-        if(instance.output !== null && instance.type === 'thermometer10k') {
-          instance.output.on("data", function(value){
+      if (key !== "board" && instance !== null && instance && instance.active) {
+        if (instance.output !== null && instance.type === 'thermometer10k') {
+          instance.output.on("data", function (value) {
 
-            const {celsius} = value;
-            if(instance.value !== celsius) {
+            const { celsius } = value;
+            if (instance.value !== celsius) {
               const roundedCelsius = round2Decimals(celsius);
-              if(typeof instance.threshold === "number") {
+              if (typeof instance.threshold === "number") {
                 // if change is gte/lte threshold
-                if(roundedCelsius >= (instance.value + instance.threshold) || roundedCelsius <= instance.value - instance.threshold ) {
+                if (roundedCelsius >= (instance.value + instance.threshold) || roundedCelsius <= instance.value - instance.threshold) {
                   instance.set(roundedCelsius);
-                  if(GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${value}`);
+                  if (GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${value}`);
                 }
               } else {
                 // set value just based on interval
                 instance.set(roundedCelsius);
-                if(GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${value}`);
+                if (GLOBALS.debug && GLOBALS.printTH) console.log(`${instance.name} value changed to ${value}`);
               }
 
             }
@@ -329,18 +329,18 @@ TH.onChanges = () => {
           });
           console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
         }
-        if(instance.output !== null && instance.type === 'DS18B20') {
-          instance.output.on("error", function(err) {
+        if (instance.output !== null && instance.type === 'DS18B20') {
+          instance.output.on("error", function (err) {
             console.log(`Error on reading TH ${instance.name}: ${err}`);
           });
 
-          instance.output.on("change", function() {
-            const {celsius, address} = instance.output;
-            if(validateTemperatures(celsius)) {
-              if(GLOBALS.debug && GLOBALS.printTH) console.log(`Thermometer at address: 0x${address.toString(16)}`);
-              if(GLOBALS.debug && GLOBALS.printTH) console.log(`TH ${instance.name} ${celsius}C`);
+          instance.output.on("change", function () {
+            const { celsius, address } = instance.output;
+            if (validateTemperatures(celsius)) {
+              if (GLOBALS.debug && GLOBALS.printTH) console.log(`Thermometer at address: 0x${address.toString(16)}`);
+              if (GLOBALS.debug && GLOBALS.printTH) console.log(`TH ${instance.name} ${celsius}C`);
               instance.set(round2Decimals(celsius));
-              if(GLOBALS.debug && GLOBALS.printTH) console.warn(`${instance.name} value changed to ${celsius}`);
+              if (GLOBALS.debug && GLOBALS.printTH) console.warn(`${instance.name} value changed to ${celsius}`);
             } else {
               console.log("ignoring temp", celsius, instance.name);
             }
@@ -349,7 +349,7 @@ TH.onChanges = () => {
           console.log(`TH, ${instance.name} onChanges watchers activated.... DONE`);
         }
 
-        if(instance.type === 'I2C_DS18B20') {
+        if (instance.type === 'I2C_DS18B20') {
 
         }
 
