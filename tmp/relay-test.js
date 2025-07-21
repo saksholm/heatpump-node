@@ -28,6 +28,8 @@ board.on("ready", function () {
 
     // Initialize relay objects
     relays.forEach(relay => {
+        // Set pin mode to OUTPUT (though Johnny-Five Relay does this automatically)
+        board.pinMode(relay.pin, board.MODES.OUTPUT);
         relay.output = new five.Relay(relay.pin, relay.relayType);
         relay.output.close(); // Start with all relays OFF
     });
