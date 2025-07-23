@@ -174,8 +174,8 @@ const GLOBALS = {
       topic: 'setMaxHPOutput',
       func: value => {
         let setValue = value;
-        if(value > DO.hpOutput.maxValue) setValue = DO.hpOutput.maxValue;
-        if(value < DO.hpOutput.minValue) setValue = DO.hpOutput.minValue;
+        if (value > DO.hpOutput.maxValue) setValue = DO.hpOutput.maxValue;
+        if (value < DO.hpOutput.minValue) setValue = DO.hpOutput.minValue;
         console.log("MQTT COMMAND :: set max HP output", setValue);
         DO.hpOutput.maxValue = setValue;
         mqttPublish(HP.board.mqttClient, 'setMaxHPOutput', setValue);
@@ -186,8 +186,8 @@ const GLOBALS = {
       topic: 'setDynamicHPOutput',
       func: value => {
         console.log("MQTT COMMAND :: setDynamicHPOutput", value);
-        if(value === 'on') HP.dynamicHPOutput = true;
-        if(value === 'off') HP.dynamicHPOutput = false;
+        if (value === 'on') HP.dynamicHPOutput = true;
+        if (value === 'off') HP.dynamicHPOutput = false;
         mqttPublish(HP.board.mqttClient, 'setDynamicHPOutput', value);
       },
     },
@@ -213,4 +213,4 @@ const GLOBALS = {
 };
 
 
-export {GLOBALS};
+export { GLOBALS };
