@@ -5,8 +5,8 @@ import {
   mqttPublish,
   resetAlarms,
 } from "./func";
-import {HP} from "./hp";
-import {DO} from "./do";
+import { HP } from "./hp";
+import { DO } from "./do";
 
 const GLOBALS = {
   version: '0.2',
@@ -18,14 +18,14 @@ const GLOBALS = {
   preventRun: false,
   activePins: [],
   timersTH: [],
-  startupTime: 60*1000, // 60sec to not start hp
-  logicLoopInterval: 1*1000,
-  logicLoopLoad2WayLoopInterval: 10*1000,
+  startupTime: 60 * 1000, // 60sec to not start hp
+  logicLoopInterval: 1 * 1000,
+  logicLoopLoad2WayLoopInterval: 10 * 1000,
   startupTimestamp: 0,
   lastRunTime: 0, // seconds
-  afterDryLimit: 45*60,
-  afterDryTime: 40*60,
-  afterDryTimeShort: 5*60,
+  afterDryLimit: 45 * 60,
+  afterDryTime: 40 * 60,
+  afterDryTimeShort: 5 * 60,
   afterDryHpFanOutput: 60,
   coolingTargetTemp: 13,
   hvacCooling: false,
@@ -108,7 +108,7 @@ const GLOBALS = {
       type: 'func',
       topic: 'emergencyReset',
       func: () => {
-        if(HP.emergencyShutdown) HP.emergencyShutdown = false;
+        if (HP.emergencyShutdown) HP.emergencyShutdown = false;
         console.log("MQTT COMMAND :: emergencyReset");
       },
     },
@@ -124,10 +124,10 @@ const GLOBALS = {
       topic: 'nightElectricityOn',
       func: value => {
         console.log("MQTT COMMAND :: nightElectricityOn", value);
-        if(value === 'on') {
+        if (value === 'on') {
           GLOBALS.nightElectricity.demand = true;
         }
-        if(value === 'off') {
+        if (value === 'off') {
           GLOBALS.nightElectricity.demand = false;
         }
         mqttPublish(HP.board.mqttClient, 'nightElectricityOn', value);
@@ -139,10 +139,10 @@ const GLOBALS = {
       topic: 'boostHotWater',
       func: value => {
         console.log("MQTT COMMAND :: boostHotWater", value);
-        if(value === 'on') {
+        if (value === 'on') {
           GLOBALS.boostHotWater = true;
         }
-        if(value === 'off') {
+        if (value === 'off') {
           GLOBALS.boostHotWater = false;
         }
         mqttPublish(HP.board.mqttClient, 'boostHotWater', value);
@@ -153,10 +153,10 @@ const GLOBALS = {
       topic: 'preventRun',
       func: value => {
         console.log("MQTT COMMAND :: prevent run", value);
-        if(value === 'on') {
+        if (value === 'on') {
           GLOBALS.preventRun = true;
         }
-        if(value === 'off') {
+        if (value === 'off') {
           GLOBALS.preventRun = false;
         }
         mqttPublish(HP.board.mqttClient, 'preventRun', value);
