@@ -171,6 +171,20 @@ const GLOBALS = {
     },
     {
       type: 'func',
+      topic: 'setHPFanOutput',
+      func: value => {
+        DO.hpFanOutput.set(value);
+      },
+    },
+    {
+      type: 'func',
+      topic: 'setAHUFanOutput',
+      func: value => {
+        DO.ahuFanOutput.set(value);
+      },
+    },
+    {
+      type: 'func',
       topic: 'setMaxHPOutput',
       func: value => {
         let setValue = value;
