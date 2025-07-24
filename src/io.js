@@ -21,6 +21,7 @@ import {
   printTimeoutHandlers,
   resetAlarms,
 } from './func';
+import { hpStatus } from './lib/status';
 
 import {
   manualCoolingModeActivate,
@@ -93,6 +94,7 @@ IO.initial = board => {
       printCommandTopics: () => { console.log("MQTT Command topics:", DO.board.mqttClient.commandTopics) },
       printDemand: () => { console.log("Demand", printDemandObject()) },
       resetAlarm: () => resetAlarms(),
+      hpStatus: () => hpStatus(),
     });
 
 
