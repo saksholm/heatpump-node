@@ -1,12 +1,12 @@
-import {GLOBALS} from './globals';
-import {DO} from './do';
-import {DI} from './di';
+import { GLOBALS } from './globals';
+import { DO } from './do';
+import { DI } from './di';
 //import {AO} from './ao';
-import {AI} from './ai';
-import {TH} from './th';
-import {HP} from './hp';
-import {LCD} from './lcd';
-import {LOGIC} from './logic';
+import { AI } from './ai';
+import { TH } from './th';
+import { HP } from './hp';
+import { LCD } from './lcd';
+import { LOGIC } from './logic';
 
 export const IO = {};
 
@@ -39,7 +39,7 @@ IO.initial = board => {
 
 
   // pass board instance to LOGIC.board
-  if(LOGIC.board === null) LOGIC.board = board;
+  if (LOGIC.board === null) LOGIC.board = board;
 
   // initialising I2C
   board.i2cConfig({});
@@ -63,14 +63,14 @@ IO.initial = board => {
 
     board.repl.inject({
       info: () => console.log("Hello, this is your info :D"),
-      stop: () => HP.stop(`REPL manual stop with emergency true`,true),
+      stop: () => HP.stop(`REPL manual stop with emergency true`, true),
       emergencyReset: () => {
-        if(HP.emergencyShutdown) HP.emergencyShutdown = false;
+        if (HP.emergencyShutdown) HP.emergencyShutdown = false;
       },
       resetLcd: () => LCD.screen.initial(),
       manualCoolingMode: () => manualCoolingModeActivate(),
       hpMode: value => {
-        if(HP.manual) {
+        if (HP.manual) {
           HP.mode = value;
         }
       },
