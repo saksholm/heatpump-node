@@ -1,12 +1,12 @@
-import {GLOBALS} from './globals';
-import {DO} from './do';
-import {DI} from './di';
+import { GLOBALS } from './globals';
+import { DO } from './do';
+import { DI } from './di';
 //import {AO} from './ao';
-import {AI} from './ai';
-import {TH} from './th';
-import {HP} from './hp';
-import {LCD} from './lcd';
-import {LOGIC} from './logic';
+import { AI } from './ai';
+import { TH } from './th';
+import { HP } from './hp';
+import { LCD } from './lcd';
+import { LOGIC } from './logic';
 
 export const IO = {};
 
@@ -21,6 +21,7 @@ import {
   printTimeoutHandlers,
   resetAlarms,
 } from './func';
+import { hpStatus } from './lib/status';
 
 import {
   manualCoolingModeActivate,
@@ -39,7 +40,7 @@ IO.initial = board => {
 
 
   // pass board instance to LOGIC.board
-  if(LOGIC.board === null) LOGIC.board = board;
+  if (LOGIC.board === null) LOGIC.board = board;
 
   // initialising I2C
   board.i2cConfig({});
@@ -63,14 +64,14 @@ IO.initial = board => {
 
     board.repl.inject({
       info: () => console.log("Hello, this is your info :D"),
-      stop: () => HP.stop(`REPL manual stop with emergency true`,true),
+      stop: () => HP.stop(`REPL manual stop with emergency true`, true),
       emergencyReset: () => {
-        if(HP.emergencyShutdown) HP.emergencyShutdown = false;
+        if (HP.emergencyShutdown) HP.emergencyShutdown = false;
       },
       resetLcd: () => LCD.screen.initial(),
       manualCoolingMode: () => manualCoolingModeActivate(),
       hpMode: value => {
-        if(HP.manual) {
+        if (HP.manual) {
           HP.mode = value;
         }
       },
@@ -84,15 +85,16 @@ IO.initial = board => {
       debugHpMax: () => GLOBALS.debugLevels.dynamicHPOutput = !GLOBALS.debugLevels.dynamicHPOutput,
       debugMqttMessages: () => GLOBALS.debugLevels.mqttMessages = !GLOBALS.debugLevels.mqttMessages,
       thTable: () => printTHTable(),
-      printTHObject: () => {console.log("TH Object", TH)},
-      printGLOBALSObject: () => {console.log("GLOBALS Objects", GLOBALS)},
-      printHPObject: () => {console.log("HP Object", printHPObject())},
-      printDOObject: () => {console.log("DO Object", printDOObject())},
-      printAIObject: () => {console.log("AI Object", printAIObject())},
+      printTHObject: () => { console.log("TH Object", TH) },
+      printGLOBALSObject: () => { console.log("GLOBALS Objects", GLOBALS) },
+      printHPObject: () => { console.log("HP Object", printHPObject()) },
+      printDOObject: () => { console.log("DO Object", printDOObject()) },
+      printAIObject: () => { console.log("AI Object", printAIObject()) },
       printTimeoutHandlers: () => printTimeoutHandlers(),
-      printCommandTopics: () => {console.log("MQTT Command topics:",DO.board.mqttClient.commandTopics)},
-      printDemand: () => {console.log("Demand", printDemandObject())},
+      printCommandTopics: () => { console.log("MQTT Command topics:", DO.board.mqttClient.commandTopics) },
+      printDemand: () => { console.log("Demand", printDemandObject()) },
       resetAlarm: () => resetAlarms(),
+      hpStatus: () => hpStatus(),
     });
 
 
