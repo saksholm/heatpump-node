@@ -95,6 +95,26 @@ IO.initial = board => {
       printDemand: () => { console.log("Demand", printDemandObject()) },
       resetAlarm: () => resetAlarms(),
       hpStatus: () => hpStatus(),
+      test4wayHeating: () => {
+        console.log("Testing 4-way valve to heating...");
+        DO.hp4Way.set('heating', true);
+      },
+      test4wayCooling: () => {
+        console.log("Testing 4-way valve to cooling...");
+        DO.hp4Way.set('cooling', true);
+      },
+      force4wayHeating: () => {
+        console.log("Forcing 4-way valve to heating (bypass mode check)...");
+        DO.hp4Way.value = 'heating';
+        DO.hp4Way.output.close();
+        console.log("4-way valve set to heating");
+      },
+      force4wayCooling: () => {
+        console.log("Forcing 4-way valve to cooling (bypass mode check)...");
+        DO.hp4Way.value = 'cooling';
+        DO.hp4Way.output.open();
+        console.log("4-way valve set to cooling");
+      },
     });
 
 
