@@ -333,8 +333,15 @@ export const DO = {
 
       if (!['starting', 'stopping', 'heating', 'cooling', 'run'].includes(HP.mode) || initial === true) {
         this.value = value;
-        if (this.value === "heating") this.output.open();
-        if (this.value === "cooling") this.output.close();
+        console.log("4-WAY DEBUG: Setting to", this.value, "HP mode is", HP.mode);
+        if (this.value === "heating") {
+          console.log("4-WAY DEBUG: Opening relay for heating");
+          this.output.open();
+        }
+        if (this.value === "cooling") {
+          console.log("4-WAY DEBUG: Closing relay for cooling");
+          this.output.close();
+        }
         console.log("switched 4-way!", this.value);
         mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       } else {
