@@ -41,7 +41,7 @@ export const hpStatus = () => {
     console.log("─".repeat(40));
     console.log(`AHU Fan:          ${DO.ahuFan.value.padEnd(10)} | HP Allowed:     ${DO.hpAllowed.value.padEnd(10)}`);
     console.log(`Damper Outside:   ${DO.damperOutside.value.padEnd(10)} | Damper Conv:    ${DO.damperConvection.value.padEnd(10)}`);
-    console.log(`Water Pump:       ${DO.waterPump.value.padEnd(10)} | CHG Pump:       ${DO.chgPump.value.padEnd(10)}`);
+    console.log(`Water Pump:       ${DO.waterpumpCharging.value.padEnd(10)} | CHG Pump:       ${DO.chgPumpRequest.value.padEnd(10)}`);
     console.log(`HP 4-Way Valve:   ${DO.hp4Way.value.padEnd(10)} | HP Fan:         ${DO.hpFan.value.padEnd(10)}`);
 
     // Setpoints & Limits
