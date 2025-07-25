@@ -90,7 +90,7 @@ export const DO = {
     maxValue: 100,
     defrostMax: 20,
 
-    set: function (value, skip=false) {
+    set: function (value, skip = false) {
       if (!skip && !defaultForSet(this, value)) return;
       this.value = value;
 
