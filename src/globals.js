@@ -166,6 +166,7 @@ const GLOBALS = {
       type: 'func',
       topic: 'setHPOutput',
       func: value => {
+        console.log("MQTT COMMAND :: setHPOutput", value);
         DO.hpOutput.set(value);
       },
     },
@@ -173,6 +174,7 @@ const GLOBALS = {
       type: 'func',
       topic: 'setHPFanOutput',
       func: value => {
+        console.log("MQTT COMMAND :: setHPFanOutput", value);
         DO.hpFanOutput.set(value);
       },
     },
@@ -180,6 +182,7 @@ const GLOBALS = {
       type: 'func',
       topic: 'setAHUFanOutput',
       func: value => {
+        console.log("MQTT COMMAND :: setAHUFanOutput", value);
         DO.ahuFanOutput.set(value);
       },
     },
