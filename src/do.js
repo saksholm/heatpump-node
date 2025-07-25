@@ -325,7 +325,7 @@ export const DO = {
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "heating",
     enum: ["heating", "cooling"],
-    relayType: 'NC',
+    relayType: 'NO',
     set: function (value, initial = false) {
       if (!defaultForSet(this, value)) return;
       console.log("HP4WAY DEBUG!!!", value);
@@ -333,8 +333,8 @@ export const DO = {
 
       if (!['starting', 'stopping', 'heating', 'cooling', 'run'].includes(HP.mode) || initial === true) {
         this.value = value;
-        if (this.value === "heating") this.output.close();
-        if (this.value === "cooling") this.output.open();
+        if (this.value === "heating") this.output.open();
+        if (this.value === "cooling") this.output.close();
         console.log("switched 4-way!", this.value);
         mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
       } else {
