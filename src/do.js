@@ -289,9 +289,9 @@ export const DO = {
   chgPumpRequest: {
     type: 'relay',
     name: 'CHG pump request',
-    active: true,
-    //    pin: 27,
-    pin: 45,
+    active: false,
+    //    pin: 45,
+    pin: 49,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "off", // true/false
     enum: ["on", "off"],
@@ -321,7 +321,7 @@ export const DO = {
     name: 'HP 4-way valve',
     active: true,
     //    pin: 28,
-    pin: 46,
+    pin: 45,
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "heating",
     enum: ["heating", "cooling"],
