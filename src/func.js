@@ -288,7 +288,7 @@ export const calculateThermistorValue = (raw, { beta, roomTemp, balanceResistor,
 
 };
 
-export const defaultForSet = (instance, value) => {
+export const defaultForSet = (instance, value, manual = false) => {
   //  console.log("defaultForSet in: ", value, instance.name);
   if (!instance.active) { console.warn(`name: ${instance.name}, type: ${instance.type} not active!`); return false; }
   if (instance.enum) {
@@ -299,14 +299,16 @@ export const defaultForSet = (instance, value) => {
     }
   }
 
+  if (!manual) {
+    if (instance.minValue) {
+      if (value < instance.minValue) console.warn(`value (${value}) is under minimum (${instance.minValue})`);
+      return false;
+    }
+    if (instance.maxValue) {
+      if (value > instance.maxValue) console.warn(`value (${value}) is over maximum (${instance.maxValue})`);
+      return false;
+    }
 
-  if (instance.minValue) {
-    if (value < instance.minValue) console.warn(`value (${value}) is under minimum (${instance.minValue})`);
-    return false;
-  }
-  if (instance.maxValue) {
-    if (value > instance.maxValue) console.warn(`value (${value}) is over maximum (${instance.maxValue})`);
-    return false;
   }
 
 
