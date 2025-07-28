@@ -121,7 +121,7 @@ IO.initial = board => {
     });
 
 
-    console.log("ACTIVE PINS", GLOBALS.activePins);
+    //    console.log("ACTIVE PINS", GLOBALS.activePins);
 
   });
 
