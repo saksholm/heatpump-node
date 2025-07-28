@@ -409,8 +409,8 @@ export const DO = {
     maxValue: 60,
     manualMin: 0,
     manualMax: 80,
-    set: function (value, skip = false, manual = true) {
-      if (!defaultForSet(this, value)) return;
+    set: function (value, skip = false, manual = false) {
+      if (!defaultForSet(this, value, manual)) return;
       this.value = constrain(value, manual ? this.manualMin : this.minValue, manual ? this.manualMax : this.maxValue);
 
       DO.board.analogWrite(this.pin, skip ? this.value : mapPercentToPWM(this.value, manual ? this.manualMin : this.minValue, manual ? this.manualMax : this.maxValue));
@@ -511,7 +511,7 @@ export const DO = {
     manualMin: 0,
     manualMax: 70,
     set: function (value, skip = false, manual = false) {
-      if (!defaultForSet(this, value)) {
+      if (!defaultForSet(this, value, manual)) {
         console.log("DO.hpOutput.. preventing to do changes on defaultForSet()");
         return;
       }
