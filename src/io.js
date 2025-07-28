@@ -75,7 +75,7 @@ IO.initial = board => {
           HP.mode = value;
         }
       },
-      manuCoolingOff: () => manualCoolingModeDeactivate(),
+      manualCoolingModeOff: () => manualCoolingModeDeactivate(),
       manualDefrost: () => stopToDefrostAndContinue(),
       debugTH: () => GLOBALS.debugLevels.th = !GLOBALS.debugLevels.th,
       debugPID: () => GLOBALS.debugLevels.load2WayControllerPid = !GLOBALS.debugLevels.load2WayControllerPid,
