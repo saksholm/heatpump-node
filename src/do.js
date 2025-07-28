@@ -405,7 +405,7 @@ export const DO = {
     pinMode: Pin.PWM, // PWM
     value: 0,
     defaultValue: 20,
-    minValue: 10,
+    minValue: 20,
     maxValue: 60,
     manualMin: 0,
     manualMax: 80,
