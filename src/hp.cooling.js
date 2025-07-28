@@ -47,17 +47,17 @@ export const manualCoolingModeActivate = () => {
   DO.hp4Way.set('cooling');
 
   DO.damperOutside.set('open');
-  DO.load2Way.set(30);
+  DO.load2Way.set(35);
   DO.waterpumpCharging.set('on');
 
 
   DO.hpFan.set('on');
-  DO.hpFanOutput.set(10);
+  DO.hpFanOutput.set(15);
 
   DO.ahuFan.set('on');
-  DO.ahuFanOutput.set(40);
+  DO.ahuFanOutput.set(30);
 
-  DO.hpOutput.set(10);
+  DO.hpOutput.set(15);
 
   HP.allowedToRun = true;
 };
