@@ -70,12 +70,12 @@ IO.initial = board => {
       },
       resetLcd: () => LCD.screen.initial(),
       manualCoolingMode: () => manualCoolingModeActivate(),
+      manualCoolingModeOff: () => manualCoolingModeDeactivate(),
       hpMode: value => {
         if (HP.manual) {
           HP.mode = value;
         }
       },
-      manualCoolingModeOff: () => manualCoolingModeDeactivate(),
       manualDefrost: () => stopToDefrostAndContinue(),
       debugTH: () => GLOBALS.debugLevels.th = !GLOBALS.debugLevels.th,
       debugPID: () => GLOBALS.debugLevels.load2WayControllerPid = !GLOBALS.debugLevels.load2WayControllerPid,
