@@ -87,7 +87,7 @@ export const DO = {
     pinMode: Pin.PWM, // PWM
     value: 0,
     minValue: 15,
-    maxValue: 100,
+    maxValue: 50,
     defrostMax: 20,
 
     set: function (value, skip = false) {
@@ -410,7 +410,7 @@ export const DO = {
     manualMin: 0,
     manualMax: 80,
     set: function (value, skip = false, manual = true) {
-      if (!defaultForSet(this, value, manual)) return;
+      if (!defaultForSet(this, value)) return;
       this.value = constrain(value, manual ? this.manualMin : this.minValue, manual ? this.manualMax : this.maxValue);
 
       DO.board.analogWrite(this.pin, skip ? this.value : mapPercentToPWM(this.value, manual ? this.manualMin : this.minValue, manual ? this.manualMax : this.maxValue));
@@ -426,6 +426,7 @@ export const DO = {
     mqttState: 'hp/fanOutput',
     repl: {
       hpFanOutput: value => DO.hpFanOutput.set(value, false, true),
+      hpFanOutputForce: value => DO.hpFanOutput.set(value, true, true),
       hpFanOutputShutdown: () => DO.hpFanOutput.set(0, true),
     },
     output: null,
@@ -510,7 +511,7 @@ export const DO = {
     manualMin: 0,
     manualMax: 70,
     set: function (value, skip = false, manual = false) {
-      if (!defaultForSet(this, value, manual)) {
+      if (!defaultForSet(this, value)) {
         console.log("DO.hpOutput.. preventing to do changes on defaultForSet()");
         return;
       }
