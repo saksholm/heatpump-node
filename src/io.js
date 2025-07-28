@@ -95,6 +95,9 @@ IO.initial = board => {
       printDemand: () => { console.log("Demand", printDemandObject()) },
       resetAlarm: () => resetAlarms(),
       hpStatus: () => hpStatus(),
+
+
+      // these are for testing the 4-way valve:
       test4wayHeating: () => {
         console.log("Testing 4-way valve to heating...");
         DO.hp4Way.set('heating', true);
