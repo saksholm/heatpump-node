@@ -336,11 +336,11 @@ export const DO = {
         console.log("4-WAY DEBUG: Setting to", this.value, "HP mode is", HP.mode);
         if (this.value === "heating") {
           console.log("4-WAY DEBUG: Opening relay for heating");
-          this.output.open();
+          this.output.close();
         }
         if (this.value === "cooling") {
           console.log("4-WAY DEBUG: Closing relay for cooling");
-          this.output.close();
+          this.output.open();
         }
         console.log("switched 4-way!", this.value);
         mqttPublish(DO.board.mqttClient, this.mqttState, this.value);
