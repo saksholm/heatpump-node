@@ -301,14 +301,17 @@ export const defaultForSet = (instance, value, manual = false) => {
 
   if (!manual) {
     if (instance.minValue) {
-      if (value < instance.minValue) console.warn(`value (${value}) is under minimum (${instance.minValue})`);
-      return false;
+      if (value < instance.minValue) {
+        console.warn(`value (${value}) is under minimum (${instance.minValue})`);
+        return false;
+      }
     }
     if (instance.maxValue) {
-      if (value > instance.maxValue) console.warn(`value (${value}) is over maximum (${instance.maxValue})`);
-      return false;
+      if (value > instance.maxValue) {
+        console.warn(`value (${value}) is over maximum (${instance.maxValue})`);
+        return false;
+      }
     }
-
   }
 
 
