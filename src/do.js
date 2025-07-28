@@ -325,7 +325,7 @@ export const DO = {
     pinMode: Pin.OUTPUT, // OUTPUT
     value: "heating",
     enum: ["heating", "cooling"],
-    relayType: 'NC',
+    relayType: 'NO',
     set: function (value, initial = false) {
       if (!defaultForSet(this, value)) return;
       console.log("HP4WAY DEBUG!!!", value);
