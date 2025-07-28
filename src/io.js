@@ -70,12 +70,12 @@ IO.initial = board => {
       },
       resetLcd: () => LCD.screen.initial(),
       manualCoolingMode: () => manualCoolingModeActivate(),
+      manualCoolingModeOff: () => manualCoolingModeDeactivate(),
       hpMode: value => {
         if (HP.manual) {
           HP.mode = value;
         }
       },
-      manuCoolingOff: () => manualCoolingModeDeactivate(),
       manualDefrost: () => stopToDefrostAndContinue(),
       debugTH: () => GLOBALS.debugLevels.th = !GLOBALS.debugLevels.th,
       debugPID: () => GLOBALS.debugLevels.load2WayControllerPid = !GLOBALS.debugLevels.load2WayControllerPid,
@@ -95,6 +95,9 @@ IO.initial = board => {
       printDemand: () => { console.log("Demand", printDemandObject()) },
       resetAlarm: () => resetAlarms(),
       hpStatus: () => hpStatus(),
+
+
+      // these are for testing the 4-way valve:
       test4wayHeating: () => {
         console.log("Testing 4-way valve to heating...");
         DO.hp4Way.set('heating', true);
@@ -118,7 +121,7 @@ IO.initial = board => {
     });
 
 
-    console.log("ACTIVE PINS", GLOBALS.activePins);
+    //    console.log("ACTIVE PINS", GLOBALS.activePins);
 
   });
 
