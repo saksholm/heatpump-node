@@ -1,22 +1,22 @@
 import five from 'johnny-five';
-import {GLOBALS} from './globals';
-const {DO} = require('./do'); //import {DO} from './do';
-import {TH} from './th';
+import { GLOBALS } from './globals';
+const { DO } = require('./do'); //import {DO} from './do';
+import { TH } from './th';
 import {
-//  unixtimestamp,
-//  calculateTimeout,
-//  mapPercentToPWM,
+  //  unixtimestamp,
+  //  calculateTimeout,
+  //  mapPercentToPWM,
   genericInitial,
   mqttPublish,
 } from './func'
 
 const {
-//  constrain,
+  //  constrain,
 } = five.Fn;
 
-import {hpStop} from './hp.stop';
-import {hpStart} from './hp.start';
-import {hpLoop} from './hp.loop';
+import { hpStop } from './hp.stop';
+import { hpStart } from './hp.start';
+import { hpLoop } from './hp.loop';
 
 
 export const HP = {
@@ -29,7 +29,7 @@ export const HP = {
   dynamicHPOutput: false,
   dynamicHPOutputParams: { // this idea is give some values for dynamic output values... value - outdoor temperature = max output.
     heating: {
-      temperatures: [-10,0,10],
+      temperatures: [-10, 0, 10],
       values: [55, 50, 45],
     },
     cooling: {
@@ -43,9 +43,9 @@ export const HP = {
   alarmBReason: null,
   running: false,
   lastStopTime: 0,
-  minimumRunningTime: 60*3, // 3min
+  minimumRunningTime: 60 * 3, // 3min
   actualRunStartTimestamp: 0,
-  restartDelay: 60*5, // 5 mins
+  restartDelay: 60 * 5, // 5 mins
   restartTimestamp: 0,
   afterDry: false,
   defrost: false,
@@ -89,18 +89,18 @@ export const HP = {
   },
   emergencyShutdown: false,
   mqtt: {
-/*
-    status: {
-      topic: 'hp/status',
-      value: {
-        value: this.mode,
-      }
-    },
-*/
-    modeChange:{
+    /*
+        status: {
+          topic: 'hp/status',
+          value: {
+            value: this.mode,
+          }
+        },
+    */
+    modeChange: {
       topic: 'hp/mode',
       value: {
-        value: function(){ return HP.mode},
+        value: function () { return HP.mode },
       },
     },
     emergency: {
@@ -110,26 +110,26 @@ export const HP = {
         name: 'Emergency Stop'
       }
     },
-    defrost:{
-      topic:'hp/status',
+    defrost: {
+      topic: 'hp/status',
       value: {
         value: 'defrosting',
         name: 'Defrosting'
       }
     },
   },
-  mqttStatus: function(val) {
-    if(val) {
-      if(Object.keys(HP.mqtt).includes(val)) {
-        const {topic,value} = HP.mqtt[val];
+  mqttStatus: function (val) {
+    if (val) {
+      if (Object.keys(HP.mqtt).includes(val)) {
+        const { topic, value } = HP.mqtt[val];
         // TODO: maybe have to refactor this idea..
-        if(topic && value) mqttPublish(HP.board.mqttClient, topic, value.value);
+        if (topic && value) mqttPublish(HP.board.mqttClient, topic, value.value);
       }
     }
   }
 };
 
 HP.start = () => hpStart();
-HP.stop = (reason, emergency=false,callback=false) => hpStop(reason, emergency,callback);
+HP.stop = (reason, emergency = false, callback = false) => hpStop(reason, emergency, callback);
 HP.loop = () => hpLoop();
 HP.initial = board => genericInitial(HP, 'HP', board);
