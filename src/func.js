@@ -277,7 +277,17 @@ export const pidController = (p = 0.25, i = 0.01, d = 0.01, time = 1, i_max = 10
       i_max = options.i_max;
     }
    */
-  return new Controller(p, i, d, time);
+
+  const options = {
+    k_p: p,
+    k_i: i,
+    k_d: d,
+    dt: time,
+    i_max: i_max,
+  };
+  return new Controller(options);
+
+  //    return new Controller(p, i, d, time);
 };
 
 export const round2Decimals = value => {
