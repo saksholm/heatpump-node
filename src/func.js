@@ -262,6 +262,21 @@ export const relayOnOff = instance => {
 };
 
 export const pidController = (p = 0.25, i = 0.01, d = 0.01, time = 1, i_max = 100) => {
+  // TODO: add i_max
+  // gets object in.
+
+  /**
+   * THIS IS FROM SOURCE:
+   * 
+   * if (typeof k_p === 'object') {
+      let options = k_p;
+      k_p = options.k_p;
+      k_i = options.k_i;
+      k_d = options.k_d;
+      dt = options.dt;
+      i_max = options.i_max;
+    }
+   */
   return new Controller(p, i, d, time);
 };
 
