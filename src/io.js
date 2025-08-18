@@ -76,6 +76,11 @@ IO.initial = board => {
           HP.mode = value;
         }
       },
+      setLoad2WayPidTarget: value => {
+        if (value) {
+          DO.load2Way.controller.setTarget(value);
+        }
+      },
       manualDefrost: () => stopToDefrostAndContinue(),
       debugTH: () => GLOBALS.debugLevels.th = !GLOBALS.debugLevels.th,
       debugPID: () => GLOBALS.debugLevels.load2WayControllerPid = !GLOBALS.debugLevels.load2WayControllerPid,
