@@ -261,7 +261,7 @@ export const relayOnOff = instance => {
   }
 };
 
-export const pidController = (p = 0.25, i = 0.01, d = 0.01, time = 1, i_max = 10) => {
+export const pidController = (p = 0.25, i = 0.01, d = 0.01, time = 1, i_max = 1) => {
   // TODO: add i_max
   // gets object in.
 
