@@ -406,7 +406,7 @@ export const DO = {
     value: 0,
     defaultValue: 20,
     minValue: 20,
-    maxValue: 60,
+    maxValue: 80,//60,
     manualMin: 0,
     manualMax: 80,
     set: function (value, skip = false, manual = false) {
